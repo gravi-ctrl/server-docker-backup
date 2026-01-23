@@ -1,0 +1,13 @@
+services:
+  glances:
+    image: nicolargo/glances:latest
+    container_name: glances
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    environment:
+      # -w : Web Server mode (Default is port 61208)
+      # -t 5 : Refresh every 5 seconds (Default is 2 or 3)
+      - GLANCES_OPT=-w -t 5
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

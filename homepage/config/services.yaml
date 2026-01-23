@@ -1,0 +1,181 @@
+- Infrastructure:
+    - Nginx Proxy Manager:
+        icon: nginx-proxy-manager.png
+        href: https://npm.homeserver
+        description: Proxy Manager
+        widget:
+            type: npm
+            url: http://192.168.1.109:81
+            username: {{HOMEPAGE_VAR_NPM_USER}}
+            password: {{HOMEPAGE_VAR_NPM_PASS}}
+
+    - Pi-hole:
+        icon: pi-hole.png
+        href: https://pihole.homeserver/admin
+        description: DNS server
+        widget:
+            type: pihole
+            url: http://192.168.1.109:8081
+            version: 6
+            key: {{HOMEPAGE_VAR_PI_API}}
+
+- Monitoring:
+    - Uptime Kuma Status Page:
+        icon: uptime-kuma.png
+        href: https://kuma.homeserver/status/home
+        widget:
+            type: uptimekuma
+            url: http://192.168.1.109:3001/
+            slug: home
+
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: https://kuma.homeserver
+
+    - Scrutiny:
+        icon: scrutiny.png
+        href: https://scrutiny.homeserver
+        description: Drive Health
+
+- Admin:
+    - Dockge:
+        icon: dockge.png
+        href: https://dockge.homeserver
+        description: Container Manager
+
+    - Borg:
+        icon: borgmatic.png
+        href: https://borg.homeserver
+        description: Borgmatic web UI
+
+    - n8n:
+        icon: n8n.png
+        href: https://n8n.homeserver
+        description: Workflow Automation
+
+- Cloud:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: https://nextcloud.homeserver
+        description: Files
+        widget:
+            type: nextcloud
+            url: http://192.168.1.109:8080
+            username: {{HOMEPAGE_VAR_NEXTCLOUD_USER}}
+            password: {{HOMEPAGE_VAR_NEXTCLOUD_APP_PASS}}
+
+    - Paperless-ngx:
+        icon: paperless-ngx.png
+        href: https://paperless.homeserver
+        description: Archives
+        widget:
+            type: paperlessngx
+            url: http://192.168.1.109:8010/
+            key: {{HOMEPAGE_VAR_PAPERLESS_API}}
+
+    - Syncthing:
+        icon: syncthing.png
+        href: https://syncthing.homeserver
+        description: Sync
+
+- Media & Entertainment:
+    - RomM:
+        icon: romm
+        href: https://romm.homeserver
+        description: ROM Manager
+        widget:
+            type: romm
+            url: http://192.168.1.109:8083
+
+    - Jellyfin:
+        icon: jellyfin.png
+        href: https://jellyfin.homeserver
+        description: Movies, Series & Music
+        widget:
+            type: jellyfin
+            url: http://192.168.1.109:8096
+            key: {{HOMEPAGE_VAR_JELLYFIN_KEY}}
+            enableBlocks: true
+            enableNowPlaying: false
+            showEpisodeNumber: true
+
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: https://audiobooks.homeserver
+        description: Books
+        widget:
+            type: audiobookshelf
+            url: http://192.168.1.109:13378/
+            key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_API}}
+
+    - Immich:
+        icon: immich.png
+        href: https://immich.homeserver
+        description: Photos
+        widget:
+            type: immich
+            url: http://192.168.1.109:2283/
+            key: {{HOMEPAGE_VAR_IMMICH_API}}
+            version: 2
+            fields: ["photos", "videos"]
+
+- Downloads:
+    - qBittorrent:
+        icon: qbittorrent.png
+        href: https://qbit.homeserver
+        description: Torrents
+        widget:
+            type: qbittorrent
+            url: http://192.168.1.109:8089
+            username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
+            password: {{HOMEPAGE_VAR_QBIT_PASS}}
+
+    - JDownloader 2:
+        icon: jdownloader.png
+        href: https://jd.homeserver
+        description: Direct Downloads
+        widget:
+            type: jdownloader
+            username: {{HOMEPAGE_VAR_JD2_USER}}
+            password: {{HOMEPAGE_VAR_JD2_PASS}}
+            client: jd@homeserver
+
+- Arrs:
+    - Radarr:
+        icon: radarr.png
+        href: https://radarr.homeserver
+        description: Movies
+        widget:
+            type: radarr
+            url: http://192.168.1.109:7878
+            key: {{HOMEPAGE_VAR_RADARR_KEY}}
+            enableQueue: true
+
+    - Sonarr:
+        icon: sonarr.png
+        href: https://sonarr.homeserver
+        description: TV Shows
+        widget:
+            type: sonarr
+            url: http://192.168.1.109:8989
+            key: {{HOMEPAGE_VAR_SONARR_KEY}}
+            enableQueue: true
+
+    - Prowlarr:
+        icon: prowlarr.png
+        href: https://prowlarr.homeserver
+        description: Indexers
+        widget:
+            type: prowlarr
+            url: http://192.168.1.109:9696
+            key: {{HOMEPAGE_VAR_PROWLARR_KEY}}
+
+    - Bazarr:
+        icon: bazarr.png
+        href: https://bazarr.homeserver
+        description: Subtitles
+        widget:
+            type: bazarr
+            url: http://192.168.1.109:6767
+            key: {{HOMEPAGE_VAR_BAZARR_KEY}}
+

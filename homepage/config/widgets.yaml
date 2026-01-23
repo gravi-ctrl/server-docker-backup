@@ -1,0 +1,20 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/info-widgets/
+
+- glances:
+    url: https://glances.homeserver
+    version: 4
+    cpu: true
+    mem: true
+    cputemp: true
+    uptime: true
+    disk:
+      - /etc/hostname
+    diskUnits: bytes
+    expanded: true
+    label: Homeserver
+
+- search:
+    provider: duckduckgo
+    target: _blank

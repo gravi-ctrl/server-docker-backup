@@ -1,0 +1,40 @@
+---
+title: Homeserver
+description: My own homelab... 3ady y3ny
+background:
+  image: "/images/triss.jpg"
+  opacity: 50
+color: neutral
+favicon: "/images/unnamed.jpg"
+cardBlur: xs
+theme: dark
+headerStyle: boxedWidgets
+fullWidth: true
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey
+quicklaunch:
+  searchDescriptions: true
+  showSearchSuggestions: true
+
+
+layout:
+  Infrastructure:
+    style: column
+  Monitoring:
+    style: column
+  Admin:
+    style: column
+  Cloud:
+    style: column
+  Media & Entertainment:
+    style: row
+    columns: 4
+  Downloads:
+    style: row
+    columns: 4
+  Arrs:
+    style: row
+    columns: 4
+
+

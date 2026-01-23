@@ -1,0 +1,50 @@
+# --- IGNORE EVERYTHING BY DEFAULT ---
+*
+
+# --- OPEN DIRECTORIES (For traversing) ---
+!*/
+
+# --- EXPLICITLY BLOCK DATA FOLDERS ---
+# These must come AFTER !*/ to prevent permission errors
+**/postgres/
+**/influxdb/
+**/mysql/
+**/mysql_data/
+**/mariadb/
+**/redis/
+**/mongo/
+**/data/
+**/logs/
+**/logrotate/
+**/tmp/
+**/etc-pihole/
+**/html/
+**/db/
+
+# Block Config folders by default
+**/config/
+**/metadata/
+
+# --- ALLOW YML CONFIG FILES ---
+!compose.yaml
+!compose.yml
+!docker-compose.yaml
+!docker-compose.yml
+!.gitignore
+!.commit-warning
+!Dockerfile
+
+# --- HOMEPAGE EXCEPTION ---
+!homepage/config/
+!homepage/config/*.yaml
+!homepage/config/images/
+!homepage/config/images/*
+
+# --- WIFI_ROBOT EXCEPTION ---
+!wifi_robot/*.py
+
+# --- SECURITY ---
+.env
+**/.env
+.dockge/
+.git/
