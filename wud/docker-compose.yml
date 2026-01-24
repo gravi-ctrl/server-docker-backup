@@ -1,0 +1,40 @@
+services:
+  wud:
+    image: fmartinou/whats-up-docker
+    container_name: wud
+    restart: always
+    depends_on:
+      - wud-socket-proxy
+    networks:
+      - wud-net
+    ports:
+      - 3030:3000
+    environment:
+      - TZ=Africa/Cairo
+      
+      # Connection to Proxy
+      - WUD_WATCHER_DOCKER_SOCKET=tcp://wud-socket-proxy:2375
+      
+      # Core Logic: Check for newer SemVer tags (e.g., 1.0.0 -> 1.0.1)
+      - WUD_WATCHER_DOCKER_REGISTRY_TAGSELECTION=semver
+      
+      # Notifications
+      - WUD_TRIGGER_TELEGRAM_ONCE=true
+      - WUD_TRIGGER_TELEGRAM_TOKEN=${TELE_TOK}
+      - WUD_TRIGGER_TELEGRAM_CHATID=${CHAT_ID}
+
+  wud-socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: wud-socket-proxy
+    restart: unless-stopped
+    networks:
+      - wud-net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+      - IMAGES=1
+
+networks:
+  wud-net:
+    driver: bridge
