@@ -8,19 +8,17 @@ services:
     networks:
       - wud-net
     ports:
-      - 3030:3000
+      - 3000:3000
     environment:
       - TZ=Africa/Cairo
-      
-      # Connection to Proxy
-      - WUD_WATCHER_DOCKER_SOCKET=tcp://wud-socket-proxy:2375
-      
-      # Core Logic: Check for newer SemVer tags (e.g., 1.0.0 -> 1.0.1)
-      - WUD_WATCHER_DOCKER_REGISTRY_TAGSELECTION=semver
-      
-      # Notifications
-      - WUD_TRIGGER_TELEGRAM_ONCE=true
-      - WUD_TRIGGER_TELEGRAM_TOKEN=${TELE_TOK}
+      - LOG_LEVEL=info
+
+      # Docker Watcher (TCP Connection)
+      - WUD_WATCHER_DOCKER_HOST=wud-socket-proxy
+      - WUD_WATCHER_DOCKER_PORT=2375
+
+      # Telegram Notification
+      - WUD_TRIGGER_TELEGRAM_BOTTOKEN=${TELE_TOK}
       - WUD_TRIGGER_TELEGRAM_CHATID=${CHAT_ID}
 
   wud-socket-proxy:
@@ -34,6 +32,8 @@ services:
     environment:
       - CONTAINERS=1
       - IMAGES=1
+      - NETWORKS=1
+      - INFO=1
 
 networks:
   wud-net:
