@@ -3,15 +3,15 @@
 # https://gethomepage.dev/configs/bookmarks
 - Developer:
     - Github:
-        - abbr: GH
+        - icon: github.png
           href: https://github.com/
 
 - Social:
     - Reddit:
-        - abbr: RE
+        - icon: reddit.png
           href: https://old.reddit.com/
 
 - Entertainment:
     - YouTube:
-        - abbr: YT
+        - icon: youtube.png
           href: https://youtube.com/
