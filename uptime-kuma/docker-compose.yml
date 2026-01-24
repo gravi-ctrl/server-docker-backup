@@ -1,6 +1,6 @@
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:2.0.2
+    image: louislam/uptime-kuma:latest
     container_name: uptime-kuma
     restart: unless-stopped
     network_mode: host
@@ -11,7 +11,6 @@ services:
       - DOCKER_HOST=tcp://127.0.0.1:2375
     depends_on:
       - uptime-socket-proxy
-
   uptime-socket-proxy:
     image: tecnativa/docker-socket-proxy
     container_name: uptime-socket-proxy
@@ -22,4 +21,5 @@ services:
       - CONTAINERS=1
     ports:
       # Expose port 2375 to the host, but ONLY to localhost (secure)
-      - "127.0.0.1:2375:2375"
+      - 127.0.0.1:2375:2375
+networks: {}

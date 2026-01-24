@@ -1,6 +1,6 @@
 services:
   jdownloader:
-    image: jlesage/jdownloader-2:v25.12.1
+    image: jlesage/jdownloader-2:latest
     container_name: jdownloader
     environment:
       - VNC_PASSWORD=${VNC_PASS}
