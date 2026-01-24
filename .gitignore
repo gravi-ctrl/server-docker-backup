@@ -33,6 +33,7 @@
 !.gitignore
 !.commit-warning
 !Dockerfile
+!scan.sh
 
 # --- HOMEPAGE EXCEPTION ---
 !homepage/config/
