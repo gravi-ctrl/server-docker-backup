@@ -2,7 +2,7 @@
 FROM python:3.9-slim
 WORKDIR /app
 
-# 1. Install Chrome (Fixed the truncated GPG commands)
+# 1. Install Chrome
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget gnupg ca-certificates \
     && mkdir -p /etc/apt/keyrings \
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get install -y google-chrome-stable --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Install Python Dependencies (Added python-dotenv)
+# 2. Install Python Dependencies
 RUN pip install selenium flask python-dotenv
 
 # 3. Copy Application Code
