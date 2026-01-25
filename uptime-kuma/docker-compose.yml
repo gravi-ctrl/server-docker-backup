@@ -19,10 +19,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - CONTAINERS=1
-      - IMAGES=1
-      - INFO=1
-      - PING=1
-      - HEADERS=1
     ports:
       # Expose port 2375 to the host, but ONLY to localhost (secure)
       - 127.0.0.1:2375:2375
