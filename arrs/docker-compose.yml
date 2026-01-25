@@ -21,7 +21,6 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/radarr:/config
-      # MAP YOUR ASSETS FOLDER
       - /srv/data/assets:/data
     ports:
       - 7878:7878
@@ -36,7 +35,6 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/sonarr:/config
-      # MAP YOUR ASSETS FOLDER
       - /srv/data/assets:/data
     ports:
       - 8989:8989
@@ -51,7 +49,6 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/bazarr:/config
-      # Must match the other Arrs exactly!
       - /srv/data/assets:/data
     ports:
       - 6767:6767
