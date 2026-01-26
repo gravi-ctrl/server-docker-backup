@@ -117,7 +117,7 @@
     - Immich:
         icon: immich.png
         href: https://immich.homeserver
-        description: Photos
+        description: Photos & Videos
         widget:
             type: immich
             url: http://192.168.1.109:2283/
