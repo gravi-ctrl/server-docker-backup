@@ -2,7 +2,7 @@
     - Pi-hole:
         icon: pi-hole.png
         href: https://pihole.homeserver/admin
-        description: DNS server
+        description: DNS Filtering
         widget:
             type: pihole
             url: http://192.168.1.109:8081
@@ -31,6 +31,12 @@
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: https://kuma.homeserver
+        description: Uptime Monitoring
+
+    - Glances:
+        icon: glances.png
+        href: https://glances.homeserver
+        description: Resource Monitor
 
     - Scrutiny:
         icon: scrutiny.png
