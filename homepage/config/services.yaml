@@ -13,6 +13,11 @@
         icon: nginx-proxy-manager.png
         href: https://npm.homeserver
         description: Proxy Manager
+        widget:
+            type: npm
+            url: http://192.168.1.109:81
+            username: {{HOMEPAGE_VAR_NPM_USER}}
+            password: {{HOMEPAGE_VAR_NPM_PASS}}
 
 - Monitoring:
     - Uptime Kuma Status Page:
