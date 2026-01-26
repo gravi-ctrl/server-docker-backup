@@ -33,15 +33,15 @@
         href: https://kuma.homeserver
         description: Uptime Monitoring
 
-    - Glances:
-        icon: glances.png
-        href: https://glances.homeserver
-        description: Resource Monitor
-
     - Scrutiny:
         icon: scrutiny.png
         href: https://scrutiny.homeserver
         description: Drive Health
+
+    - Glances:
+        icon: glances.png
+        href: https://glances.homeserver
+        description: Resource Monitor
 
 - Admin:
     - Dockge:
