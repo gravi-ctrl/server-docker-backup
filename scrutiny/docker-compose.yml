@@ -17,9 +17,11 @@ services:
       - SCRUTINY_NOTIFY_URLS=${TELE_API}
       - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=90s
       - SCRUTINY_ARGS=--log-level debug
-    restart: always
+    restart: on-failure:5
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/health || exit 1"]
+      test:
+        - CMD-SHELL
+        - curl -f http://localhost:8080/api/health || exit 1
       interval: 30s
       timeout: 10s
       retries: 3

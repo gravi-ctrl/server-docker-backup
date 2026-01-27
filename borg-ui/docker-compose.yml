@@ -4,7 +4,7 @@ services:
     container_name: borg-web-ui
     restart: unless-stopped
     ports:
-      - "8093:8081"
+      - 8093:8081
     volumes:
       - borg_data:/data
       - borg_cache:/home/borg/.cache/borg
@@ -15,7 +15,7 @@ services:
       - TZ=Africa/Cairo
       - PUID=1000
       - PGID=1000
-
 volumes:
-  borg_data:
-  borg_cache:
+  borg_data: null
+  borg_cache: null
+networks: {}

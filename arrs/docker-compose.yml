@@ -11,7 +11,6 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
-
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -25,7 +24,6 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
-
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
@@ -39,7 +37,6 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
-
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
@@ -53,7 +50,6 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped
-
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -65,3 +61,4 @@ services:
     ports:
       - 8191:8191
     restart: unless-stopped
+networks: {}

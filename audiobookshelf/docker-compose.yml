@@ -14,5 +14,5 @@ services:
       - TZ=Africa/Cairo
       - AUDIOBOOKSHELF_UID=1000
       - AUDIOBOOKSHELF_GID=1000
-    restart: always
+    restart: unless-stopped
 networks: {}

@@ -3,7 +3,7 @@ services:
     image: crazymax/diun:latest
     container_name: diun
     command: serve
-    restart: always
+    restart: unless-stopped
     environment:
       - TZ=Africa/Cairo
       - LOG_LEVEL=info
@@ -22,7 +22,6 @@ services:
       - diun-socket-proxy
     networks:
       - diun-net
-
   diun-socket-proxy:
     image: tecnativa/docker-socket-proxy
     container_name: diun-socket-proxy
@@ -31,10 +30,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # Read-only mount
     environment:
       - CONTAINERS=1 # Allow listing containers
-      - IMAGES=1     # Allow inspecting images (Critical for Diun!)
+      - IMAGES=1 # Allow inspecting images (Critical for Diun!)
     networks:
       - diun-net
-
 networks:
   diun-net:
     driver: bridge

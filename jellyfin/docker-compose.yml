@@ -11,4 +11,5 @@ services:
       - /srv/data/assets:/data
     ports:
       - 8096:8096
-    restart: unless-stopped
+    restart: on-failure:5
+networks: {}
