@@ -3,10 +3,11 @@ services:
     container_name: scrutiny
     image: ghcr.io/analogj/scrutiny:master-omnibus
     cap_add:
-      - SYS_RAWIO # Allow container to query hardware info
+      - SYS_RAWIO
     privileged: true
+    stop_grace_period: 2m
     ports:
-      - 8020:8080 # Web UI port
+      - 8020:8080
     volumes:
       - /run/udev:/run/udev:ro
       - ./config:/opt/scrutiny/config
@@ -14,14 +15,13 @@ services:
     environment:
       - TZ=Africa/Cairo
       - SCRUTINY_NOTIFY_URLS=${TELE_API}
-      - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=30s
+      - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=90s
+      - SCRUTINY_ARGS=--log-level debug
     restart: always
     healthcheck:
-      test:
-        - CMD-SHELL
-        - curl -f http://localhost:8080/api/health || exit 1
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 90s
 networks: {}
