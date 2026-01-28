@@ -12,6 +12,7 @@ services:
       # --- SECRETS ---
       # the vars can be added in the workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
       - MY_BOT_TOKEN=${TELEGRAM_TOKEN}
+      - MY_2ND_BOT_TOKEN=${TELEGRAM_ROFL_TOKEN}
       - CHAT_ID=${MY_TELEGRAM_CHAT_ID}
       - SONARR_API=${SON_API}
       - RADARR_API=${RAD_API}
