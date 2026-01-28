@@ -50,15 +50,15 @@ services:
     ports:
       - 6767:6767
     restart: unless-stopped
-  flaresolverr:
-    image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: flaresolverr
-    environment:
-      - LOG_LEVEL=info
-      - LOG_HTML=false
-      - CAPTCHA_SOLVER=none
-      - TZ=Africa/Cairo
-    ports:
-      - 8191:8191
-    restart: unless-stopped
+#  flaresolverr:
+#    image: ghcr.io/flaresolverr/flaresolverr:latest
+#    container_name: flaresolverr
+#    environment:
+#      - LOG_LEVEL=info
+#      - LOG_HTML=false
+#      - CAPTCHA_SOLVER=none
+#      - TZ=Africa/Cairo
+#    ports:
+#      - 8191:8191
+#    restart: unless-stopped
 networks: {}
