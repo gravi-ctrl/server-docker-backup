@@ -25,7 +25,8 @@
 **/config/
 **/metadata/
 
-# --- ALLOW YML CONFIG FILES ---
+# --- ALLOW ---
+!docker-compose.yml.disabled
 !compose.yaml
 !compose.yml
 !docker-compose.yaml
