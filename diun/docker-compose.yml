@@ -14,7 +14,6 @@ services:
       - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
       - DIUN_NOTIF_TELEGRAM_TOKEN=${TELE_TOK}
       - DIUN_NOTIF_TELEGRAM_CHATIDS=${CHAT_ID}
-      # Tell Diun to look at the proxy, not the socket file
       - DIUN_PROVIDERS_DOCKER_ENDPOINT=tcp://diun-socket-proxy:2375
     volumes:
       - ./data:/data
@@ -27,10 +26,10 @@ services:
     container_name: diun-socket-proxy
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro # Read-only mount
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - CONTAINERS=1 # Allow listing containers
-      - IMAGES=1 # Allow inspecting images (Critical for Diun!)
+      - CONTAINERS=1
+      - IMAGES=1
     networks:
       - diun-net
 networks:
