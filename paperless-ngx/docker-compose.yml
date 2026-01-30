@@ -36,8 +36,8 @@ services:
       - PAPERLESS_OCR_LANGUAGE=ara+eng
       - PAPERLESS_OCR_LANGUAGES=ara eng
       - PAPERLESS_URL=https://paperless.homeserver
-      - PAPERLESS_FILENAME_FORMAT={{ created_year }}/{{ document_type }}/{{
-        correspondent }}/{{ title }}
+      - PAPERLESS_FILENAME_FORMAT={{ tag }}/{{ created_year }}/{{ title }}
+
     volumes:
       - /srv/data/assets/paperless/data:/usr/src/paperless/data
       - /srv/data/assets/paperless/media:/usr/src/paperless/media
