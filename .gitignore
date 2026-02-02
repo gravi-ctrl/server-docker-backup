@@ -20,20 +20,16 @@
 **/etc-pihole/
 **/html/
 **/db/
-
-# Block Config folders by default
 **/config/
 **/metadata/
 
 # --- ALLOW ---
 !docker-compose.yml.disabled
-!compose.yaml
-!compose.yml
-!docker-compose.yaml
 !docker-compose.yml
 !.gitignore
 !.commit-warning
 !Dockerfile
+!.env.example
 
 # --- HOMEPAGE EXCEPTION ---
 !homepage/config/
