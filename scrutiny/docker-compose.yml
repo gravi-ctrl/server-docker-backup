@@ -14,7 +14,7 @@ services:
       - ./influxdb:/opt/scrutiny/influxdb
     environment:
       - TZ=Africa/Cairo
-      - SCRUTINY_NOTIFY_URLS=${TELE_API}
+      - SCRUTINY_NOTIFY_URLS=${TELE_DANTE_TOKEN}
       - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=90s
       - SCRUTINY_ARGS=--log-level debug
     restart: unless-stopped
