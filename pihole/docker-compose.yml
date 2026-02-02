@@ -9,6 +9,7 @@ services:
     environment:
       - TZ=Africa/Cairo
       - WEBPASSWORD=${PASS}
+      - ADDITIONAL_PACKAGES=python3 curl
       - CHECK_LOAD=false
     volumes:
       - ./etc-pihole:/etc/pihole
