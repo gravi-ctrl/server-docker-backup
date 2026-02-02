@@ -15,15 +15,6 @@ services:
     environment:
       - TZ=Africa/Cairo
       - SCRUTINY_NOTIFY_URLS=${TELE_DANTE_TOKEN}
-      - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=90s
+      - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=120s
       - SCRUTINY_ARGS=--log-level debug
     restart: unless-stopped
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - curl -f http://localhost:8080/api/health || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 90s
-networks: {}
