@@ -17,7 +17,7 @@ services:
       - SCRUTINY_NOTIFY_URLS=${TELE_API}
       - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=90s
       - SCRUTINY_ARGS=--log-level debug
-    restart: on-failure:20
+    restart: unless-stopped
     healthcheck:
       test:
         - CMD-SHELL
