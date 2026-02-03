@@ -2,11 +2,11 @@
 title: Homeserver
 description: My own homelab... 3ady y3ny
 background:
-  image: "/images/space.jpg"
+  image: "/images/triss.jpg"
   opacity: 50
 color: neutral
 favicon: "/images/unnamed.jpg"
-cardBlur: xl # sm md xl xs
+cardBlur: xs # sm md xl xs
 theme: dark
 headerStyle: boxedWidgets
 fullWidth: true
