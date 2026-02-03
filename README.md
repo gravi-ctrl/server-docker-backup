@@ -11,4 +11,4 @@ If you clone this repo to a new server, **Docker containers will fail to start**
 
 ### How to Restore Secrets
 
-*   For restoration instructions including secrets, refer to **[Phase 3: Restore Docker Stacks in server-scripts repo](https://github.com/gravi-ctrl/server-scripts/#phase-3-restore-docker-stacks)**
+For restoration instructions including secrets, refer to **[Phase 3: Restore Docker Stacks in server-scripts repo](https://github.com/gravi-ctrl/server-scripts/#phase-3-restore-docker-stacks)**
