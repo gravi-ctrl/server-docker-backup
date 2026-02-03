@@ -2,8 +2,6 @@
 
 This repository contains the configuration files (`compose.yaml`) for all containers running in `/opt/stacks`.
 
-**Sync Method:** GitOps via `git-auto-sync.sh` (Runs every 15 mins).
-
 ## ⚠️ Important Note on Secrets
 
 For security reasons, **`.env` files are NOT included** in this repository.
