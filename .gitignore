@@ -30,6 +30,7 @@
 !.commit-warning
 !Dockerfile
 !.env.example
+!/README.md
 
 # --- HOMEPAGE EXCEPTION ---
 !homepage/config/
