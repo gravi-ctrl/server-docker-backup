@@ -5,7 +5,6 @@
 !*/
 
 # --- EXPLICITLY BLOCK DATA FOLDERS ---
-# These must come AFTER !*/ to prevent permission errors
 **/postgres/
 **/influxdb/
 **/mysql/
@@ -32,13 +31,11 @@
 !.env.example
 !/README.md
 
-# --- HOMEPAGE EXCEPTION ---
+# --- CONTAINERS EXCEPTION ---
 !homepage/config/
 !homepage/config/*.yaml
 !homepage/config/images/
 !homepage/config/images/*
-
-# --- WIFI_ROBOT EXCEPTION ---
 !wifi_robot/*.py
 
 # --- SECURITY ---
