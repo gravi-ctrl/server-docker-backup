@@ -9,4 +9,4 @@
 # The script itself is added in ~/.zshrc
 # ==========================================
 
-This directory auto-commits every 30m — gitignore secrets.
+This directory auto-commits daily at 5am — gitignore secrets.
