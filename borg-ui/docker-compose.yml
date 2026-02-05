@@ -8,7 +8,7 @@ services:
     volumes:
       - borg_data:/data
       - borg_cache:/home/borg/.cache/borg
-      # Mount directories you want to backup (REPLACE with your actual paths)
+      # Mount dirs you want to backup (REPLACE with your actual paths)
       - /srv/data/assets:/local/assets:ro
       - /srv/data/borg_backup:/home/borg_backup:rw
     environment:

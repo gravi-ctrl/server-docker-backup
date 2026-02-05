@@ -7,7 +7,7 @@ services:
     volumes:
       - ./config:/config
       - ./metadata:/metadata
-      - ./backups:/config/backups
+      - /srv/data/assets/syncthing/Backup/audiobookshelf:/config/backups
       - /srv/data/assets/Media/Books:/audiobooks:rw
       - /srv/data/assets/Media/Podcasts:/podcasts:rw
     environment:
