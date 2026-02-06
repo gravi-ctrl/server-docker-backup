@@ -10,7 +10,7 @@ services:
       - WEBHOOK_URL=https://${NGROK_DOMAIN}
       - GENERIC_TIMEZONE=Africa/Cairo
       # --- SECRETS ---
-      # the vars can be added in the workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
+      # Variables can be added in the workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
       - MY_BOT_TOKEN=${TELEGRAM_DANTE_TOKEN}
       - MY_2ND_BOT_TOKEN=${TELEGRAM_VERGIL_TOKEN}
       - CHAT_ID=${MY_TELEGRAM_CHAT_ID}
