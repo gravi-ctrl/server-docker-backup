@@ -3,20 +3,13 @@ services:
     image: syncthing/syncthing:latest
     container_name: syncthing
     hostname: Homeserver
+    network_mode: host
     environment:
       - PUID=1000
       - PGID=1000
+      - STGUIADDRESS=192.168.1.109:8384
     volumes:
       - ./config:/var/syncthing/config
       - /srv/data:/srv/data
-      # - STGUIADDRESS=0.0.0.0:9084    # If you uncomment this to switch the network mode, then remove the whole 'ports:' section
-    ports:
-      - 9084:8384
     restart: unless-stopped
-    healthcheck:
-      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never
-        OK || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 3
 networks: {}

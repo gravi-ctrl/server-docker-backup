@@ -19,6 +19,7 @@ services:
       - ${UPLOAD_LOCATION}:/data
       - /etc/localtime:/etc/localtime:ro
       - /srv/data/assets/syncthing/DCIM:/mnt/photos_external:rw
+      # - /srv/data/assets/syncthing/Movies:/mnt/videos_external:rw
     env_file:
       - .env
     ports:
@@ -42,6 +43,7 @@ services:
     volumes:
       - model-cache:/cache
       - /srv/data/assets/syncthing/DCIM:/mnt/photos_external:rw
+      # - /srv/data/assets/syncthing/Movies:/mnt/videos_external:rw
     env_file:
       - .env
     restart: unless-stopped
