@@ -44,16 +44,6 @@ services:
       - ./n8n_data:/home/node/.n8n
       - /srv/data/assets/downloads:/downloads:rw
       - /srv/data/assets/downloads/watch:/watch-folder:rw
-    # Standard Healthcheck
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - wget --no-verbose --tries=1 --spider http://127.0.0.1:5678/healthz ||
-          exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
   # --- SIDECAR: NGROK TUNNEL ---
   ngrok:
     image: ngrok/ngrok:latest

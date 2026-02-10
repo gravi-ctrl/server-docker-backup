@@ -29,7 +29,7 @@ services:
       romm-redis:
         condition: service_started
   romm-db:
-    image: mariadb:11
+    image: mariadb:lts
     container_name: romm-db
     restart: unless-stopped
     environment:

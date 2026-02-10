@@ -20,6 +20,5 @@ services:
     environment:
       - CONTAINERS=1
     ports:
-      # Expose port 2375 to the host, but ONLY to localhost (secure)
       - 127.0.0.1:2375:2375
 networks: {}

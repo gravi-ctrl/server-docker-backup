@@ -1,18 +1,19 @@
 services:
   broker:
-    image: docker.io/library/redis:7
+    image: docker.io/library/redis:alpine
     container_name: paperless-redis
     restart: unless-stopped
     volumes:
       - redisdata:/data
   db:
-    image: docker.io/library/postgres:15
+    image: docker.io/library/postgres:17
     container_name: paperless-db
     restart: unless-stopped
     environment:
       - POSTGRES_DB=paperless
       - POSTGRES_USER=paperless
       - POSTGRES_PASSWORD=${POSTGRES_DBPASS}
+      - POSTGRES_HOST_AUTH_METHOD=md5
     volumes:
       - pgdata:/var/lib/postgresql/data
   webserver:
@@ -36,7 +37,8 @@ services:
       - PAPERLESS_OCR_LANGUAGE=ara+eng
       - PAPERLESS_OCR_LANGUAGES=ara eng
       - PAPERLESS_URL=https://paperless.homeserver
-      - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created }}-{{ title }}
+      - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created
+        }}-{{ title }}
     volumes:
       - /srv/data/assets/paperless/data:/usr/src/paperless/data
       - /srv/data/assets/paperless/media:/usr/src/paperless/media
@@ -45,4 +47,5 @@ services:
 volumes:
   pgdata: null
   redisdata: null
+
 networks: {}

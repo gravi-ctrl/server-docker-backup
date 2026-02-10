@@ -59,6 +59,11 @@
         href: https://n8n.homeserver
         description: Workflow Automation
 
+    - Home Router:
+        icon: router.png
+        href: http://192.168.1.1
+        description: Default Gateway
+
 - Cloud:
     - Nextcloud:
         icon: nextcloud.png
