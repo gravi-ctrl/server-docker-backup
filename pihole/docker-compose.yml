@@ -13,6 +13,7 @@ services:
       - WEBPASSWORD=${PASS}
       - ADDITIONAL_PACKAGES=python3 curl
       - CHECK_LOAD=false
+      - FTLCONF_database_maxDBdays=7
     volumes:
       - ./etc-pihole:/etc/pihole
       - ./etc-dnsmasq.d:/etc/dnsmasq.d
