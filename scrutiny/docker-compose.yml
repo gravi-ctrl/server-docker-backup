@@ -17,4 +17,5 @@ services:
       - SCRUTINY_NOTIFY_URLS=${TELE_DANTE_TOKEN}
       - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=120s
       - SCRUTINY_ARGS=--log-level debug
+      - S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
     restart: unless-stopped
