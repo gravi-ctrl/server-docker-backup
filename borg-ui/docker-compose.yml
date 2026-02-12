@@ -6,8 +6,8 @@ services:
     ports:
       - 8093:8081
     volumes:
-      - borg_data:/data
-      - borg_cache:/home/borg/.cache/borg
+      - ./borg_data:/data
+      - ./borg_cache:/home/borg/.cache/borg
       # Mount dirs you want to backup (REPLACE with your actual paths)
       - /srv/data/assets:/local/assets:ro
       - /srv/data/borg_backup:/home/borg_backup:rw
