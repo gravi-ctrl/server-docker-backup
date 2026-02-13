@@ -4,7 +4,7 @@
 # --- OPEN DIRECTORIES (For traversing) ---
 !*/
 
-# --- BLOCK DATA FOLDERS ---
+# --- PREVENT PERMISSION ERROR ---
 **/html/
 **/postgres/
 **/db/
