@@ -6,7 +6,7 @@ services:
     volumes:
       - ./redisdata:/data
   db:
-    image: docker.io/library/postgres:17
+    image: docker.io/library/postgres:18
     container_name: paperless-db
     restart: unless-stopped
     environment:
@@ -15,7 +15,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_DBPASS}
       - POSTGRES_HOST_AUTH_METHOD=md5
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless-ngx
