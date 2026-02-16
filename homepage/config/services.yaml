@@ -49,10 +49,10 @@
         href: https://dockge.homeserver
         description: Container Manager
 
-    - Borg:
+    - Borg Web UI:
         icon: borgmatic.png
         href: https://borg.homeserver
-        description: Borgmatic web UI
+        description: Borg Backup web interface
 
     - n8n:
         icon: n8n.png
