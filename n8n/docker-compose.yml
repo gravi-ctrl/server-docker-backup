@@ -44,7 +44,7 @@ services:
       - ./n8n_data:/home/node/.n8n
       - /srv/data/assets/downloads:/downloads:rw
       - /srv/data/assets/downloads/watch:/watch-folder:rw
-  # --- SIDECAR: NGROK TUNNEL ---
+  # --- NGROK TUNNEL ---
   ngrok:
     image: ngrok/ngrok:latest
     container_name: ngrok
