@@ -20,7 +20,7 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/radarr:/config
-      - /srv/data/assets:/data
+      - /data/assets:/data
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -33,7 +33,7 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/sonarr:/config
-      - /srv/data/assets:/data
+      - /data/assets:/data
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -46,7 +46,7 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/bazarr:/config
-      - /srv/data/assets:/data
+      - /data/assets:/data
     ports:
       - 6767:6767
     restart: unless-stopped
