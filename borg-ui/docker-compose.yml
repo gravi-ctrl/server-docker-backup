@@ -9,8 +9,8 @@ services:
       - ./borg_data:/data
       - ./borg_cache:/home/borg/.cache/borg
       # Mount dirs you want to backup (REPLACE with your actual paths)
-      - /srv/data/assets:/local/assets:ro
-      - /srv/data/borg_backup:/home/borg_backup:rw
+      - /data/assets:/local/assets:ro
+      - /data/borg_backup:/home/borg_backup:rw
     environment:
       - TZ=Africa/Cairo
       - PUID=1000
