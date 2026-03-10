@@ -7,9 +7,9 @@ services:
     volumes:
       - ./config:/config
       - ./metadata:/metadata
-      - /srv/data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups
-      - /srv/data/assets/Media/Books:/audiobooks:rw
-      - /srv/data/assets/Media/Podcasts:/podcasts:rw
+      - /data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups
+      - /data/assets/Media/Books:/audiobooks:rw
+      - /data/assets/Media/Podcasts:/podcasts:rw
     environment:
       - TZ=Africa/Cairo
       - AUDIOBOOKSHELF_UID=1000
