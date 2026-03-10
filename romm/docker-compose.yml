@@ -16,11 +16,11 @@ services:
       - PGID=1000
       - TZ=Africa/Cairo
     volumes:
-      - /srv/data/assets/romm/resources:/romm/resources
+      - /data/assets/romm/resources:/romm/resources
       - ./config:/romm/config
       - ./assets:/romm/assets
       # the roms need to be in a folder called 'roms' inside each platform folder (e.g. romm/library/snes/roms)
-      - /srv/data/assets/romm/library:/romm/library
+      - /data/assets/romm/library:/romm/library
     ports:
       - 8083:8080
     depends_on:
