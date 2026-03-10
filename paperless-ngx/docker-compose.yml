@@ -40,9 +40,9 @@ services:
       - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created
         }}-{{ title }}
     volumes:
-      - /srv/data/assets/paperless/data:/usr/src/paperless/data
-      - /srv/data/assets/paperless/media:/usr/src/paperless/media
-      - /srv/data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
+      - /data/assets/paperless/data:/usr/src/paperless/data
+      - /data/assets/paperless/media:/usr/src/paperless/media
+      - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
       - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
 
 networks: {}
