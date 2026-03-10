@@ -21,8 +21,8 @@ services:
       - db
     volumes:
       - ./html:/var/www/html
-      - /srv/data/assets/nextcloud_data:/var/www/html/data
-      - /srv/data/assets:/mnt/external_files
+      - /data/assets/nextcloud_data:/var/www/html/data
+      - /data/assets:/mnt/external_files
     environment:
       - MYSQL_PASSWORD=${MYSQL_PASS}
       - MYSQL_DATABASE=nextcloud
