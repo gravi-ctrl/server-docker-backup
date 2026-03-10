@@ -9,7 +9,7 @@ services:
       - WEBUI_PORT=8080
     volumes:
       - ./config:/config
-      - /srv/data/assets:/data
+      - /data/assets:/data
     ports:
       - 8089:8080 # Internal Port 8089
       - 6881:6881
