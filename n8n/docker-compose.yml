@@ -42,8 +42,8 @@ services:
       - N8N_RUNNERS_ENABLED=true
     volumes:
       - ./n8n_data:/home/node/.n8n
-      - /srv/data/assets/downloads:/downloads:rw
-      - /srv/data/assets/downloads/watch:/watch-folder:rw
+      - /data/assets/downloads:/downloads:rw
+      - /data/assets/downloads/watch:/watch-folder:rw
   # --- NGROK TUNNEL ---
   ngrok:
     image: ngrok/ngrok:latest
