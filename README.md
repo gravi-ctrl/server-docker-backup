@@ -8,4 +8,4 @@ For security reasons, config and **`.env` files are NOT included** in this repos
 
 ### How to Restore
 
-For restoration instructions including secrets, refer to **[Phase 2: Restore Docker Stacks](https://github.com/gravi-ctrl/server-scripts/tree/main#phase-2-restore-docker-stacks) in [server-scripts repo](https://github.com/gravi-ctrl/server-scripts/)**
+For restoration instructions, refer to **[Phase 2: Restore Docker Stacks](https://github.com/gravi-ctrl/server-scripts/tree/main#phase-2-restore-docker-stacks) in [server-scripts repo](https://github.com/gravi-ctrl/server-scripts/)**
