@@ -4,8 +4,7 @@ This repository contains the configuration files (`compose.yaml`) for all contai
 
 ## ⚠️ Important Note on Secrets
 
-For security reasons, **`.env` files are NOT included** in this repository.
-If you clone this repo to a new server, **Docker containers will fail to start** until you restore the secrets.
+For security reasons, config and **`.env` files are NOT included** in this repository.
 
 ### How to Restore
 
