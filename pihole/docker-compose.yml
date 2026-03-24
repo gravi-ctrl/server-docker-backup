@@ -5,6 +5,9 @@ services:
     dns:
       - 1.1.1.1
     ports:
+      # In case if port 53 is already in use. The issue is a `systemd-resolved` occupying the port. Just run:
+      # sudo sed -i 's/#DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf
+      # sudo systemctl restart systemd-resolved
       - 53:53/tcp
       - 53:53/udp
       - 8081:80/tcp
