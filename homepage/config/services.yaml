@@ -119,17 +119,6 @@
             url: http://192.168.1.109:13378/
             key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_API}}
 
-    - Immich:
-        icon: immich.png
-        href: https://immich.homeserver
-        description: Photos & Videos
-        widget:
-            type: immich
-            url: http://192.168.1.109:2283/
-            key: {{HOMEPAGE_VAR_IMMICH_API}}
-            version: 2
-            fields: ["photos", "videos"]
-
 - Downloads:
     - qBittorrent:
         icon: qbittorrent.png
