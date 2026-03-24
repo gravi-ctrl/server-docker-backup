@@ -26,6 +26,7 @@ services:
     ports:
       - 8010:8000
     environment:
+      # Note: In n8n, the API is added like: Token <API> with a space between
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBHOST=db
       - PAPERLESS_DBPASS=${POSTGRES_DBPASS}
