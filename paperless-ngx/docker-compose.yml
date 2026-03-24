@@ -26,8 +26,6 @@ services:
     ports:
       - 8010:8000
     environment:
-      # Delete the DB records whose files no longer exist
-      # docker exec -it paperless-ngx python3 manage.py document_sanity_checker --delete
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBHOST=db
       - PAPERLESS_DBPASS=${POSTGRES_DBPASS}
