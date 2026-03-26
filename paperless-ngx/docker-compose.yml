@@ -18,6 +18,7 @@ services:
       - ./pgdata:/var/lib/postgresql
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    user: '1000:1000'
     container_name: paperless-ngx
     restart: unless-stopped
     depends_on:
@@ -45,5 +46,6 @@ services:
       - /data/assets/paperless/media:/usr/src/paperless/media
       - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
       - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
+    env_file: docker-compose.env
 
 networks: {}

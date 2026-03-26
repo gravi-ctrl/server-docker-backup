@@ -31,6 +31,7 @@
 !homepage/config/images/
 !homepage/config/images/*
 !wifi_robot/*.py
+!paperless-ngx/docker-compose.env
 
 # --- SECURITY ---
 .env
