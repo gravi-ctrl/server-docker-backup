@@ -8,4 +8,4 @@ For security reasons, config and **`.env` files are NOT included** in this repos
 
 ### How to Restore
 
-For restoration instructions, refer to **[Phase 2: Restore Docker Stacks](https://codeberg.org/gravi-ctrl/server-scripts#phase-2-restore-docker-stacks) in [server-scripts repo](https://codeberg.org/gravi-ctrl/server-scripts)**
+For restoration instructions, refer to **[Phase 2: Restore Docker Stacks](https://codeberg.org/gravi-ctrl/homelab-blueprint#phase-2-restore-docker-stacks) in [homelab-blueprint repo](https://codeberg.org/gravi-ctrl/homelab-blueprint)**
