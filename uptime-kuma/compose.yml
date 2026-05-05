@@ -1,0 +1,24 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:next
+    container_name: uptime-kuma
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./data:/app/data
+    environment:
+      # Add this in 'Docker Hosts' from Kuma's Settings.
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    depends_on:
+      - uptime-socket-proxy
+  uptime-socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: uptime-socket-proxy
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+    ports:
+      - 127.0.0.1:2375:2375
+networks: {}

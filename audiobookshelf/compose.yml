@@ -1,0 +1,18 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    ports:
+      - 13378:80
+    volumes:
+      - ./config:/config
+      - ./metadata:/metadata
+      - /data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups
+      - /data/assets/Media/Books:/audiobooks:rw
+      - /data/assets/Media/Podcasts:/podcasts:rw
+    environment:
+      - TZ=Africa/Cairo
+      - AUDIOBOOKSHELF_UID=1000
+      - AUDIOBOOKSHELF_GID=1000
+    restart: unless-stopped
+networks: {}

@@ -1,0 +1,51 @@
+services:
+  broker:
+    image: docker.io/library/redis:alpine
+    container_name: paperless-redis
+    restart: unless-stopped
+    volumes:
+      - ./redisdata:/data
+  db:
+    image: docker.io/library/postgres:18
+    container_name: paperless-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=paperless
+      - POSTGRES_USER=paperless
+      - POSTGRES_PASSWORD=${POSTGRES_DBPASS}
+      - POSTGRES_HOST_AUTH_METHOD=md5
+    volumes:
+      - ./pgdata:/var/lib/postgresql
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    user: '1000:1000'
+    container_name: paperless-ngx
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    ports:
+      - 8010:8000
+    environment:
+      # Note: In n8n, the API is added like: Token <API> with a space between
+      - PAPERLESS_REDIS=redis://broker:6379
+      - PAPERLESS_DBHOST=db
+      - PAPERLESS_DBPASS=${POSTGRES_DBPASS}
+      - PAPERLESS_SECRET_KEY=${PAPER_SECRET_KEY}
+      - PAPERLESS_TIME_ZONE=Africa/Cairo
+      - PAPERLESS_WEBSERVER_WORKERS=1
+      - PAPERLESS_TASK_WORKERS=1
+      - PAPERLESS_THREADS_PER_WORKER=1
+      - PAPERLESS_OCR_LANGUAGE=ara+eng
+      - PAPERLESS_OCR_LANGUAGES=ara eng
+      - PAPERLESS_URL=https://paperless.homeserver
+      - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created
+        }}-{{ title }}
+    volumes:
+      - /data/assets/paperless/data:/usr/src/paperless/data
+      - /data/assets/paperless/media:/usr/src/paperless/media
+      - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
+      - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
+    env_file: docker-compose.env
+
+networks: {}

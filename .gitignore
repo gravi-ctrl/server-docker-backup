@@ -19,6 +19,7 @@
 # --- ALLOW ---
 !docker-compose.yml.disabled
 !docker-compose.yml
+!compose.yml
 !.gitignore
 !.commit-warning
 !Dockerfile

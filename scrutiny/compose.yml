@@ -1,0 +1,21 @@
+services:
+  scrutiny:
+    container_name: scrutiny
+    image: ghcr.io/starosdev/scrutiny:master-omnibus
+    cap_add:
+      - SYS_RAWIO
+    privileged: true
+    stop_grace_period: 2m
+    ports:
+      - 8020:8080
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ./config:/opt/scrutiny/config
+      - ./influxdb:/opt/scrutiny/influxdb
+    environment:
+      - TZ=Africa/Cairo
+      - SCRUTINY_NOTIFY_URLS=${TELE_DANTE_TOKEN}
+      - SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT=120s
+      - SCRUTINY_ARGS=--log-level debug
+      - S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
+    restart: unless-stopped

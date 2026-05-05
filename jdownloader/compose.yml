@@ -1,0 +1,19 @@
+services:
+  jdownloader:
+    image: jlesage/jdownloader-2:latest
+    container_name: jdownloader
+    environment:
+      - VNC_PASSWORD=${VNC_PASS}
+      - USER_ID=1000
+      - GROUP_ID=1000
+      #- DISPLAY_WIDTH=720
+      #- DISPLAY_HEIGHT=1280
+    volumes:
+      - ./config:/config
+      - /data/assets/downloads:/output:rw
+      - /data/assets/downloads/watch:/output/watch:rw
+    ports:
+      - 5800:5800
+      - 3129:3129
+    restart: unless-stopped
+networks: {}
