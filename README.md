@@ -1,6 +1,6 @@
 # 🐳 Server Docker Stacks
 
-This repository contains the configuration files (`compose.yaml`) for all containers running in `/opt/stacks`.
+This repository contains the configuration files (`compose.yml`) for all containers running in `/opt/stacks`.
 
 ## ⚠️ Important Note on Secrets
 
