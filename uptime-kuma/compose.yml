@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data:/app/data
     environment:
-      # Add this in 'Docker Hosts' from Kuma's Settings.
+      # Add tcp://uptime-socket-proxy:2375 in 'Docker Hosts' from Kuma's Settings.
       - DOCKER_HOST=tcp://127.0.0.1:2375
     depends_on:
       - uptime-socket-proxy
@@ -23,7 +23,7 @@ services:
       - CONTAINERS=1
     networks:
       - internal
-      
+
 networks:
   proxy:
     external: true
