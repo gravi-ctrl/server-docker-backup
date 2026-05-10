@@ -10,9 +10,13 @@ services:
     volumes:
       - ./config:/config
       - /data/assets:/data
+    networks:
+      - proxy      
     ports:
-      - 8089:8080 # Internal Port 8089
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
-networks: {}
+
+networks:
+  proxy:
+    external: true    

@@ -21,8 +21,9 @@ services:
       - ./assets:/romm/assets
       # the roms need to be in a folder called 'roms' inside each platform folder (e.g. romm/library/snes/roms)
       - /data/assets/romm/library:/romm/library
-    ports:
-      - 8083:8080
+    networks:
+      - proxy
+      - internal
     depends_on:
       romm-db:
         condition: service_healthy
@@ -39,6 +40,8 @@ services:
       - MARIADB_PASSWORD=${DB_MYSQL_PASS}
     volumes:
       - ./mysql_data:/var/lib/mysql
+    networks:
+      - internal
     healthcheck:
       test:
         - CMD
@@ -53,4 +56,11 @@ services:
     image: redis:alpine
     container_name: romm-redis
     restart: unless-stopped
-networks: {}
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true

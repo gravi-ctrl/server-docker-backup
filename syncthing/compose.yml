@@ -3,7 +3,8 @@ services:
     image: syncthing/syncthing:latest
     container_name: syncthing
     hostname: Homeserver
-    network_mode: host
+    networks:
+      - proxy
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,4 +13,7 @@ services:
       - ./config:/var/syncthing/config
       - /data:/data
     restart: unless-stopped
-networks: {}
+
+networks:
+  proxy:
+    external: true    

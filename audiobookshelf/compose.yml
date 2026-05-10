@@ -2,8 +2,8 @@ services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
-    ports:
-      - 13378:80
+    networks:
+      - proxy
     volumes:
       - ./config:/config
       - ./metadata:/metadata
@@ -15,4 +15,6 @@ services:
       - AUDIOBOOKSHELF_UID=1000
       - AUDIOBOOKSHELF_GID=1000
     restart: unless-stopped
-networks: {}
+networks:
+  proxy:
+    external: true

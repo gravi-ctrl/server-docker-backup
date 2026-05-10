@@ -6,8 +6,8 @@ services:
       - SYS_RAWIO
     privileged: true
     stop_grace_period: 2m
-    ports:
-      - 8020:8080
+    networks:
+      - proxy
     volumes:
       - /run/udev:/run/udev:ro
       - ./config:/opt/scrutiny/config
@@ -19,3 +19,7 @@ services:
       - SCRUTINY_ARGS=--log-level debug
       - S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0
     restart: unless-stopped
+
+networks:
+  proxy:
+    external: true    

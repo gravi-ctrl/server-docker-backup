@@ -5,6 +5,8 @@ services:
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
       - ./db:/var/lib/mysql
+    networks:
+      - internal      
     environment:
       - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
       - MYSQL_PASSWORD=${MYSQL_PASS}
@@ -14,9 +16,11 @@ services:
       - 127.0.0.1:3306:3306 # for calcardbackup to work
   app:
     image: nextcloud:latest
+    container_name: nextcloud
     restart: unless-stopped
-    ports:
-      - 8080:80
+    networks:
+      - proxy
+      - internal
     links:
       - db
     volumes:
@@ -29,4 +33,9 @@ services:
       - MYSQL_USER=${NC_USER}
       - MYSQL_HOST=db
       - NEXTCLOUD_DATA_DIR=/var/www/html/data
-networks: {}
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true      

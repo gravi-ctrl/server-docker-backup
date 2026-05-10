@@ -9,7 +9,10 @@ services:
     volumes:
       - ./config:/config
       - /data/assets:/data
-    ports:
-      - 8096:8096
+    networks:
+      - proxy
     restart: unless-stopped
-networks: {}
+    
+networks:
+  proxy:
+    external: true

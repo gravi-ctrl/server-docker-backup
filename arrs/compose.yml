@@ -8,8 +8,8 @@ services:
       - TZ=Africa/Cairo
     volumes:
       - ./config/prowlarr:/config
-    ports:
-      - 9696:9696
+    networks:
+      - proxy
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -21,8 +21,8 @@ services:
     volumes:
       - ./config/radarr:/config
       - /data/assets:/data
-    ports:
-      - 7878:7878
+    networks:
+      - proxy
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -34,8 +34,8 @@ services:
     volumes:
       - ./config/sonarr:/config
       - /data/assets:/data
-    ports:
-      - 8989:8989
+    networks:
+      - proxy
     restart: unless-stopped
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -47,8 +47,8 @@ services:
     volumes:
       - ./config/bazarr:/config
       - /data/assets:/data
-    ports:
-      - 6767:6767
+    networks:
+      - proxy
     restart: unless-stopped
 #  flaresolverr:
 #    image: ghcr.io/flaresolverr/flaresolverr:latest
@@ -59,9 +59,13 @@ services:
 #      - LOG_HTML=${LOG_HTML:-false}
 #      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
 #      - TZ=Africa/Cairo
-#    ports:
-#      - 8191:8191
+#    networks:
+#      - internal
 #    volumes:
 #      - ./config/flaresolver:/config
 #    restart: unless-stopped
-networks: {}
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true

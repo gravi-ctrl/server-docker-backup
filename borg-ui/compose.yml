@@ -1,10 +1,10 @@
 services:
   borg-ui:
     image: ainullcode/borg-ui:latest
-    container_name: borg-web-ui
+    container_name: borgui
     restart: unless-stopped
-    ports:
-      - 8093:8081
+    networks:
+      - proxy
     volumes:
       - ./borg_data:/data
       - ./borg_cache:/home/borg/.cache/borg
@@ -18,4 +18,6 @@ services:
 volumes:
   borg_data: null
   borg_cache: null
-networks: {}
+networks:
+  proxy:
+    external: true

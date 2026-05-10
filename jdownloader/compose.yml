@@ -13,7 +13,11 @@ services:
       - /data/assets/downloads:/output:rw
       - /data/assets/downloads/watch:/output/watch:rw
     ports:
-      - 5800:5800
-      - 3129:3129
+      - 127.0.0.1:3129:3129
+    networks:
+      - proxy      
     restart: unless-stopped
-networks: {}
+    
+networks:
+  proxy:
+    external: true
