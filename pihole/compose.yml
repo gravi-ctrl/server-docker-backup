@@ -12,12 +12,14 @@ services:
       - 53:53/udp
     networks:
       - proxy
+      - internal
     environment:
       - TZ=Africa/Cairo
       - WEBPASSWORD=${PASS}
       - ADDITIONAL_PACKAGES=python3 curl
       - CHECK_LOAD=false
       - FTLCONF_database_maxDBdays=7
+      - PIHOLE_DNS_=unbound#5335
     volumes:
       - ./etc-pihole:/etc/pihole
       - ./etc-dnsmasq.d:/etc/dnsmasq.d
@@ -25,4 +27,6 @@ services:
 
 networks:
   proxy:
-    external: true    
+    external: true
+  internal:
+    internal: true
