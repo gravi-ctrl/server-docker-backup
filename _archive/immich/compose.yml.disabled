@@ -22,8 +22,9 @@ services:
       # - /data/assets/syncthing/Movies:/mnt/videos_external:rw
     env_file:
       - .env
-    ports:
-      - 2283:2283
+    networks:
+      - proxy
+      - internal
     environment:
       - BIND_ADDRESS=0.0.0.0
     depends_on:
@@ -47,6 +48,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - internal    
     healthcheck:
       disable: false
   redis:
@@ -70,6 +73,13 @@ services:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
     shm_size: 128mb
     restart: unless-stopped
+    networks:
+      - internal    
 volumes:
   model-cache: null
-networks: {}
+  
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true
