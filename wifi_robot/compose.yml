@@ -4,13 +4,17 @@ services:
     container_name: wifi-robot
     init: true
     restart: unless-stopped
-    ports:
-      - "5050:5000"
+    networks:
+      - proxy
     environment:
       - PYTHONUNBUFFERED=1
     env_file:
       - .env
 
+networks:
+  proxy:
+    external: true
+
 # USAGE:
-# http://ip:5050/on - turns the Guest WiFi ON
-# http://ip:5050/off - turns the Guest WiFi OFF
+# http://wifi-robot:5000/on - turns the Guest WiFi ON
+# http://wifi-robot:5000/off - turns the Guest WiFi OFF
