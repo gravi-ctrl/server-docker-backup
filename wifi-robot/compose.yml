@@ -16,5 +16,5 @@ networks:
     external: true
 
 # USAGE:
-# http://wifi-robot:5000/on - turns the Guest WiFi ON
-# http://wifi-robot:5000/off - turns the Guest WiFi OFF
+# docker exec wifi-robot curl -s "http://localhost:5000/on" - turns the Guest WiFi ON
+# docker exec wifi-robot curl -s "http://localhost:5000/off" - turns the Guest WiFi OFF
