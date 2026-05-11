@@ -11,7 +11,7 @@ services:
       - ./config:/config
       - /data/assets:/data
     networks:
-      - proxy      
+      - proxy
     ports:
       - 6881:6881
       - 6881:6881/udp
@@ -19,4 +19,4 @@ services:
 
 networks:
   proxy:
-    external: true    
+    external: true

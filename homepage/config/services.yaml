@@ -5,7 +5,7 @@
         description: DNS Filtering
         widget:
             type: pihole
-            url: http://192.168.1.109:8081
+            url: http://pihole:80
             version: 6
             key: {{HOMEPAGE_VAR_PI_API}}
 
@@ -25,7 +25,7 @@
         href: https://kuma.homeserver/status/home
         widget:
             type: uptimekuma
-            url: http://192.168.1.109:3001/
+            url: http://uptime-kuma:3001
             slug: home
 
     - Uptime Kuma:
@@ -71,7 +71,7 @@
         description: Files
         widget:
             type: nextcloud
-            url: http://192.168.1.109:8080
+            url: http://nextcloud:80
             username: {{HOMEPAGE_VAR_NEXTCLOUD_USER}}
             password: {{HOMEPAGE_VAR_NEXTCLOUD_APP_PASS}}
 
@@ -81,7 +81,7 @@
         description: Archives
         widget:
             type: paperlessngx
-            url: http://192.168.1.109:8010/
+            url: http://paperless-ngx:8000
             key: {{HOMEPAGE_VAR_PAPERLESS_API}}
 
     - Syncthing:
@@ -96,7 +96,7 @@
         description: ROM Manager
         widget:
             type: romm
-            url: http://192.168.1.109:8083
+            url: http://romm:8080
 
     - Jellyfin:
         icon: jellyfin.png
@@ -104,7 +104,7 @@
         description: Movies, Series & Music
         widget:
             type: jellyfin
-            url: http://192.168.1.109:8096
+            url: http://jellyfin:8096/
             key: {{HOMEPAGE_VAR_JELLYFIN_KEY}}
             enableBlocks: true
             enableNowPlaying: false
@@ -116,7 +116,7 @@
         description: Books
         widget:
             type: audiobookshelf
-            url: http://192.168.1.109:13378/
+            url: http://audiobookshelf:80/
             key: {{HOMEPAGE_VAR_AUDIOBOOKSHELF_API}}
 
 - Downloads:
@@ -126,7 +126,7 @@
         description: Torrents
         widget:
             type: qbittorrent
-            url: http://192.168.1.109:8089
+            url: http://qbittorrent:8080/
             username: {{HOMEPAGE_VAR_QBIT_USERNAME}}
             password: {{HOMEPAGE_VAR_QBIT_PASS}}
 
@@ -147,7 +147,7 @@
         description: Movies
         widget:
             type: radarr
-            url: http://192.168.1.109:7878
+            url: http://radarr:7878/
             key: {{HOMEPAGE_VAR_RADARR_KEY}}
             enableQueue: true
 
@@ -157,7 +157,7 @@
         description: TV Shows
         widget:
             type: sonarr
-            url: http://192.168.1.109:8989
+            url: http://sonarr:8989/
             key: {{HOMEPAGE_VAR_SONARR_KEY}}
             enableQueue: true
 
@@ -167,7 +167,7 @@
         description: Indexers
         widget:
             type: prowlarr
-            url: http://192.168.1.109:9696
+            url: http://prowlarr:9696/
             key: {{HOMEPAGE_VAR_PROWLARR_KEY}}
 
     - Bazarr:
@@ -176,6 +176,6 @@
         description: Subtitles
         widget:
             type: bazarr
-            url: http://192.168.1.109:6767
+            url: http://bazarr:6767/
             key: {{HOMEPAGE_VAR_BAZARR_KEY}}
 
