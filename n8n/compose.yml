@@ -5,9 +5,15 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+    ports:
+      - 127.0.0.1:5678:5678
     environment:
       # --- NETWORK CONFIG ---
-      - WEBHOOK_URL=https://${NGROK_DOMAIN}
+      # To have Tailscale act as a webhook post-restore:
+      # docker exec tailscaled tailscale serve reset
+      # docker exec tailscaled tailscale funnel --bg --https=443 http://127.0.0.1:5678
+      # Then deactivate/activate the Telegram related workflow(s) in n8n.
+      - WEBHOOK_URL=https://${TAILSCALE_DOMAIN}
       - GENERIC_TIMEZONE=Africa/Cairo
       # --- SECRETS ---
       # Variables can be added in a workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
@@ -44,18 +50,7 @@ services:
       - ./n8n_data:/home/node/.n8n
       - /data/assets/downloads:/downloads:rw
       - /data/assets/downloads/watch:/watch-folder:rw
-  # --- NGROK TUNNEL ---
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: ngrok
-    restart: unless-stopped
-    networks:
-      - proxy    
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_TOKEN}
-    # Points the static domain to the n8n container
-    command: http n8n:5678 --domain=${NGROK_DOMAIN}
-    
+
 networks:
   proxy:
     external: true
