@@ -15,6 +15,7 @@
 **/etc-pihole/
 **/etc-dnsmasq.d/
 **/pgdata/
+**/npm/letsencrypt/
 
 # --- ALLOW ---
 !docker-compose.yml.disabled
