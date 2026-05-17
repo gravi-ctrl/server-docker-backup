@@ -15,12 +15,12 @@
 **/etc-pihole/
 **/etc-dnsmasq.d/
 **/pgdata/
-**/npm/letsencrypt/
+**/letsencrypt/
 
 # --- ALLOW ---
-!docker-compose.yml.disabled
+!docker-compose.yml~
 !docker-compose.yml
-!compose.yml.disabled
+!compose.yml~
 !compose.yml
 !.gitignore
 !.commit-warning

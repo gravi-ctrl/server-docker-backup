@@ -21,7 +21,8 @@ services:
     depends_on:
       - diun-socket-proxy
     networks:
-      - diun-net
+      - proxy
+      - internal
   diun-socket-proxy:
     image: tecnativa/docker-socket-proxy
     container_name: diun-socket-proxy
@@ -32,7 +33,9 @@ services:
       - CONTAINERS=1
       - IMAGES=1
     networks:
-      - diun-net
+      - internal
 networks:
-  diun-net:
-    driver: bridge
+  proxy:
+    external: true
+  internal:
+    internal: true
