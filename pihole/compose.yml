@@ -10,7 +10,7 @@ services:
       # sudo systemctl restart systemd-resolved
       - 53:53/tcp
       - 53:53/udp
-      # If you face any issues in accessing pihole just uncomment the below port and access pihole through
+      # For pihole to work as your resolver, you might need to uncomment the below port and access pihole through
       # http://192.168.1.109:8081/admin
       #- 8081:80/tcp
     networks:
