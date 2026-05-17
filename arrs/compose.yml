@@ -10,6 +10,7 @@ services:
       - ./config/prowlarr:/config
     networks:
       - proxy
+      - internal
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
