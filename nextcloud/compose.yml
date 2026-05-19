@@ -35,8 +35,6 @@ services:
       - NEXTCLOUD_DATA_DIR=/var/www/html/data
   calcardbackup:
     image: waja/calcardbackup
-    # To run a manual backup
-    # docker exec calcardbackup /run.sh
     container_name: calcardbackup
     restart: unless-stopped
     networks:
