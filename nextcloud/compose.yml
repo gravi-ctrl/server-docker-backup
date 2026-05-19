@@ -8,32 +8,51 @@ services:
     networks:
       - internal
     environment:
+      - TZ=Africa/Cairo
       - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
       - MYSQL_PASSWORD=${MYSQL_PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${NC_USER}
   app:
-    build: .          # ⚠️ Custom image — DO NOT use docker pull
-                      # To update: docker compose build --no-cache && docker compose up -d
-                      # Reason: mariadb-client needed for calcardbackup
+    image: nextcloud:latest
     container_name: nextcloud
     restart: unless-stopped
     networks:
       - proxy
       - internal
-    links:
+    depends_on:
       - db
     volumes:
       - ./html:/var/www/html
       - /data/assets/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
-      - ./calcardbackup:/usr/local/bin/calcardbackup:ro
     environment:
+      - TZ=Africa/Cairo
       - MYSQL_PASSWORD=${MYSQL_PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${NC_USER}
       - MYSQL_HOST=db
       - NEXTCLOUD_DATA_DIR=/var/www/html/data
+  calcardbackup:
+    image: waja/calcardbackup
+    # To run a manual backup
+    # docker exec calcardbackup /run.sh
+    container_name: calcardbackup
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      - db
+      - app
+    environment:
+      - NC_DIR=/var/www/html
+      - DB_HOST=db
+      - CRON_TIME="59 23 31 12 *"
+      - CALCARD_OPTS=-s
+    volumes:
+      - ./html:/var/www/html:ro
+      - /data/assets:/backup
+      - /usr/share/zoneinfo/Africa/Cairo:/etc/localtime:ro
 
 networks:
   proxy:
