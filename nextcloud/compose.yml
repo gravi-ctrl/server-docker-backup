@@ -6,7 +6,7 @@ services:
     volumes:
       - ./db:/var/lib/mysql
     networks:
-      - internal      
+      - internal
     environment:
       - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
       - MYSQL_PASSWORD=${MYSQL_PASS}
@@ -15,7 +15,7 @@ services:
     ports:
       - 127.0.0.1:3306:3306 # for calcardbackup to work
   app:
-    image: nextcloud:latest
+    build: .
     container_name: nextcloud
     restart: unless-stopped
     networks:
@@ -27,6 +27,7 @@ services:
       - ./html:/var/www/html
       - /data/assets/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
+      - /home/gravi-ctrl/scripts/calcardbackup:/usr/local/bin/calcardbackup:ro
     environment:
       - MYSQL_PASSWORD=${MYSQL_PASS}
       - MYSQL_DATABASE=nextcloud
@@ -38,4 +39,4 @@ networks:
   proxy:
     external: true
   internal:
-    internal: true      
+    internal: true
