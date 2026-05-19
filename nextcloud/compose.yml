@@ -13,7 +13,9 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${NC_USER}
   app:
-    build: .
+    build: .          # ⚠️ Custom image — DO NOT use docker pull
+                      # To update: docker compose build --no-cache && docker compose up -d
+                      # Reason: mariadb-client needed for calcardbackup
     container_name: nextcloud
     restart: unless-stopped
     networks:
