@@ -6,7 +6,7 @@ services:
     volumes:
       - ./redisdata:/data
     networks:
-      - internal      
+      - internal
   db:
     image: docker.io/library/postgres:18
     container_name: paperless-db
@@ -19,10 +19,9 @@ services:
     volumes:
       - ./pgdata:/var/lib/postgresql
     networks:
-      - internal      
+      - internal
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
-    user: '1000:1000'
     container_name: paperless-ngx
     restart: unless-stopped
     depends_on:
@@ -32,6 +31,8 @@ services:
       - proxy
       - internal
     environment:
+      - USERMAP_UID=1000
+      - USERMAP_GID=1000
       # Note: In n8n, the API is added like: Token <API> with a space between
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBHOST=db
