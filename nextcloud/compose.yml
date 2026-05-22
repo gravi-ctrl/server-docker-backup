@@ -24,7 +24,7 @@ services:
       - db
     volumes:
       - ./html:/var/www/html
-      - /data/assets/nextcloud_data:/var/www/html/data
+      - /data/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
     environment:
       - TZ=Africa/Cairo
