@@ -48,8 +48,8 @@ services:
       - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created
         }}-{{ title }}
     volumes:
-      - /data/assets/paperless/data:/usr/src/paperless/data
-      - /data/assets/paperless/media:/usr/src/paperless/media
+      - /data/paperless/data:/usr/src/paperless/data
+      - /data/paperless/media:/usr/src/paperless/media
       - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
       - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
     env_file: docker-compose.env
