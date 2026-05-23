@@ -33,7 +33,8 @@
 !homepage/config/*.yaml
 !homepage/config/images/
 !homepage/config/images/*
-!wifi_robot/*.py
+!wifi-robot/*.py
+!wifi-robot/guestwifi
 !paperless-ngx/docker-compose.env
 
 # --- SECURITY ---
