@@ -13,6 +13,7 @@ services:
       - /dev/net/tun:/dev/net/tun
     environment:
       # To generate a new key — if needed, go to https://login.tailscale.com/admin/settings/keys, then 'Generate auth key...', make sure to tick 'Reusable' and 'Tags' and select a tag, then Generate key
+      # Make sure the tailscale ip of the server is added in DNS > Add nameserver > Custom > Save then tick 'Override DNS servers' 
       - TS_AUTHKEY=${AUTH_KEY}
       # Make sure that the 'Subnet routes' is active on the Tailscale Admin Console with the below
       - TS_EXTRA_ARGS=--advertise-routes=192.168.1.0/24
