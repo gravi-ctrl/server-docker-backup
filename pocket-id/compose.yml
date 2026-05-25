@@ -9,7 +9,7 @@ services:
       - ./data:/app/data
       - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
     environment:
-      # First time setting up please visit https://pocket.homeserver/setup
+      # First time setting up visit https://pocket.homeserver/setup
       - APP_URL=https://pocket.homeserver
       - TRUST_PROXY=true
       - ANALYTICS_DISABLED=true
