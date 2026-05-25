@@ -1,0 +1,22 @@
+services:
+  pocket-id:
+    image: ghcr.io/pocket-id/pocket-id:latest
+    container_name: pocket-id
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ./data:/app/data
+      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      # First time setting up please visit https://pocket.homeserver/setup
+      - APP_URL=https://pocket.homeserver
+      - TRUST_PROXY=true
+      - ANALYTICS_DISABLED=true
+      - VERSION_CHECK_DISABLED=true
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - SSL_CERT_FILE=/etc/ssl/certs/homeserver-ca.pem
+
+networks:
+  proxy:
+    external: true

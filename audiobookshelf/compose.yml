@@ -10,10 +10,12 @@ services:
       - /data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups
       - /data/assets/Media/Books:/audiobooks:rw
       - /data/assets/Media/Podcasts:/podcasts:rw
+      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
     environment:
       - TZ=Africa/Cairo
       - AUDIOBOOKSHELF_UID=1000
       - AUDIOBOOKSHELF_GID=1000
+      - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/homeserver-ca.pem
     restart: unless-stopped
 networks:
   proxy:

@@ -35,6 +35,9 @@ services:
       - ./html:/var/www/html
       - /data/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
+      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
+    command: >
+      sh -c "update-ca-certificates && apache2-foreground"
     environment:
       - TZ=Africa/Cairo
       - MYSQL_PASSWORD=${MYSQL_PASS}

@@ -34,6 +34,12 @@ services:
     environment:
       - USERMAP_UID=1000
       - USERMAP_GID=1000
+      # pocket-id support
+      - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
+      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"APPS":[{"provider_id":"pocket-id","name":"Pocket ID","client_id":"${PAPERLESS_OIDC_CLIENT_ID}","secret":"${PAPERLESS_OIDC_CLIENT_SECRET}","settings":{"server_url":"https://pocket.homeserver/.well-known/openid-configuration"}}]}}
+      - PAPERLESS_SOCIALACCOUNT_AUTO_SIGNUP=true
+      - SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+      - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
       # Note: In n8n, the API is added like: Token <API> with a space between
       - PAPERLESS_REDIS=redis://broker:6379
       - PAPERLESS_DBHOST=db
@@ -53,6 +59,9 @@ services:
       - /data/paperless/media:/usr/src/paperless/media
       - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
       - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
+      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
+    command: >
+      sh -c "update-ca-certificates && /usr/local/bin/paperless_cmd.sh"
     env_file: docker-compose.env
 
 networks:
