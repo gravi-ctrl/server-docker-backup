@@ -82,7 +82,7 @@ services:
       - ./config/flaresolver:/config
     restart: unless-stopped
 
-  # ── THE AUTH SIDECARS (Notice how small they are!) ─────────
+  # ── THE AUTH SIDECARS ─────────
   prowlarr-auth:
     image: quay.io/oauth2-proxy/oauth2-proxy:latest
     container_name: prowlarr-auth
