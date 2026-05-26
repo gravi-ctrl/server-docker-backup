@@ -10,7 +10,7 @@ services:
       - /data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups
       - /data/assets/Media/Books:/audiobooks:rw
       - /data/assets/Media/Podcasts:/podcasts:rw
-      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
     environment:
       - TZ=Africa/Cairo
       - AUDIOBOOKSHELF_UID=1000

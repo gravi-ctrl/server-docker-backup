@@ -59,7 +59,7 @@ services:
       - /data/paperless/media:/usr/src/paperless/media
       - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
       - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
-      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
+      - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
     command: >
       sh -c "update-ca-certificates && /usr/local/bin/paperless_cmd.sh"
     env_file: docker-compose.env

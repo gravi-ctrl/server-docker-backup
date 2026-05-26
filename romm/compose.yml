@@ -24,7 +24,7 @@ services:
       - OIDC_REDIRECT_URI=https://romm.homeserver/api/oauth/openid
       - OIDC_SERVER_APPLICATION_URL=https://pocket.homeserver
     volumes:
-      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
       - /data/assets/romm/resources:/romm/resources
       - ./config:/romm/config
       - ./assets:/romm/assets

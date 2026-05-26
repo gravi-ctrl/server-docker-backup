@@ -57,7 +57,7 @@ services:
       - N8N_RUNNERS_ENABLED=true
     volumes:
       - ./n8n_data:/home/node/.n8n
-      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/etc/ssl/certs/homeserver-ca.pem:ro
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
       - /data/assets/downloads:/downloads:rw
       - /data/assets/downloads/watch:/watch-folder:rw
 

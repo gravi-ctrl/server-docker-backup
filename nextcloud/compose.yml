@@ -1,6 +1,7 @@
 services:
   db:
     image: mariadb:lts
+    container_name: nextcloud-mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
@@ -35,7 +36,7 @@ services:
       - ./html:/var/www/html
       - /data/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
-      - /home/gravi-ctrl/.local/share/mkcert/rootCA.pem:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
+      - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
     command: >
       sh -c "update-ca-certificates && apache2-foreground"
     environment:
