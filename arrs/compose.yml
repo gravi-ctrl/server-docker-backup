@@ -1,3 +1,15 @@
+# ── 1. BASE TEMPLATES ─────────
+x-base-proxy-env: &base-proxy-env
+  OAUTH2_PROXY_PROVIDER: oidc
+  OAUTH2_PROXY_OIDC_ISSUER_URL: https://pocket.homeserver
+  OAUTH2_PROXY_HTTP_ADDRESS: http://0.0.0.0:4180
+  OAUTH2_PROXY_REVERSE_PROXY: "true"
+  OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+  SSL_CERT_FILE: /etc/ssl/certs/homeserver-ca.pem
+  OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY: "true"
+  OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL: "true"
+
+# ── 2. SERVICES ──────────────────────────────────────────────
 services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -12,6 +24,7 @@ services:
       - proxy
       - internal
     restart: unless-stopped
+
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -25,6 +38,7 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
@@ -38,6 +52,7 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
@@ -51,6 +66,7 @@ services:
     networks:
       - proxy
     restart: unless-stopped
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -65,6 +81,76 @@ services:
     volumes:
       - ./config/flaresolver:/config
     restart: unless-stopped
+
+  # ── THE AUTH SIDECARS (Notice how small they are!) ─────────
+  prowlarr-auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: prowlarr-auth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      <<: *base-proxy-env # Pulls all base settings
+      OAUTH2_PROXY_CLIENT_ID: ${PROWLARR_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${PROWLARR_CLIENT_SECRET}
+      OAUTH2_PROXY_REDIRECT_URL: https://prowlarr.homeserver/oauth2/callback
+      OAUTH2_PROXY_UPSTREAMS: http://prowlarr:9696
+      OAUTH2_PROXY_COOKIE_SECRET: ${PROWLARR_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_DOMAINS: prowlarr.homeserver
+
+  radarr-auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: radarr-auth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      <<: *base-proxy-env
+      OAUTH2_PROXY_CLIENT_ID: ${RADARR_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${RADARR_CLIENT_SECRET}
+      OAUTH2_PROXY_REDIRECT_URL: https://radarr.homeserver/oauth2/callback
+      OAUTH2_PROXY_UPSTREAMS: http://radarr:7878
+      OAUTH2_PROXY_COOKIE_SECRET: ${RADARR_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_DOMAINS: radarr.homeserver
+
+  sonarr-auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: sonarr-auth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      <<: *base-proxy-env
+      OAUTH2_PROXY_CLIENT_ID: ${SONARR_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${SONARR_CLIENT_SECRET}
+      OAUTH2_PROXY_REDIRECT_URL: https://sonarr.homeserver/oauth2/callback
+      OAUTH2_PROXY_UPSTREAMS: http://sonarr:8989
+      OAUTH2_PROXY_COOKIE_SECRET: ${SONARR_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_DOMAINS: sonarr.homeserver
+
+  bazarr-auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: bazarr-auth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      <<: *base-proxy-env
+      OAUTH2_PROXY_CLIENT_ID: ${BAZARR_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${BAZARR_CLIENT_SECRET}
+      OAUTH2_PROXY_REDIRECT_URL: https://bazarr.homeserver/oauth2/callback
+      OAUTH2_PROXY_UPSTREAMS: http://bazarr:6767
+      OAUTH2_PROXY_COOKIE_SECRET: ${BAZARR_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_DOMAINS: bazarr.homeserver
+
 networks:
   proxy:
     external: true
