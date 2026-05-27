@@ -6,12 +6,9 @@ services:
     networks:
       - proxy
     ports:
-      - 127.0.0.1:5678:5678
+      - 127.0.0.1:5678:5678 # For the Tailscale Funnel to work
     environment:
       # --- NETWORK CONFIG ---
-      # To have Tailscale act as a webhook post-restore:
-      # docker exec tailscaled tailscale serve reset
-      # docker exec tailscaled tailscale funnel --bg --https=443 http://127.0.0.1:5678
       - WEBHOOK_URL=https://${TAILSCALE_DOMAIN}
       - GENERIC_TIMEZONE=Africa/Cairo
       # --- SECRETS ---
