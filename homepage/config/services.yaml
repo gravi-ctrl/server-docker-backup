@@ -127,7 +127,7 @@
 
     - JDownloader 2:
         icon: jdownloader.png
-        href: https://jd.homeserver
+        href: https://my.jdownloader.org/
         description: Direct Downloads
         widget:
             type: jdownloader
