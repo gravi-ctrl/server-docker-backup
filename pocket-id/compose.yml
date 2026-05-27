@@ -1,6 +1,7 @@
 services:
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:latest
+    user: "1000:1000"
     container_name: pocket-id
     restart: unless-stopped
     networks:

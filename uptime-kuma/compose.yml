@@ -2,6 +2,7 @@ services:
   uptime-kuma:
     image: louislam/uptime-kuma:next
     container_name: uptime-kuma
+    user: "1000:1000"
     restart: unless-stopped
     networks:
       - proxy
