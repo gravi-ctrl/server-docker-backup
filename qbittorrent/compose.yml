@@ -17,6 +17,38 @@ services:
       - 6881:6881/udp
     restart: unless-stopped
 
+  qbit-auth:
+    image: quay.io/oauth2-proxy/oauth2-proxy:latest
+    container_name: qbit-auth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      # Mount the mkcert root CA so the proxy trusts pocket.homeserver
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      # Base settings
+      - OAUTH2_PROXY_PROVIDER=oidc
+      - OAUTH2_PROXY_CLIENT_ID=${QBIT_CLIENT_ID}
+      - OAUTH2_PROXY_CLIENT_SECRET=${QBIT_CLIENT_SECRET}
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://pocket.homeserver
+      - OAUTH2_PROXY_REDIRECT_URL=https://qbit.homeserver/oauth2/callback
+      - OAUTH2_PROXY_UPSTREAMS=http://qbittorrent:8080 # container name and internal port
+
+      # Expose to external docker network
+      - OAUTH2_PROXY_HTTP_ADDRESS=http://0.0.0.0:4180
+      - OAUTH2_PROXY_REVERSE_PROXY=true
+
+      # Cookie settings
+      - OAUTH2_PROXY_COOKIE_SECRET=${QBIT_SECRET} # Generate with: openssl rand -hex 16
+      - OAUTH2_PROXY_COOKIE_DOMAINS=qbit.homeserver
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+
+      # Local self-signed SSL fixes (Required)
+      - SSL_CERT_FILE=/etc/ssl/certs/homeserver-ca.pem
+      - OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY=true
+      - OAUTH2_PROXY_INSECURE_OIDC_ALLOW_UNVERIFIED_EMAIL=true
+
 networks:
   proxy:
     external: true
