@@ -3,21 +3,20 @@ services:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader
     environment:
-      - VNC_PASSWORD=${VNC_PASS}
+      - MYJDOWNLOADER_EMAIL=${JD2_USER}
+      - MYJDOWNLOADER_PASSWORD=${JD2_PASS}
+      - MYJDOWNLOADER_DEVICE_NAME=Homeserver
+      - JDOWNLOADER_HEADLESS=1 # 1 here means no GUI. Managing is through my.jdownloader.org
       - USER_ID=1000
       - GROUP_ID=1000
-      #- DISPLAY_WIDTH=720
-      #- DISPLAY_HEIGHT=1280
     volumes:
       - ./config:/config
       - /data/assets/downloads:/output:rw
       - /data/assets/downloads/watch:/output/watch:rw
-    ports:
-      - 127.0.0.1:3129:3129
     networks:
-      - proxy      
+      - proxy
     restart: unless-stopped
-    
+
 networks:
   proxy:
     external: true
