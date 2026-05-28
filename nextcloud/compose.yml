@@ -37,8 +37,7 @@ services:
       - /data/nextcloud_data:/var/www/html/data
       - /data/assets:/mnt/external_files
       - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
-    command: >
-      sh -c "update-ca-certificates && apache2-foreground"
+    entrypoint: /bin/sh -c "update-ca-certificates && exec /entrypoint.sh apache2-foreground"
     environment:
       - TZ=Africa/Cairo
       - MYSQL_PASSWORD=${MYSQL_PASS}
