@@ -1,7 +1,14 @@
 # 🐳 Server Docker Stacks
 
+[![StackDeck Dashboard (Codeberg)](https://img.shields.io/badge/StackDeck-Codeberg_Pages-2185d0?style=flat-square&logo=codeberg&logoColor=white)](https://gravi-ctrl.codeberg.page/server-docker-backup/)
+[![StackDeck Dashboard (GitHub)](https://img.shields.io/badge/StackDeck-GitHub_Pages-181717?style=flat-square&logo=github&logoColor=white)](https://gravi-ctrl.github.io/server-docker-backup/)
+
 Docker Compose configs for all services running in `/opt/stacks` on the home server.
 No `.env` files are included — secrets live in the encrypted weekly backup.
+
+🖥️ **Live Interactive Dashboard:** 
+* **Primary:** [gravi-ctrl.codeberg.page/server-docker-backup](https://gravi-ctrl.codeberg.page/server-docker-backup/)
+* **Mirror:** [gravi-ctrl.github.io/server-docker-backup](https://gravi-ctrl.github.io/server-docker-backup/)
 
 For restoration instructions, see **[Phase 3 — Docker & Finalize](https://github.com/gravi-ctrl/homelab-blueprint#phase-3--docker--finalize)** in homelab-blueprint.
 
@@ -56,4 +63,22 @@ Then repopulate credentials from your password manager / the decrypted backup.
 git remote set-url --add --push origin git@codeberg.org:gravi-ctrl/server-docker-backup.git
 git remote set-url --add --push origin git@github.com:gravi-ctrl/server-docker-backup.git
 git remote -v
+```
+
+---
+
+## 📊 Dashboard Maintenance
+
+The interactive dashboard is generated using **StackDeck**. To regenerate the dashboard locally before pushing updates:
+
+```bash
+# 1. Update the local index.html using NPM integration
+python3 docker_dash.py
+
+# 2. Push index.html to your 'pages' branch
+git checkout pages
+git add index.html
+git commit -m "Update StackDeck dashboard"
+git push origin pages
+git checkout main
 ```
