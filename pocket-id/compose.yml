@@ -1,7 +1,6 @@
 services:
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:latest
-    user: "1000:1000"
     container_name: pocket-id
     restart: unless-stopped
     networks:
@@ -11,6 +10,7 @@ services:
       - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
     environment:
       # First time setting up visit https://pocket.homeserver/setup
+      # To by pass the passkey and login with a url, run this: docker exec -it pocket-id /app/pocket-id one-time-access-token <EMAIL_ADDRESS>
       - APP_URL=https://pocket.homeserver
       - TRUST_PROXY=true
       - ANALYTICS_DISABLED=true
