@@ -16,7 +16,7 @@ services:
       - PGID=1000
       - LOG_LEVEL=info
       - HOMEPAGE_ALLOWED_HOSTS=*
-      
+
 networks:
   proxy:
     external: true
