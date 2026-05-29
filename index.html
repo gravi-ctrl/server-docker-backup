@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Docker Stacks — gravi-ctrl/server-docker-backup</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--bg2:#f7f6f3;--bg3:#efede8;--bg4:#e4e2dc;
+  --tx:#181816;--tx2:#5c5c58;--tx3:#9a9a96;
+  --br:rgba(0,0,0,.09);--br2:rgba(0,0,0,.18);
+  --r:8px;--r2:12px;
+  --blue-bg:#e6f1fb;--blue-tx:#0c447c;--blue-bd:#aacbee;
+  --green-bg:#e1f5ee;--green-tx:#085041;--green-bd:#7dcdb5;
+  --amber-bg:#faeeda;--amber-tx:#633806;--amber-bd:#e8b96a;
+  --purple-bg:#eeedfe;--purple-tx:#3c3489;--purple-bd:#b3a9ec;
+  --gray-bg:#f1efe8;--gray-tx:#444441;
+  --coral-bg:#faece7;--coral-tx:#993c1d;
+  --red-bg:#fcebeb;--red-tx:#a32d2d;
+  --ok-bg:#eaf3de;--ok-tx:#3b6d11;
+  --orange-bg:#fff0e0;--orange-tx:#7a3800;--orange-bd:#f5b060;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1c1a;--bg2:#232320;--bg3:#2a2a27;--bg4:#323230;
+  --tx:#f0efeb;--tx2:#a0a09c;--tx3:#66665f;
+  --br:rgba(255,255,255,.09);--br2:rgba(255,255,255,.18);
+  --blue-bg:#0c447c;--blue-tx:#b5d4f4;--blue-bd:#2060a0;
+  --green-bg:#085041;--green-tx:#9fe1cb;--green-bd:#0f6e56;
+  --amber-bg:#4a2800;--amber-tx:#fac775;--amber-bd:#854f0b;
+  --purple-bg:#2e2870;--purple-tx:#cecbf6;--purple-bd:#534ab7;
+  --gray-bg:#3a3a38;--gray-tx:#d3d1c7;
+  --coral-bg:#7a2e14;--coral-tx:#f5c4b3;
+  --red-bg:#501313;--red-tx:#f7c1c1;
+  --ok-bg:#173404;--ok-tx:#c0dd97;
+  --orange-bg:#4a2200;--orange-tx:#ffb870;--orange-bd:#7a4800;
+}}
+body{font-family:system-ui,-apple-system,sans-serif;font-size:14px;
+     color:var(--tx);background:var(--bg3);line-height:1.5}
+.page{max-width:960px;margin:0 auto;padding:2rem 1rem 5rem}
+.hdr{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.2rem;flex-wrap:wrap}
+h1{font-size:20px;font-weight:500}
+.hdr-meta{font-size:13px;color:var(--tx2)}
+.hdr-meta a{color:var(--blue-tx);text-decoration:none}
+.hdr-meta a:hover{text-decoration:underline}
+.gen-time{font-size:12px;color:var(--tx3);margin-bottom:1.5rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.25rem}
+.stat{background:var(--bg);border:.5px solid var(--br);border-radius:var(--r);padding:.8rem 1rem}
+.stat-n{font-size:26px;font-weight:500;line-height:1.1}
+.stat-l{font-size:12px;color:var(--tx2);margin-top:2px}
+.filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-bar input{flex:1;min-width:160px;padding:7px 11px;font-size:13px;
+  border:.5px solid var(--br2);border-radius:var(--r);background:var(--bg);color:var(--tx);outline:none}
+.filter-bar input:focus{border-color:var(--blue-tx)}
+.fbtn{padding:5px 13px;font-size:12px;border:.5px solid var(--br2);border-radius:100px;
+  background:var(--bg);color:var(--tx2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.fbtn.on{background:var(--blue-bg);color:var(--blue-tx);border-color:var(--blue-bd);font-weight:500}
+.stacks{display:grid;gap:8px}
+.card{background:var(--bg);border:.5px solid var(--br);border-radius:var(--r2);overflow:hidden}
+.card-head{padding:.72rem 1rem;display:flex;align-items:center;gap:10px;cursor:pointer;
+           user-select:none;border-bottom:.5px solid transparent}
+.card-head:hover{background:var(--bg2)}
+.card-head.is-open{border-bottom-color:var(--br)}
+.stack-name{font-weight:500;font-size:14px;flex:1;min-width:0;
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.head-badges{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex-shrink:0}
+.chev{color:var(--tx3);transition:transform .18s;flex-shrink:0;font-size:12px}
+.is-open .chev{transform:rotate(180deg)}
+.bdg{font-size:11px;padding:2px 8px;border-radius:100px;display:inline-flex;align-items:center;
+     gap:3px;line-height:1.5;white-space:nowrap;flex-shrink:0}
+.b-svc   {background:var(--gray-bg);  color:var(--gray-tx)}
+.b-port  {background:var(--blue-bg);  color:var(--blue-tx)}
+.b-proxy {background:var(--green-bg); color:var(--green-tx)}
+.b-int   {background:var(--amber-bg); color:var(--amber-tx)}
+.b-both  {background:var(--coral-bg); color:var(--coral-tx)}
+.b-url   {background:var(--purple-bg);color:var(--purple-tx)}
+.b-pin   {background:var(--ok-bg);    color:var(--ok-tx)}
+.b-roll  {background:var(--amber-bg); color:var(--amber-tx)}
+.b-warn  {background:var(--red-bg);   color:var(--red-tx)}
+.b-host  {background:var(--orange-bg);color:var(--orange-tx)}
+.b-priv  {background:var(--red-bg);   color:var(--red-tx)}
+.b-noname{background:var(--amber-bg); color:var(--amber-tx)}
+.r-always{background:var(--ok-bg);    color:var(--ok-tx)}
+.r-unless{background:var(--blue-bg);  color:var(--blue-tx)}
+.r-onfail{background:var(--amber-bg); color:var(--amber-tx)}
+.r-no    {background:var(--red-bg);   color:var(--red-tx)}
+.card-body{padding:.75rem 1rem;display:none}
+.card-body.open{display:block}
+.svc-list{display:grid;gap:8px}
+.svc{border:.5px solid var(--br);border-radius:var(--r);overflow:hidden}
+.svc-head{padding:.55rem .85rem;display:flex;align-items:center;gap:8px;
+          background:var(--bg2);border-bottom:.5px solid var(--br);flex-wrap:wrap}
+.svc-name{font-weight:500;font-size:13px;flex:1;min-width:120px}
+.svc-badges{display:flex;gap:4px;flex-wrap:wrap}
+.svc-body{padding:.65rem .85rem;display:grid;gap:.55rem}
+.detail{display:flex;gap:.6rem;font-size:12px;align-items:flex-start}
+.dlabel{color:var(--tx3);min-width:76px;flex-shrink:0;padding-top:1px;
+        font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;line-height:1.8}
+.dval{color:var(--tx);display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.dval-col{flex-direction:column;align-items:flex-start}
+.mono{font-family:ui-monospace,monospace;font-size:11px;background:var(--bg4);
+      padding:1px 5px;border-radius:4px;color:var(--tx2);word-break:break-all}
+.url-link{font-size:12px;color:var(--blue-tx);text-decoration:none;
+          display:inline-flex;align-items:center;gap:3px}
+.url-link:hover{text-decoration:underline}
+.npm-detail{font-size:11px;color:var(--tx3);display:inline-flex;align-items:center;
+            gap:3px;font-family:ui-monospace,monospace}
+.npm-detail-sep{color:var(--tx3);margin:0 2px}
+.env-wrap{margin-top:2px;width:100%;overflow-x:auto}
+.env-table{width:100%;border-collapse:collapse;font-size:11.5px}
+.env-table th{text-align:left;color:var(--tx3);font-weight:400;font-size:10.5px;
+              text-transform:uppercase;letter-spacing:.04em;
+              padding:3px 8px 3px 0;border-bottom:.5px solid var(--br)}
+.env-table td{padding:4px 8px 4px 0;vertical-align:top;color:var(--tx2);font-size:11.5px}
+.env-table td.k{font-family:ui-monospace,monospace;color:var(--tx);font-size:11px;white-space:nowrap}
+.env-table td.v{font-family:ui-monospace,monospace;font-size:11px;color:var(--tx3)}
+.env-secret{font-style:italic;color:var(--tx3)}
+.shared-env{margin-top:12px;padding-top:10px;border-top:.5px solid var(--br)}
+.shared-env-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;
+                  color:var(--tx3);margin-bottom:6px}
+.svc-desc{font-size:12px;color:var(--tx2);padding:.4rem .85rem .1rem;font-style:italic;border-bottom:.5px solid var(--br)}
+.svc-notes{font-size:11.5px;color:var(--tx3);background:var(--bg3);padding:.35rem .85rem;border-top:.5px solid var(--br);border-radius:0 0 var(--r) var(--r)}
+.err-banner{background:var(--red-bg);color:var(--red-tx);border:.5px solid;
+            border-radius:var(--r);padding:.45rem .85rem;font-size:12px;margin-bottom:8px}
+.no-match{color:var(--tx2);font-size:13px;padding:2rem 0;text-align:center;display:none}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="hdr">
+    <h1>🐳 Docker Stack Dashboard</h1>
+    <span class="hdr-meta">
+      <a href="https://github.com/gravi-ctrl/server-docker-backup" target="_blank">gravi-ctrl/server-docker-backup</a>
+      &nbsp;·&nbsp; branch: <strong>main</strong>
+    </span>
+  </div>
+  <div class="gen-time">Generated 2026-05-29 22:05 UTC</div>
+  <div class="stats" id="stats"></div>
+  <div class="filter-bar">
+    <input type="text" id="search" placeholder="Search stacks, images, URLs, env keys…" oninput="applyFilter()">
+    <button class="fbtn" id="f-ports"    onclick="tog('ports')">Open ports</button>
+    <button class="fbtn" id="f-urls"     onclick="tog('urls')">Has URL</button>
+    <button class="fbtn" id="f-internal" onclick="tog('internal')">Internal net</button>
+    <button class="fbtn" id="f-rolling"  onclick="tog('rolling')">Rolling tag</button>
+    <button class="fbtn" id="f-security" onclick="tog('security')">⚠ Security</button>
+    <button class="fbtn" id="f-host"     onclick="tog('host')">Host network</button>
+  </div>
+  <div class="stacks" id="stacks"></div>
+  <div class="no-match" id="no-match">No stacks match your filter.</div>
+</div>
+<script>
+const D=[{"path": "arrs/compose.yml", "parse_error": null, "services": [{"name": "prowlarr", "container_name": "prowlarr", "explicit_container_name": true, "image": "lscr.io/linuxserver/prowlarr:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy", "internal"], "network_type": "both", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://prowlarr.wonder.lan"], "npm_details": [{"url": "https://prowlarr.wonder.lan", "forward_host": "prowlarr", "forward_port": "9696"}], "volumes": ["./config/prowlarr:/config"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}, {"name": "radarr", "container_name": "radarr", "explicit_container_name": true, "image": "lscr.io/linuxserver/radarr:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://radarr.wonder.lan"], "npm_details": [{"url": "https://radarr.wonder.lan", "forward_host": "radarr", "forward_port": "7878"}], "volumes": ["./config/radarr:/config", "/data/assets:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}, {"name": "sonarr", "container_name": "sonarr", "explicit_container_name": true, "image": "lscr.io/linuxserver/sonarr:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://sonarr.wonder.lan"], "npm_details": [{"url": "https://sonarr.wonder.lan", "forward_host": "sonarr", "forward_port": "8989"}], "volumes": ["./config/sonarr:/config", "/data/assets:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}, {"name": "bazarr", "container_name": "bazarr", "explicit_container_name": true, "image": "lscr.io/linuxserver/bazarr:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://bazarr.wonder.lan"], "npm_details": [{"url": "https://bazarr.wonder.lan", "forward_host": "bazarr", "forward_port": "6767"}], "volumes": ["./config/bazarr:/config", "/data/assets:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}, {"name": "flaresolverr", "container_name": "flaresolverr", "explicit_container_name": true, "image": "ghcr.io/flaresolverr/flaresolverr:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./config/flaresolver:/config"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["LOG_LEVEL", "TZ", "LOG_LEVEL:-info", "CAPTCHA_SOLVER", "LOG_HTML:-false", "LOG_HTML", "LOG_FILE", "CAPTCHA_SOLVER:-none", "LOG_FILE:-none"], "env_vars": [{"key": "LOG_LEVEL", "default": "''", "comment": "", "is_secret": false}, {"key": "LOG_FILE", "default": "''", "comment": "", "is_secret": false}, {"key": "LOG_HTML", "default": "''", "comment": "", "is_secret": false}, {"key": "CAPTCHA_SOLVER", "default": "''", "comment": "", "is_secret": false}], "description": "", "notes": ""}], "env_vars": []}, {"path": "audiobookshelf/compose.yml", "parse_error": null, "services": [{"name": "audiobookshelf", "container_name": "audiobookshelf", "explicit_container_name": true, "image": "ghcr.io/advplyr/audiobookshelf:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://audiobooks.wonder.lan"], "npm_details": [{"url": "https://audiobooks.wonder.lan", "forward_host": "audiobookshelf", "forward_port": "80"}], "volumes": ["./config:/config", "./metadata:/metadata", "/data/assets/syncthing/Backup/self-hosted/audiobookshelf:/config/backups", "/data/assets/Media/Books:/audiobooks:rw", "/data/assets/Media/Podcasts:/podcasts:rw", "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["AUDIOBOOKSHELF_UID", "AUDIOBOOKSHELF_GID", "TZ", "HOST_CERT_PATH", "NODE_EXTRA_CA_CERTS"], "env_vars": [{"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}], "env_vars": []}, {"path": "dockge/compose.yml", "parse_error": null, "services": [{"name": "dockge", "container_name": "dockge", "explicit_container_name": true, "image": "louislam/dockge:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://dockge.wonder.lan"], "npm_details": [{"url": "https://dockge.wonder.lan", "forward_host": "dockge", "forward_port": "5001"}], "volumes": ["/var/run/docker.sock:/var/run/docker.sock", "./data:/app/data", "/opt/stacks:/opt/stacks"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["DOCKGE_STACKS_DIR"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "glances/compose.yml", "parse_error": null, "services": [{"name": "glances", "container_name": "glances", "explicit_container_name": true, "image": "nicolargo/glances:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://glances.wonder.lan"], "npm_details": [{"url": "https://glances.wonder.lan", "forward_host": "glances", "forward_port": "61208"}], "volumes": ["/var/run/docker.sock:/var/run/docker.sock:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["GLANCES_OPT"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "homepage/compose.yml", "parse_error": null, "services": [{"name": "homepage", "container_name": "homepage", "explicit_container_name": true, "image": "ghcr.io/gethomepage/homepage:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://home.wonder.lan"], "npm_details": [{"url": "https://home.wonder.lan", "forward_host": "homepage", "forward_port": "3000"}], "volumes": ["./config:/app/config", "./config/images:/app/public/images"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["HOMEPAGE_ALLOWED_HOSTS", "PUID", "LOG_LEVEL", "PGID"], "env_vars": [], "description": "", "notes": ""}], "env_vars": [{"key": "HOMEPAGE_VAR_NPM_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_NPM_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_PI_API", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_NEXTCLOUD_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_NEXTCLOUD_APP_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_PAPERLESS_API", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_AUDIOBOOKSHELF_API", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_QBIT_USERNAME", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_QBIT_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_JD2_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_JD2_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_JELLYFIN_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_RADARR_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_SONARR_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_PROWLARR_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "HOMEPAGE_VAR_BAZARR_KEY", "default": "''", "comment": "", "is_secret": true}]}, {"path": "jdownloader/compose.yml", "parse_error": null, "services": [{"name": "jdownloader", "container_name": "jdownloader", "explicit_container_name": true, "image": "jlesage/jdownloader-2:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://jd.wonder.lan"], "npm_details": [{"url": "https://jd.wonder.lan", "forward_host": "jdownloader", "forward_port": "5800"}], "volumes": ["./config:/config", "/data/assets/downloads:/output:rw", "/data/assets/downloads/watch:/output/watch:rw"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["JDOWNLOADER_HEADLESS", "USER_ID", "GROUP_ID", "JD2_USER", "JD2_PASS", "MYJDOWNLOADER_DEVICE_NAME", "MYJDOWNLOADER_EMAIL", "MYJDOWNLOADER_PASSWORD"], "env_vars": [{"key": "JD2_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "JD2_PASS", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}], "env_vars": []}, {"path": "jellyfin/compose.yml", "parse_error": null, "services": [{"name": "jellyfin", "container_name": "jellyfin", "explicit_container_name": true, "image": "lscr.io/linuxserver/jellyfin:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://jellyfin.wonder.lan"], "npm_details": [{"url": "https://jellyfin.wonder.lan", "forward_host": "jellyfin", "forward_port": "8096"}], "volumes": ["./config:/config", "/data/assets:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "n8n/compose.yml", "parse_error": null, "services": [{"name": "n8n", "container_name": "n8n", "explicit_container_name": true, "image": "n8nio/n8n:latest", "image_tag": "latest", "image_pinned": false, "ports": ["127.0.0.1:5678:5678"], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://n8n.wonder.lan"], "npm_details": [{"url": "https://n8n.wonder.lan", "forward_host": "n8n", "forward_port": "5678"}], "volumes": ["./n8n_data:/home/node/.n8n", "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro", "/data/assets/downloads:/downloads:rw", "/data/assets/downloads/watch:/watch-folder:rw"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["N8N_ADDITIONAL_NON_UI_ROUTES", "RADARR_API", "MY_2ND_BOT_TOKEN", "EXECUTIONS_DATA_PRUNE", "EXECUTIONS_DATA_SAVE_ON_ERROR", "TELEGRAM_VERGIL_TOKEN", "SON_API", "OIDC_CLIENT_SECRET", "SONARR_API", "OIDC_REDIRECT_URI", "HOST_CERT_PATH", "OIDC_ISSUER_URL", "EXTERNAL_FRONTEND_HOOKS_URLS", "EXECUTIONS_DATA_MAX_AGE", "EXECUTIONS_DATA_SAVE_ON_PROGRESS", "GENERIC_TIMEZONE", "MY_TELEGRAM_CHAT_ID", "N8N_ENV_ALLOWLIST", "QBIT_USER", "N8N_SECURE_COOKIE", "TAILSCALE_DOMAIN", "N8N_RUNNERS_ENABLED", "DB_SQLITE_POOL_SIZE", "PIHOLE_PASS", "N8N_PERSONALIZATION_ENABLED", "EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS", "CHAT_ID", "QBIT_PASS", "N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS", "PIHOLE_APP_PASS", "N8N_CLIENT_ID", "N8N_DIAGNOSTICS_ENABLED", "EXECUTIONS_DATA_SAVE_ON_SUCCESS", "EXTERNAL_HOOK_FILES", "OIDC_CLIENT_ID", "N8N_BLOCK_ENV_ACCESS_IN_NODE", "NODES_EXCLUDE", "NODE_EXTRA_CA_CERTS", "N8N_VERSION_NOTIFICATIONS_ENABLED", "N8N_CLIENT_SECRET", "MY_BOT_TOKEN", "RAD_API", "TELEGRAM_DANTE_TOKEN", "WEBHOOK_URL"], "env_vars": [{"key": "TAILSCALE_DOMAIN", "default": "''", "comment": "", "is_secret": false}, {"key": "TELEGRAM_DANTE_TOKEN", "default": "''", "comment": "", "is_secret": true}, {"key": "TELEGRAM_VERGIL_TOKEN", "default": "''", "comment": "", "is_secret": true}, {"key": "MY_TELEGRAM_CHAT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "SON_API", "default": "''", "comment": "", "is_secret": true}, {"key": "RAD_API", "default": "''", "comment": "", "is_secret": true}, {"key": "QBIT_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "QBIT_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "PIHOLE_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "N8N_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "N8N_CLIENT_SECRET", "default": "''", "comment": "", "is_secret": true}, {"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}], "env_vars": []}, {"path": "nextcloud/compose.yml", "parse_error": null, "services": [{"name": "db", "container_name": "nextcloud-mariadb", "explicit_container_name": true, "image": "mariadb:lts", "image_tag": "lts", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./db:/var/lib/mysql"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["MYSQL_DATABASE", "MYSQL_PASS", "NC_USER", "MYSQL_USER", "TZ", "ROOT_PASS", "MYSQL_ROOT_PASSWORD", "MYSQL_PASSWORD"], "env_vars": [{"key": "ROOT_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "MYSQL_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "NC_USER", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}, {"name": "redis", "container_name": "nextcloud-redis", "explicit_container_name": true, "image": "redis:alpine", "image_tag": "alpine", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": [], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": [], "env_vars": [], "description": "", "notes": ""}, {"name": "app", "container_name": "nextcloud", "explicit_container_name": true, "image": "nextcloud:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy", "internal"], "network_type": "both", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://nextcloud.wonder.lan"], "npm_details": [{"url": "https://nextcloud.wonder.lan", "forward_host": "nextcloud", "forward_port": "80"}], "volumes": ["./html:/var/www/html", "/data/nextcloud_data:/var/www/html/data", "/data/assets:/mnt/external_files", "${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": ["db", "redis"], "is_privileged": false, "cap_add": [], "env_keys": ["MYSQL_USER", "TZ", "MYSQL_HOST", "MYSQL_PASSWORD", "MYSQL_DATABASE", "MYSQL_PASS", "NC_USER", "NEXTCLOUD_DATA_DIR", "HOST_CERT_PATH", "REDIS_HOST"], "env_vars": [{"key": "MYSQL_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "NC_USER", "default": "''", "comment": "", "is_secret": true}, {"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}, {"name": "calcardbackup", "container_name": "calcardbackup", "explicit_container_name": true, "image": "waja/calcardbackup", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./html:/var/www/html:ro", "/data/assets:/backup", "/usr/share/zoneinfo/Africa/Cairo:/etc/localtime:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": ["db", "app"], "is_privileged": false, "cap_add": [], "env_keys": ["DB_HOST", "NC_DIR", "CRON_TIME", "CALCARD_OPTS"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "npm/compose.yml", "parse_error": null, "services": [{"name": "app", "container_name": "npm", "explicit_container_name": true, "image": "jc21/nginx-proxy-manager:latest", "image_tag": "latest", "image_pinned": false, "ports": ["80:80", "81:81", "443:443"], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://npm.wonder.lan"], "npm_details": [{"url": "https://npm.wonder.lan", "forward_host": "192.168.1.109", "forward_port": "81"}], "volumes": ["./data:/data", "./letsencrypt:/etc/letsencrypt"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": [], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "paperless-ngx/compose.yml", "parse_error": null, "services": [{"name": "broker", "container_name": "paperless-redis", "explicit_container_name": true, "image": "docker.io/library/redis:alpine", "image_tag": "alpine", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./redisdata:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": [], "env_vars": [], "description": "", "notes": ""}, {"name": "db", "container_name": "paperless-db", "explicit_container_name": true, "image": "docker.io/library/postgres:18", "image_tag": "18", "image_pinned": true, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./pgdata:/var/lib/postgresql"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["POSTGRES_PASSWORD", "POSTGRES_DBPASS", "POSTGRES_USER", "POSTGRES_DB", "POSTGRES_INITDB_ARGS", "POSTGRES_HOST_AUTH_METHOD"], "env_vars": [{"key": "POSTGRES_DBPASS", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}, {"name": "webserver", "container_name": "paperless-ngx", "explicit_container_name": true, "image": "ghcr.io/paperless-ngx/paperless-ngx:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy", "internal"], "network_type": "both", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://paperless.wonder.lan"], "npm_details": [{"url": "https://paperless.wonder.lan", "forward_host": "paperless-ngx", "forward_port": "8000"}], "volumes": ["/data/paperless/data:/usr/src/paperless/data", "/data/paperless/media:/usr/src/paperless/media", "/data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw", "./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata", "${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": ["db", "broker"], "is_privileged": false, "cap_add": [], "env_keys": ["PAPERLESS_APPS", "PAPERLESS_DBPASS", "REQUESTS_CA_BUNDLE", "PAPERLESS_TASK_WORKERS", "POSTGRES_DBPASS", "PAPERLESS_REDIS", "HOST_CERT_PATH", "PAPERLESS_WEBSERVER_WORKERS", "PAPERLESS_OCR_LANGUAGES", "PAPERLESS_OIDC_CLIENT_ID", "PAPERLESS_DBHOST", "PAPERLESS_FILENAME_FORMAT", "USERMAP_UID", "SSL_CERT_FILE", "PAPERLESS_SOCIALACCOUNT_PROVIDERS", "PAPERLESS_SECRET_KEY", "PAPER_SECRET_KEY", "PAPERLESS_OCR_LANGUAGE", "USERMAP_GID", "PAPERLESS_SOCIALACCOUNT_AUTO_SIGNUP", "PAPERLESS_THREADS_PER_WORKER", "PAPERLESS_TIME_ZONE", "PAPERLESS_OIDC_CLIENT_SECRET", "PAPERLESS_URL"], "env_vars": [{"key": "POSTGRES_DBPASS", "default": "''", "comment": "", "is_secret": true}, {"key": "PAPER_SECRET_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "PAPERLESS_OIDC_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "PAPERLESS_OIDC_CLIENT_SECRET", "default": "''", "comment": "", "is_secret": true}, {"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}], "env_vars": []}, {"path": "pihole/compose.yml", "parse_error": null, "services": [{"name": "pihole", "container_name": "pihole", "explicit_container_name": true, "image": "pihole/pihole:latest", "image_tag": "latest", "image_pinned": false, "ports": ["53:53/tcp", "53:53/udp"], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://pihole.wonder.lan"], "npm_details": [{"url": "https://pihole.wonder.lan", "forward_host": "pihole", "forward_port": "80"}], "volumes": ["./etc-pihole:/etc/pihole", "./etc-dnsmasq.d:/etc/dnsmasq.d"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["WEBPASSWORD", "PIHOLE_DNS_", "FTLCONF_database_maxDBdays", "TZ", "ADDITIONAL_PACKAGES", "PASS", "CHECK_LOAD"], "env_vars": [{"key": "PASS", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}], "env_vars": []}, {"path": "pocket-id/compose.yml", "parse_error": null, "services": [{"name": "pocket-id", "container_name": "pocket-id", "explicit_container_name": true, "image": "ghcr.io/pocket-id/pocket-id:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": "https://pocket.wonder.lan", "npm_urls": ["https://pocket.wonder.lan"], "npm_details": [{"url": "https://pocket.wonder.lan", "forward_host": "pocket-id", "forward_port": "1411"}], "volumes": ["./data:/app/data", "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["TRUST_PROXY", "HOST_CERT_PATH", "VERSION_CHECK_DISABLED", "ENCRYPTION_KEY", "APP_URL", "ANALYTICS_DISABLED", "SSL_CERT_FILE"], "env_vars": [{"key": "ENCRYPTION_KEY", "default": "'' # Generate with: openssl rand -hex 32", "comment": "", "is_secret": true}, {"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}], "env_vars": []}, {"path": "qbittorrent/compose.yml", "parse_error": null, "services": [{"name": "qbittorrent", "container_name": "qbittorrent", "explicit_container_name": true, "image": "lscr.io/linuxserver/qbittorrent:latest", "image_tag": "latest", "image_pinned": false, "ports": ["6881:6881", "6881:6881/udp"], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://qbit.wonder.lan"], "npm_details": [{"url": "https://qbit.wonder.lan", "forward_host": "qbittorrent", "forward_port": "8080"}], "volumes": ["./config:/config", "/data/assets:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PUID", "WEBUI_PORT", "PGID", "TZ"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "romm/compose.yml", "parse_error": null, "services": [{"name": "romm", "container_name": "romm", "explicit_container_name": true, "image": "rommapp/romm:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy", "internal"], "network_type": "both", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://romm.wonder.lan"], "npm_details": [{"url": "https://romm.wonder.lan", "forward_host": "romm", "forward_port": "8080"}], "volumes": ["${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro", "/data/assets/romm/resources:/romm/resources", "./config:/romm/config", "./assets:/romm/assets", "/data/assets/romm/library:/romm/library"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": ["romm-db", "romm-redis"], "is_privileged": false, "cap_add": [], "env_keys": ["OIDC_PROVIDER", "IGDB_CLIENT_ID", "PUID", "DB_HOST", "OIDC_CLIENT_SECRET", "OIDC_REDIRECT_URI", "OIDC_TLS_CACERTFILE", "ROMM_CLIENT_ID", "REDIS_HOST", "HOST_CERT_PATH", "ROMM_AUTH_KEY", "PGID", "IGDB_TWITCH_CLIENT_ID", "OIDC_SERVER_APPLICATION_URL", "IGDB_CLIENT_SECRET", "OIDC_CLIENT_ID", "TZ", "IGDB_TWITCH_CLIENT_SECRET", "DB_MYSQL_PASS", "ROMM_CLIENT_SECRET", "DB_PASSWD", "DB_USER", "ROMM_AUTH_SECRET_KEY", "OIDC_ENABLED", "DB_NAME"], "env_vars": [{"key": "DB_MYSQL_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "ROMM_AUTH_KEY", "default": "''", "comment": "", "is_secret": true}, {"key": "IGDB_TWITCH_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "IGDB_TWITCH_CLIENT_SECRET", "default": "''", "comment": "", "is_secret": true}, {"key": "ROMM_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "ROMM_CLIENT_SECRET", "default": "''", "comment": "", "is_secret": true}, {"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}], "description": "", "notes": ""}, {"name": "romm-db", "container_name": "romm-db", "explicit_container_name": true, "image": "mariadb:lts", "image_tag": "lts", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./mysql_data:/var/lib/mysql"], "restart": "unless-stopped", "has_healthcheck": true, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["MYSQL_PASS", "MARIADB_USER", "MARIADB_DATABASE", "DB_MYSQL_PASS", "MARIADB_PASSWORD", "MARIADB_ROOT_PASSWORD"], "env_vars": [{"key": "DB_MYSQL_PASS", "default": "''", "comment": "", "is_secret": true}, {"key": "MYSQL_PASS", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}, {"name": "romm-redis", "container_name": "romm-redis", "explicit_container_name": true, "image": "redis:alpine", "image_tag": "alpine", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": [], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": [], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "scrutiny/compose.yml", "parse_error": null, "services": [{"name": "scrutiny", "container_name": "scrutiny", "explicit_container_name": true, "image": "ghcr.io/starosdev/scrutiny:master-omnibus", "image_tag": "master-omnibus", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://scrutiny.wonder.lan"], "npm_details": [{"url": "https://scrutiny.wonder.lan", "forward_host": "scrutiny", "forward_port": "8080"}], "volumes": ["/run/udev:/run/udev:ro", "./config:/opt/scrutiny/config", "./influxdb:/opt/scrutiny/influxdb"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": true, "cap_add": ["SYS_RAWIO"], "env_keys": ["SCRUTINY_ARGS", "S6_CMD_WAIT_FOR_SERVICES_MAXTIME", "SCRUTINY_NOTIFY_URLS", "TZ", "SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT", "TELE_DANTE_TOKEN"], "env_vars": [{"key": "TELE_DANTE_TOKEN", "default": "'telegram://<BOT_TOKEN>@telegram?channels=<CHAT_ID>'", "comment": "", "is_secret": true}], "description": "", "notes": ""}], "env_vars": []}, {"path": "syncthing/compose.yml", "parse_error": null, "services": [{"name": "syncthing", "container_name": "syncthing", "explicit_container_name": true, "image": "syncthing/syncthing:latest", "image_tag": "latest", "image_pinned": false, "ports": ["22000:22000/tcp", "22000:22000/udp", "21027:21027/udp"], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://syncthing.wonder.lan"], "npm_details": [{"url": "https://syncthing.wonder.lan", "forward_host": "syncthing", "forward_port": "8384"}], "volumes": ["./config:/var/syncthing/config", "/data:/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["STGUIADDRESS", "PUID", "PGID"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "tailscale/compose.yml", "parse_error": null, "services": [{"name": "tailscale", "container_name": "tailscaled", "explicit_container_name": true, "image": "tailscale/tailscale:latest", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": [], "network_type": "none", "network_mode": "host", "is_host_network": true, "is_special_network": true, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["./config:/var/lib/tailscale", "/dev/net/tun:/dev/net/tun"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": ["NET_ADMIN", "NET_RAW"], "env_keys": ["TS_STATE_DIR", "AUTH_KEY", "TS_AUTHKEY", "TS_SOCKS5_SERVER", "TS_EXTRA_ARGS"], "env_vars": [{"key": "AUTH_KEY", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}], "env_vars": []}, {"path": "tinyauth/compose.yml", "parse_error": null, "services": [{"name": "tinyauth", "container_name": "tinyauth", "explicit_container_name": true, "image": "ghcr.io/tinyauthapp/tinyauth:v5", "image_tag": "v5", "image_pinned": true, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://auth.wonder.lan"], "npm_details": [{"url": "https://auth.wonder.lan", "forward_host": "tinyauth", "forward_port": "3000"}], "volumes": ["${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL", "TINYAUTH_APPURL", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL", "SSL_CERT_FILE", "TINYAUTH_CLIENT_ID", "TINYAUTH_CLIENT_SECRET", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET", "HOST_CERT_PATH", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL", "TINYAUTH_OAUTH_AUTOREDIRECT", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES", "TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID"], "env_vars": [{"key": "HOST_CERT_PATH", "default": "'/home/gravi-ctrl/.local/share/mkcert/rootCA.pem'", "comment": "", "is_secret": false}, {"key": "TINYAUTH_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}, {"key": "TINYAUTH_CLIENT_ID", "default": "''", "comment": "", "is_secret": true}], "description": "", "notes": ""}], "env_vars": []}, {"path": "uptime-kuma/compose.yml", "parse_error": null, "services": [{"name": "uptime-kuma", "container_name": "uptime-kuma", "explicit_container_name": true, "image": "louislam/uptime-kuma:next", "image_tag": "next", "image_pinned": false, "ports": [], "networks": ["proxy", "internal"], "network_type": "both", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": ["https://kuma.wonder.lan"], "npm_details": [{"url": "https://kuma.wonder.lan", "forward_host": "uptime-kuma", "forward_port": "3001"}], "volumes": ["./data:/app/data"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": ["uptime-socket-proxy"], "is_privileged": false, "cap_add": [], "env_keys": ["DOCKER_HOST"], "env_vars": [], "description": "", "notes": ""}, {"name": "uptime-socket-proxy", "container_name": "uptime-socket-proxy", "explicit_container_name": true, "image": "tecnativa/docker-socket-proxy", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["internal"], "network_type": "internal-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": ["/var/run/docker.sock:/var/run/docker.sock:ro"], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["CONTAINERS"], "env_vars": [], "description": "", "notes": ""}], "env_vars": []}, {"path": "wifi-robot/compose.yml", "parse_error": null, "services": [{"name": "robot", "container_name": "wifi-robot", "explicit_container_name": true, "image": "", "image_tag": "latest", "image_pinned": false, "ports": [], "networks": ["proxy"], "network_type": "proxy-only", "network_mode": "", "is_host_network": false, "is_special_network": false, "app_url_hint": null, "npm_urls": [], "npm_details": [], "volumes": [], "restart": "unless-stopped", "has_healthcheck": false, "depends_on": [], "is_privileged": false, "cap_add": [], "env_keys": ["PYTHONUNBUFFERED"], "env_vars": [], "description": "", "notes": ""}], "env_vars": [{"key": "ROUTER_IP", "default": "''", "comment": "", "is_secret": false}, {"key": "ROUTER_PASSWORD", "default": "''", "comment": "", "is_secret": true}]}];
+function e(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function bdg(cls,txt){return`<span class="bdg ${cls}">${e(txt)}</span>`}
+function extLink(url,label){
+  return`<a class="url-link" href="${e(url)}" target="_blank">`+
+    `<svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3H3a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-4"/><path d="M13 1h2v2M9 7l6-6"/></svg>`+
+    `${e(label||url)}</a>`}
+function rcls(r){
+  if(!r||r==='no')return 'r-no';
+  if(r==='always')return 'r-always';
+  if(r.includes('unless'))return 'r-unless';
+  if(r.includes('on-failure'))return 'r-onfail';
+  return 'r-no';}
+
+function envTable(vars){
+  if(!vars||!vars.length) return '';
+  const trows=vars.map(ev=>`<tr>
+    <td class="k">${e(ev.key)}</td>
+    <td class="v">${ev.is_secret?'<span class="env-secret">••••••</span>':ev.default?e(ev.default):'<span style="color:var(--tx3)">—</span>'}</td>
+    <td>${e(ev.comment)}</td></tr>`).join('');
+  return`<div class="env-wrap"><table class="env-table">
+    <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+    <tbody>${trows}</tbody></table></div>`;
+}
+
+function svcHasSecurityConcern(sv){
+  return sv.is_privileged || (sv.cap_add&&sv.cap_add.length>0) || !sv.explicit_container_name || (sv.restart==='no'||!sv.restart);
+}
+
+function renderStats(){
+  let svcs=0;const pts=new Set();let urls=0,roll=0,secWarn=0,hostNet=0;
+  D.forEach(s=>{svcs+=s.services.length;s.services.forEach(sv=>{
+    sv.ports.forEach(p=>pts.add(p));
+    if(sv.npm_urls.length||sv.app_url_hint)urls++;
+    if(!sv.image_pinned)roll++;
+    if(svcHasSecurityConcern(sv))secWarn++;
+    if(sv.is_host_network)hostNet++;
+  })});
+  document.getElementById('stats').innerHTML=[
+    ['Stacks',D.length],['Services',svcs],
+    ['Open ports',pts.size],['URLs found',urls],['Rolling tags',roll],
+    ['⚠ Warnings',secWarn]
+  ].map(([l,n])=>`<div class="stat"><div class="stat-n">${n}</div><div class="stat-l">${e(l)}</div></div>`).join('');
+}
+
+function buildCard(stack,i){
+  const allPorts=[],allUrls=[];
+  let hp=false,hi=false,hasRoll=false,hasSec=false,hasHost=false;
+  stack.services.forEach(sv=>{
+    sv.ports.forEach(p=>allPorts.push(p));
+    if(sv.npm_urls.length)allUrls.push(...sv.npm_urls);
+    else if(sv.app_url_hint)allUrls.push(sv.app_url_hint);
+    if(['proxy-only','both'].includes(sv.network_type))hp=true;
+    if(['internal-only','both'].includes(sv.network_type))hi=true;
+    if(!sv.image_pinned)hasRoll=true;
+    if(svcHasSecurityConcern(sv))hasSec=true;
+    if(sv.is_host_network)hasHost=true;
+  });
+  const hb=[
+    bdg('b-svc',`${stack.services.length} svc${stack.services.length!==1?'s':''}`),
+    hp&&hi?bdg('b-both','proxy+internal'):hp?bdg('b-proxy','proxy'):hi?bdg('b-int','internal'):'',
+    hasHost?bdg('b-host','host net'):'',
+    ...allPorts.slice(0,3).map(p=>bdg('b-port',p)),
+    allPorts.length>3?bdg('b-svc',`+${allPorts.length-3} ports`):'',
+    ...allUrls.slice(0,2).map(u=>bdg('b-url',u)),
+    allUrls.length>2?bdg('b-url',`+${allUrls.length-2} more`):'',
+    hasRoll?bdg('b-roll','rolling'):'',
+    hasSec?bdg('b-warn','⚠ warnings'):'',
+  ].filter(Boolean).join('');
+
+  const svcsHtml=stack.services.map(sv=>{
+    const secFlags=[];
+    if(sv.is_privileged) secFlags.push(bdg('b-priv','⚠ privileged'));
+    if(sv.cap_add&&sv.cap_add.length) secFlags.push(bdg('b-priv',`⚠ cap_add: ${sv.cap_add.join(', ')}`));
+    if(!sv.explicit_container_name) secFlags.push(bdg('b-noname','⚠ no container_name'));
+    if(sv.is_host_network) secFlags.push(bdg('b-host','host network'));
+    if(sv.is_special_network&&!sv.is_host_network) secFlags.push(bdg('b-host',`network_mode: ${sv.network_mode}`));
+
+    const sb=[
+      sv.image_pinned?bdg('b-pin',sv.image_tag):bdg('b-roll',sv.image_tag||'latest'),
+      sv.has_healthcheck?bdg('b-pin','✓ health'):'',
+      bdg(rcls(sv.restart),sv.restart||'no'),
+      ...secFlags,
+    ].filter(Boolean).join('');
+
+    const rows=[];
+    rows.push(`<div class="detail"><span class="dlabel">Image</span><span class="dval"><span class="mono">${e(sv.image)}</span></span></div>`);
+
+    // Container name row — only show if explicit (implicit names are already flagged)
+    if(sv.explicit_container_name){
+      rows.push(`<div class="detail"><span class="dlabel">Container</span><span class="dval"><span class="mono">${e(sv.container_name)}</span></span></div>`);
+    }
+
+    // NPM URLs with container:port details
+    if(sv.npm_details&&sv.npm_details.length){
+      const npmRows = sv.npm_details.map(d=>{
+        const portPart = d.forward_port ? `<span class="npm-detail"><span class="mono">${e(d.forward_host)}:${e(d.forward_port)}</span></span>` : '';
+        return `<div style="display:flex;flex-direction:column;gap:2px">${extLink(d.url)}${portPart}</div>`;
+      }).join('');
+      rows.push(`<div class="detail"><span class="dlabel">URL</span><span class="dval" style="flex-direction:column;align-items:flex-start">${npmRows}</span></div>`);
+    } else if(sv.app_url_hint){
+      rows.push(`<div class="detail"><span class="dlabel">URL</span><span class="dval">${extLink(sv.app_url_hint)}</span></div>`);
+    }
+
+    // network_mode row
+    if(sv.network_mode){
+      rows.push(`<div class="detail"><span class="dlabel">Net mode</span><span class="dval">${bdg(sv.is_host_network?'b-host':'b-int', sv.network_mode)}</span></div>`);
+    }
+
+    if(sv.ports.length)rows.push(`<div class="detail"><span class="dlabel">Ports</span><span class="dval">${sv.ports.map(p=>`<span class="mono">${e(p)}</span>`).join('')}</span></div>`);
+
+    if(sv.networks.length)rows.push(`<div class="detail"><span class="dlabel">Networks</span><span class="dval">${sv.networks.map(n=>bdg(n.toLowerCase().includes('internal')?'b-int':'b-proxy',n)).join('')}</span></div>`);
+
+    if(sv.depends_on.length)rows.push(`<div class="detail"><span class="dlabel">Depends</span><span class="dval">${sv.depends_on.map(d=>`<span class="mono">${e(d)}</span>`).join('')}</span></div>`);
+
+    if(sv.volumes.length)rows.push(`<div class="detail"><span class="dlabel">Volumes</span><span class="dval dval-col">${sv.volumes.map(v=>`<span class="mono">${e(v)}</span>`).join('')}</span></div>`);
+
+    if(sv.env_vars&&sv.env_vars.length){
+      rows.push(`<div class="detail"><span class="dlabel">Env vars</span>${envTable(sv.env_vars)}</div>`);
+    }
+
+    return`<div class="svc"><div class="svc-head"><span class="svc-name">${e(sv.name)}</span><div class="svc-badges">${sb}</div></div>${sv.description?`<div class="svc-desc">${e(sv.description)}</div>`:''}<div class="svc-body">${rows.join('')}</div>${sv.notes?`<div class="svc-notes">📝 ${e(sv.notes)}</div>`:''}</div>`;
+  }).join('');
+
+  const orphanEnv = (stack.env_vars&&stack.env_vars.length)
+    ? `<div class="shared-env">
+         <div class="shared-env-label">Shared / unmatched env vars</div>
+         ${envTable(stack.env_vars)}
+       </div>`
+    : '';
+
+  const label=stack.path.replace(/\/(docker-compose|compose)\.ya?ml$/i,'');
+  const err=stack.parse_error?`<div class="err-banner">⚠ ${e(stack.parse_error)}</div>`:'';
+  return`<div class="card-head" id="h${i}" onclick="toggle(${i})"><span>🗂</span><span class="stack-name">${e(label)}</span><div class="head-badges">${hb}</div><span class="chev">▾</span></div><div class="card-body" id="b${i}">${err}<div class="svc-list">${svcsHtml}</div>${orphanEnv}</div>`;
+}
+
+function renderCards(){
+  const c=document.getElementById('stacks');c.innerHTML='';
+  D.forEach((s,i)=>{const el=document.createElement('div');el.className='card';el.dataset.i=i;el.innerHTML=buildCard(s,i);c.appendChild(el);});
+}
+function toggle(i){const b=document.getElementById('b'+i),h=document.getElementById('h'+i);const o=b.classList.toggle('open');h.classList.toggle('is-open',o);}
+
+const F={ports:false,urls:false,internal:false,rolling:false,security:false,host:false};
+function tog(k){F[k]=!F[k];document.getElementById('f-'+k).classList.toggle('on',F[k]);applyFilter();}
+function applyFilter(){
+  const q=document.getElementById('search').value.toLowerCase();let n=0;
+  document.querySelectorAll('#stacks .card').forEach(el=>{
+    const s=D[+el.dataset.i];const txt=JSON.stringify(s).toLowerCase();
+    const ok=(!q||txt.includes(q))
+      &&(!F.ports||s.services.some(sv=>sv.ports.length>0))
+      &&(!F.urls||s.services.some(sv=>sv.npm_urls.length||sv.app_url_hint))
+      &&(!F.internal||s.services.some(sv=>['internal-only','both'].includes(sv.network_type)))
+      &&(!F.rolling||s.services.some(sv=>!sv.image_pinned))
+      &&(!F.security||s.services.some(sv=>svcHasSecurityConcern(sv)))
+      &&(!F.host||s.services.some(sv=>sv.is_host_network));
+    el.style.display=ok?'':'none';if(ok)n++;
+  });
+  document.getElementById('no-match').style.display=n?'none':'block';
+}
+renderStats();renderCards();
+</script>
+</body>
+</html>
