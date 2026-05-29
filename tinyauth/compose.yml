@@ -1,0 +1,25 @@
+services:
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:latest
+    container_name: tinyauth
+    restart: unless-stopped
+    networks:
+      - proxy
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+    environment:
+      - SSL_CERT_FILE=/etc/ssl/certs/homeserver-ca.pem
+      - TINYAUTH_APPURL=https://auth.wonder.lan
+      - TINYAUTH_OAUTH_AUTOREDIRECT=pocketid
+      # Pocket ID OIDC Configuration
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID=${TINYAUTH_CLIENT_ID}
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET=${TINYAUTH_CLIENT_SECRET}
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL=https://pocket.wonder.lan/authorize
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL=https://pocket.wonder.lan/api/oidc/token
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL=https://pocket.wonder.lan/api/oidc/userinfo
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL=https://auth.wonder.lan/api/oauth/callback/pocketid
+      - TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES=openid email profile groups
+
+networks:
+  proxy:
+    external: true

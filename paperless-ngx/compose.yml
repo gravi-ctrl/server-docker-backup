@@ -36,7 +36,7 @@ services:
       - USERMAP_GID=1000
       # pocket-id support
       - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
-      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"APPS":[{"provider_id":"pocket-id","name":"Pocket ID","client_id":"${PAPERLESS_OIDC_CLIENT_ID}","secret":"${PAPERLESS_OIDC_CLIENT_SECRET}","settings":{"server_url":"https://pocket.homeserver/.well-known/openid-configuration"}}]}}
+      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"APPS":[{"provider_id":"pocket-id","name":"Pocket ID","client_id":"${PAPERLESS_OIDC_CLIENT_ID}","secret":"${PAPERLESS_OIDC_CLIENT_SECRET}","settings":{"server_url":"https://pocket.wonder.lan/.well-known/openid-configuration"}}]}}
       - PAPERLESS_SOCIALACCOUNT_AUTO_SIGNUP=true
       - SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
       - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
@@ -51,7 +51,7 @@ services:
       - PAPERLESS_THREADS_PER_WORKER=1
       - PAPERLESS_OCR_LANGUAGE=ara+eng
       - PAPERLESS_OCR_LANGUAGES=ara eng
-      - PAPERLESS_URL=https://paperless.homeserver
+      - PAPERLESS_URL=https://paperless.wonder.lan
       - PAPERLESS_FILENAME_FORMAT={{ tag_list }}/{{ created_year }}/{{ created
         }}-{{ title }}
     volumes:

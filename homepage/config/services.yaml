@@ -1,7 +1,7 @@
 - Infrastructure:
     - Pi-hole:
         icon: pi-hole.png
-        href: https://pihole.homeserver/admin
+        href: https://pihole.wonder.lan/admin
         description: DNS Filtering
         widget:
             type: pihole
@@ -11,7 +11,7 @@
 
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.png
-        href: https://npm.homeserver
+        href: https://npm.wonder.lan
         description: Proxy Manager
         widget:
             type: npm
@@ -22,7 +22,7 @@
 - Monitoring:
     - Uptime Kuma Status Page:
         icon: uptime-kuma.png
-        href: https://kuma.homeserver/status/home
+        href: https://kuma.wonder.lan/status/home
         widget:
             type: uptimekuma
             url: http://uptime-kuma:3001
@@ -30,28 +30,28 @@
 
     - Uptime Kuma:
         icon: uptime-kuma.png
-        href: https://kuma.homeserver
+        href: https://kuma.wonder.lan
         description: Uptime Monitoring
 
     - Scrutiny:
         icon: scrutiny.png
-        href: https://scrutiny.homeserver
+        href: https://scrutiny.wonder.lan
         description: Drive Health
 
     - Glances:
         icon: glances.png
-        href: https://glances.homeserver
+        href: https://glances.wonder.lan
         description: Resource Monitor
 
 - Admin:
     - Dockge:
         icon: dockge.png
-        href: https://dockge.homeserver
+        href: https://dockge.wonder.lan
         description: Container Manager
 
     - n8n:
         icon: n8n.png
-        href: https://n8n.homeserver
+        href: https://n8n.wonder.lan
         description: Workflow Automation
 
     - Home Router:
@@ -62,7 +62,7 @@
 - Cloud:
     - Nextcloud:
         icon: nextcloud.png
-        href: https://nextcloud.homeserver
+        href: https://nextcloud.wonder.lan
         description: Files
         widget:
             type: nextcloud
@@ -72,7 +72,7 @@
 
     - Paperless-ngx:
         icon: paperless-ngx.png
-        href: https://paperless.homeserver
+        href: https://paperless.wonder.lan
         description: Archives
         widget:
             type: paperlessngx
@@ -81,13 +81,13 @@
 
     - Syncthing:
         icon: syncthing.png
-        href: https://syncthing.homeserver
+        href: https://syncthing.wonder.lan
         description: Sync
 
 - Media & Entertainment:
     - RomM:
         icon: romm
-        href: https://romm.homeserver
+        href: https://romm.wonder.lan
         description: ROM Manager
         widget:
             type: romm
@@ -95,7 +95,7 @@
 
     - Jellyfin:
         icon: jellyfin.png
-        href: https://jellyfin.homeserver
+        href: https://jellyfin.wonder.lan
         description: Movies, Series & Music
         widget:
             type: jellyfin
@@ -107,7 +107,7 @@
 
     - Audiobookshelf:
         icon: audiobookshelf.png
-        href: https://audiobooks.homeserver
+        href: https://audiobooks.wonder.lan
         description: Books
         widget:
             type: audiobookshelf
@@ -117,7 +117,7 @@
 - Downloads:
     - qBittorrent:
         icon: qbittorrent.png
-        href: https://qbit.homeserver
+        href: https://qbit.wonder.lan
         description: Torrents
         widget:
             type: qbittorrent
@@ -138,7 +138,7 @@
 - Arrs:
     - Radarr:
         icon: radarr.png
-        href: https://radarr.homeserver
+        href: https://radarr.wonder.lan
         description: Movies
         widget:
             type: radarr
@@ -148,7 +148,7 @@
 
     - Sonarr:
         icon: sonarr.png
-        href: https://sonarr.homeserver
+        href: https://sonarr.wonder.lan
         description: TV Shows
         widget:
             type: sonarr
@@ -158,7 +158,7 @@
 
     - Prowlarr:
         icon: prowlarr.png
-        href: https://prowlarr.homeserver
+        href: https://prowlarr.wonder.lan
         description: Indexers
         widget:
             type: prowlarr
@@ -167,7 +167,7 @@
 
     - Bazarr:
         icon: bazarr.png
-        href: https://bazarr.homeserver
+        href: https://bazarr.wonder.lan
         description: Subtitles
         widget:
             type: bazarr

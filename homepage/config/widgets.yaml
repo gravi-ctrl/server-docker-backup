@@ -3,7 +3,7 @@
 # https://gethomepage.dev/configs/info-widgets/
 
 - glances:
-    url: https://glances.homeserver
+    url: https://glances.wonder.lan
     version: 4
     cpu: true
     mem: true
