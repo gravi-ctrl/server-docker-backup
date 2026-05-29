@@ -1,0 +1,6 @@
+# Ignore absolutely everything on this branch
+*
+
+# EXCEPT for these two files
+!index.html
+!.gitignore
