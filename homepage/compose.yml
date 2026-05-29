@@ -2,6 +2,8 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
+    labels:
+      - "dash.description=Personal dashboard — links to all services"
     init: true
     env_file:
       - .env

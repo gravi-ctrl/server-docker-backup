@@ -1,6 +1,8 @@
 services:
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
+    labels:
+      - "dash.description=Torrent client"
     container_name: qbittorrent
     environment:
       - PUID=1000

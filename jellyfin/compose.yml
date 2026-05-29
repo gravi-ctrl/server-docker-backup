@@ -2,6 +2,8 @@ services:
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
     container_name: jellyfin
+    labels:
+      - "dash.description=Media server — movies, shows, music"
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,7 +14,7 @@ services:
     networks:
       - proxy
     restart: unless-stopped
-    
+
 networks:
   proxy:
     external: true

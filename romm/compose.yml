@@ -2,6 +2,8 @@ services:
   romm:
     image: rommapp/romm:latest
     container_name: romm
+    labels:
+      - "dash.description=ROM manager and game library browser"
     restart: unless-stopped
     environment:
       - DB_HOST=romm-db

@@ -2,6 +2,9 @@ services:
   tinyauth:
     image: ghcr.io/tinyauthapp/tinyauth:v5
     container_name: tinyauth
+    labels:
+      - "dash.description=Lightweight auth middleware — protects services via Pocket ID OIDC"
+      - "dash.notes=start early on restore. NPM will crash without it"
     restart: unless-stopped
     networks:
       - proxy

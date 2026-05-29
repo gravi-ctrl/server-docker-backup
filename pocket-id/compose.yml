@@ -1,6 +1,9 @@
 services:
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:latest
+    labels:
+      - "dash.description=OIDC identity provider — handles SSO via passkeys"
+      - "dash.notes=start early on restore"
     container_name: pocket-id
     restart: unless-stopped
     networks:

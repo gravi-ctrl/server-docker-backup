@@ -25,6 +25,9 @@ services:
   app:
     image: nextcloud:latest
     container_name: nextcloud
+    labels:
+      - "dash.description=Self-hosted file sync and cloud storage"
+      - "dash.notes=Watched by nextcloud-dynamic-watch.sh"
     restart: unless-stopped
     networks:
       - proxy

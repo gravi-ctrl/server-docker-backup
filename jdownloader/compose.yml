@@ -2,6 +2,8 @@ services:
   jdownloader:
     image: jlesage/jdownloader-2:latest
     container_name: jdownloader
+    labels:
+      - "dash.description=Download manager"
     environment:
       - MYJDOWNLOADER_EMAIL=${JD2_USER}
       - MYJDOWNLOADER_PASSWORD=${JD2_PASS}

@@ -24,6 +24,8 @@ services:
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     container_name: paperless-ngx
+    labels:
+      - "dash.description=Document scanning and archival"
     restart: unless-stopped
     depends_on:
       - db

@@ -2,6 +2,8 @@ services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
+    labels:
+      - "dash.description=Audiobook and podcast server"
     networks:
       - proxy
     volumes:

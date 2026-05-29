@@ -1,6 +1,9 @@
 services:
   pihole:
     container_name: pihole
+    labels:
+      - "dash.description=DNS-level ad blocking and LAN resolver"
+      - "dash.notes=Acts as DNS for the whole network — start early on restore"
     image: pihole/pihole:latest
     dns:
       - 1.1.1.1

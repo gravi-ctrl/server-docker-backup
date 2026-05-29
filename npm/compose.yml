@@ -2,6 +2,9 @@ services:
   app:
     image: jc21/nginx-proxy-manager:latest
     container_name: npm
+    labels:
+      - "dash.description=Nginx Proxy Manager — reverse proxy and SSL termination"
+      - "dash.notes=Core infrastructure — start early on restore"
     restart: unless-stopped
     ports:
       - 80:80

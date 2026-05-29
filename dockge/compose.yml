@@ -2,6 +2,9 @@ services:
   dockge:
     image: louislam/dockge:latest
     container_name: dockge
+    labels:
+      - "dash.description=Docker Compose stack manager UI"
+      - "dash.notes=First stack to bring up on a fresh restore"
     restart: unless-stopped
     networks:
       - proxy
