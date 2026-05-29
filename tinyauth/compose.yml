@@ -1,6 +1,6 @@
 services:
   tinyauth:
-    image: ghcr.io/steveiliop56/tinyauth:latest
+    image: ghcr.io/tinyauthapp/tinyauth:v5
     container_name: tinyauth
     restart: unless-stopped
     networks:
