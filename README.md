@@ -1,5 +1,7 @@
 # 🐳 Server Docker Stacks
 
+> **Mirror Status:** Mirrored across [Codeberg](https://codeberg.org/gravi-ctrl/server-docker-backup) (Primary) and [GitHub](https://github.com/gravi-ctrl/server-docker-backup).
+
 [![StackDeck Dashboard (Codeberg)](https://img.shields.io/badge/StackDeck-Codeberg_Pages-2185d0?style=flat-square&logo=codeberg&logoColor=white)](https://gravi-ctrl.codeberg.page/server-docker-backup/)
 [![StackDeck Dashboard (GitHub)](https://img.shields.io/badge/StackDeck-GitHub_Pages-181717?style=flat-square&logo=github&logoColor=white)](https://gravi-ctrl.github.io/server-docker-backup/)
 
