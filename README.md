@@ -21,12 +21,9 @@ For restoration instructions, see **[Phase 3 — Docker & Finalize](https://gith
 `.env` files are **not** in this repo. On a fresh restore, copy each `.env.example`:
 
 ```bash
-for d in /opt/stacks/*/; do
-  [ -f "${d}.env.example" ] && cp --update=none "${d}.env.example" "${d}.env"
-done
+for d in /opt/stacks/*/; do [ -f "${d}.env.example" ] && cp --update=none "${d}.env.example" "${d}.env"; done
 ```
-
-Then repopulate credentials from your password manager / the decrypted backup.
+Fill in what you can from your password manager. Some secrets (e.g. OIDC client credentials) can only be obtained after spinning up their respective services first.
 
 ---
 
