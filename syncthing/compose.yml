@@ -1,6 +1,6 @@
 services:
   syncthing:
-    image: syncthing/syncthing:latest
+    image: syncthing/syncthing:2.1
     container_name: syncthing
     hostname: Homeserver
     networks:

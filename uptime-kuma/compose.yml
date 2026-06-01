@@ -1,6 +1,6 @@
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:next
+    image: louislam/uptime-kuma:2.4.0
     container_name: uptime-kuma
     labels:
       - "dash.description=Service uptime monitoring and alerting"

@@ -1,6 +1,6 @@
 services:
   db:
-    image: mariadb:lts
+    image: mariadb:11.8
     container_name: nextcloud-mariadb
     restart: unless-stopped
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
@@ -16,14 +16,14 @@ services:
       - MYSQL_USER=${NC_USER}
 
   redis:
-    image: redis:alpine
+    image: redis:8.6-alpine
     container_name: nextcloud-redis
     restart: unless-stopped
     networks:
       - internal
 
   app:
-    image: nextcloud:latest
+    image: nextcloud:33.0.4
     container_name: nextcloud
     labels:
       - "dash.description=Self-hosted file sync and cloud storage"

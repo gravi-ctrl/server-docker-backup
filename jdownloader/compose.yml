@@ -1,6 +1,6 @@
 services:
   jdownloader:
-    image: jlesage/jdownloader-2:latest
+    image: jlesage/jdownloader-2:v26.03.1
     container_name: jdownloader
     labels:
       - "dash.description=Download manager"

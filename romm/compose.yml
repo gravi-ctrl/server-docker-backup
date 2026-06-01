@@ -1,6 +1,6 @@
 services:
   romm:
-    image: rommapp/romm:latest
+    image: rommapp/romm:4.8.1
     container_name: romm
     labels:
       - "dash.description=ROM manager and game library browser"
@@ -41,7 +41,7 @@ services:
       romm-redis:
         condition: service_started
   romm-db:
-    image: mariadb:lts
+    image: mariadb:11.8
     container_name: romm-db
     restart: unless-stopped
     environment:
@@ -64,7 +64,7 @@ services:
       timeout: 5s
       retries: 10
   romm-redis:
-    image: redis:alpine
+    image: redis:8.6-alpine
     container_name: romm-redis
     restart: unless-stopped
     networks:

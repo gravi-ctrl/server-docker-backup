@@ -4,7 +4,7 @@ services:
     labels:
       - "dash.description=DNS-level ad blocking and LAN resolver"
       - "dash.notes=Acts as DNS for the whole network — start early on restore"
-    image: pihole/pihole:latest
+    image: pihole/pihole:2026.05.0
     dns:
       - 1.1.1.1
     ports:
