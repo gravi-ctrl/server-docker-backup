@@ -1,6 +1,6 @@
 services:
   broker:
-    image: docker.io/library/redis:8.6-alpine
+    image: docker.io/library/redis:8.6-alpine@sha256:d146f83b1e0f02fc27c26a50cee39338c736674c5959db84363e6ae3cd9e02d2
     container_name: paperless-redis
     restart: unless-stopped
     volumes:
@@ -8,7 +8,7 @@ services:
     networks:
       - internal
   db:
-    image: docker.io/library/postgres:18.4
+    image: docker.io/library/postgres:18.4@sha256:8ff36f3c66371cba71d20ceedccfc3de9669a68737607888c4ef0af93abe8e39
     container_name: paperless-db
     restart: unless-stopped
     environment:
@@ -22,7 +22,7 @@ services:
     networks:
       - internal
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
     container_name: paperless-ngx
     labels:
       - "dash.description=Document scanning and archival"
