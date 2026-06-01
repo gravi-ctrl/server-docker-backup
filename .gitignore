@@ -29,6 +29,7 @@
 !/README.md
 
 # --- CONTAINERS EXCEPTION ---
+!renovate/config.js
 !homepage/config/
 !homepage/config/*.yaml
 !homepage/config/images/
