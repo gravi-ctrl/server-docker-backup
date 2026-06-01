@@ -1,6 +1,6 @@
 services:
   jellyfin:
-    image: lscr.io/linuxserver/jellyfin:10.11.10
+    image: lscr.io/linuxserver/jellyfin:10.11.10@sha256:c0ed73678fb4ca761e0d940a92e49b95352f7f241a9be79a2c575c0099288f46
     container_name: jellyfin
     labels:
       - "dash.description=Media server — movies, shows, music"

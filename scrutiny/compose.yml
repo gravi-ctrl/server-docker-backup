@@ -3,7 +3,7 @@ services:
     container_name: scrutiny
     labels:
       - "dash.description=S.M.A.R.T. drive health monitoring"
-    image: ghcr.io/starosdev/scrutiny:master-omnibus
+    image: ghcr.io/starosdev/scrutiny:master-omnibus@sha256:8c09f958f4bbd0cfe68ee1396517420c33704226839186a04cdc5ec56381780e
     cap_add:
       - SYS_RAWIO
     privileged: true

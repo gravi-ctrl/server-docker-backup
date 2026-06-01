@@ -1,6 +1,6 @@
 services:
   syncthing:
-    image: syncthing/syncthing:2.1
+    image: syncthing/syncthing:2.1@sha256:7c60eb0ec887696c8684de88aea2dfe39a7391184b29d33c0aad778c99c7683e
     container_name: syncthing
     hostname: Homeserver
     networks:
