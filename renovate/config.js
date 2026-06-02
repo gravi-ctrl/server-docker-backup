@@ -8,24 +8,30 @@ module.exports = {
     "gravi-ctrl/server-docker-backup",
   ],
   enabledManagers: ["docker-compose"],
+  hostRules: [
+    {
+      matchHost: "github.com",
+      token: process.env.GITHUB_TOKEN,
+    }
+  ],
   packageRules: [
     {
       matchDatasources: ["docker"],
       automerge: false,
-      stabilityDays: 3,
+      minimumReleaseAge: "3 days",
       pinDigests: true,
     },
     {
       matchUpdateTypes: ["patch"],
-      stabilityDays: 1,
+      minimumReleaseAge: "1 day",
     },
     {
       matchUpdateTypes: ["minor"],
-      stabilityDays: 3,
+      minimumReleaseAge: "3 days",
     },
     {
       matchUpdateTypes: ["major"],
-      stabilityDays: 7,
+      minimumReleaseAge: "7 days",
       labels: ["major-update", "review-carefully"],
     }
   ],
