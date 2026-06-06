@@ -1,0 +1,27 @@
+services:
+  ignis:
+    image: nobbe/ignis:latest
+    container_name: obsidian
+    restart: unless-stopped
+    labels:
+      - "dash.description=Obsidian notes"
+    networks:
+      - proxy
+    ports:
+      - 127.0.0.1:8080:8080
+    environment:
+      - OBSIDIAN_VERSION=1.12.7
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+    volumes:
+      - /data/assets/syncthing/Backup/obsidian-notes:/vaults
+      - ./data:/app/data
+      - obsidian-app:/app/obsidian-app
+
+volumes:
+  obsidian-app:
+
+networks:
+  proxy:
+    external: true

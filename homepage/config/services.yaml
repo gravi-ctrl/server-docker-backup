@@ -54,6 +54,11 @@
         href: https://n8n.wonder.lan
         description: Workflow Automation
 
+    - Obsidian:
+        icon: obsidian.png
+        href: https://notes.wonder.lan
+        description: Obsidian Notes
+
     - Home Router:
         icon: router.png
         href: http://192.168.1.1
