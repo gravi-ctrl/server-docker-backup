@@ -1,6 +1,6 @@
 services:
   ignis:
-    image: nobbe/ignis:latest
+    image: nobbe/ignis:latest@sha256:553b6f5c3acc7265c41534d3e49c49608efb6dc516bb9d66e9fdd0bb89cf7ad6
     container_name: obsidian
     restart: unless-stopped
     labels:
