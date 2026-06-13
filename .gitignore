@@ -27,6 +27,7 @@
 !Dockerfile
 !.env.example
 !/README.md
+!.gitattributes
 
 # --- CONTAINERS EXCEPTION ---
 !renovate/config.js
