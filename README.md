@@ -34,21 +34,3 @@ git remote set-url --add --push origin git@codeberg.org:gravi-ctrl/server-docker
 git remote set-url --add --push origin git@github.com:gravi-ctrl/server-docker-backup.git
 git remote -v
 ```
-
----
-
-## 📊 Dashboard Maintenance
-
-The interactive dashboard is generated using **StackDeck**. To regenerate the dashboard locally before pushing updates:
-
-```bash
-# 1. Update the local index.html using NPM integration
-python3 docker_dash.py
-
-# 2. Push index.html to your 'pages' branch
-git checkout pages
-git add index.html
-git commit -m "Update StackDeck dashboard"
-git push origin pages
-git checkout main
-```
