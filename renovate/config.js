@@ -23,7 +23,7 @@ module.exports = {
     },
     {
       matchUpdateTypes: ["patch"],
-      automerge: true,
+      automerge: false,
       minimumReleaseAge: "1 day",
     },
     {
