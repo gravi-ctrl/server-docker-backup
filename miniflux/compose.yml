@@ -1,6 +1,6 @@
 services:
   miniflux-db:
-    image: postgres:16-alpine@sha256:e013e867e712fec275706a6c51c966f0bb0c93cfa8f51000f85a15f9865a28cb
+    image: docker.io/library/postgres:18.4@sha256:29ee7bb30d804447dc9a91fd0d74322ae1dc3a4072cc6346f70a5ed6e783b565
     container_name: miniflux-db
     restart: unless-stopped
     networks:
@@ -11,7 +11,7 @@ services:
       - POSTGRES_PASSWORD=${MINIFLUX_DB_PASS}
       - POSTGRES_DB=miniflux
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql
 
   miniflux:
     image: miniflux/miniflux:2.3.1@sha256:42f14382a035e9d9bbc33910ca53f72d47177f75c3c638d2c5a85adf5582d538
