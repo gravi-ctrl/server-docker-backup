@@ -1,0 +1,42 @@
+services:
+  miniflux-db:
+    image: postgres:16-alpine
+    container_name: miniflux-db
+    restart: unless-stopped
+    networks:
+      - internal
+    environment:
+      - TZ=Africa/Cairo
+      - POSTGRES_USER=${MINIFLUX_DB_USER}
+      - POSTGRES_PASSWORD=${MINIFLUX_DB_PASS}
+      - POSTGRES_DB=miniflux
+    volumes:
+      - ./db:/var/lib/postgresql/data
+
+  miniflux:
+    image: miniflux/miniflux:2.3.1
+    container_name: miniflux
+    labels:
+      - "dash.description=Self-hosted RSS reader — daily digest pushed via miniflux-digest.py"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      - miniflux-db
+    ports:
+      # Host-local only. Lets miniflux-digest.py (runs on the host via cron, not inside a container) 
+      - "127.0.0.1:8090:8080"
+    environment:
+      - TZ=Africa/Cairo
+      - DATABASE_URL=postgres://${MINIFLUX_DB_USER}:${MINIFLUX_DB_PASS}@miniflux-db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=${MINIFLUX_ADMIN_USER}
+      - ADMIN_PASSWORD=${MINIFLUX_ADMIN_PASS}
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true
