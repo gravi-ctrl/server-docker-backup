@@ -10,6 +10,8 @@ services:
       - 80:80
       - 81:81
       - 443:443
+    environment:
+      - TZ=Africa/Cairo
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
