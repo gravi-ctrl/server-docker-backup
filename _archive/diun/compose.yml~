@@ -1,0 +1,41 @@
+services:
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    command: serve
+    restart: unless-stopped
+    environment:
+      - TZ=Africa/Cairo
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+      - DIUN_WATCH_WORKERS=20
+      - DIUN_WATCH_SCHEDULE=0 0 1 1 * # (Jan 1st) Effectively "never"
+      - DIUN_WATCH_RUNONSTARTUP=true
+      - DIUN_PROVIDERS_DOCKER=true
+      - DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT=true
+      - DIUN_NOTIF_TELEGRAM_TOKEN=${TELE_VERGIL_TOK}
+      - DIUN_NOTIF_TELEGRAM_CHATIDS=${CHAT_ID}
+      - DIUN_PROVIDERS_DOCKER_ENDPOINT=tcp://diun-socket-proxy:2375
+    volumes:
+      - ./data:/data
+    depends_on:
+      - diun-socket-proxy
+    networks:
+      - proxy
+      - internal
+  diun-socket-proxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: diun-socket-proxy
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+      - IMAGES=1
+    networks:
+      - internal
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true
