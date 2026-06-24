@@ -18,9 +18,7 @@
 **/letsencrypt/
 
 # --- ALLOW ---
-!docker-compose.yml~
-!docker-compose.yml
-!compose.yml~
+!compose.yml.disabled
 !compose.yml
 !.gitignore
 !.commit-warning
