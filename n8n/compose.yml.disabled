@@ -1,0 +1,77 @@
+# Use this compose if we switched to headscale. It doesn't support funneling like Tailscale, and we'll have to rely on ngrok... sadly
+services:
+  n8n:
+    image: n8nio/n8n:2.26.3@sha256:51ac1d08178e635a593368f0947532990e55c14342ac781c8d77538daae859c8
+    container_name: n8n
+    labels:
+      - "dash.description=Workflow automation"
+      - "dash.notes=Triggers wifi-robot among other automations"
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      # --- NETWORK CONFIG ---
+      - WEBHOOK_URL=https://${NGROK_DOMAIN}
+      - GENERIC_TIMEZONE=Africa/Cairo
+      # --- SECRETS ---
+      # Variables can be added in a workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
+      - MY_BOT_TOKEN=${TELEGRAM_DANTE_TOKEN}
+      - MY_2ND_BOT_TOKEN=${TELEGRAM_VERGIL_TOKEN}
+      - CHAT_ID=${MY_TELEGRAM_CHAT_ID}
+      - SONARR_API=${SON_API}
+      - RADARR_API=${RAD_API}
+      - QBIT_USER=${QBIT_USER}
+      - QBIT_PASS=${QBIT_PASS}
+      - PIHOLE_APP_PASS=${PIHOLE_PASS}
+      - N8N_ENV_ALLOWLIST=*
+      - N8N_BLOCK_ENV_ACCESS_IN_NODE=false
+      # Node.js SSL Trust Fix
+      - NODE_EXTRA_CA_CERTS=/etc/ssl/certs/homeserver-ca.pem
+      # OIDC Integration Variables (n8n-oidc)
+      - EXTERNAL_HOOK_FILES=/home/node/.n8n/hooks.js
+      - OIDC_ISSUER_URL=https://pocket.wonder.lan
+      - OIDC_CLIENT_ID=${N8N_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${N8N_CLIENT_SECRET}
+      - OIDC_REDIRECT_URI=https://n8n.wonder.lan/auth/oidc/callback
+      - N8N_ADDITIONAL_NON_UI_ROUTES=auth
+      - EXTERNAL_FRONTEND_HOOKS_URLS=/assets/oidc-frontend-hook.js
+      # --- PRIVACY & LOGS ---
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_VERSION_NOTIFICATIONS_ENABLED=false
+      # --- DATABASE MAINTENANCE ---
+      # Keeps the database small and fast
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=24
+      - DB_SQLITE_POOL_SIZE=10
+      - EXECUTIONS_DATA_SAVE_ON_SUCCESS=none
+      - EXECUTIONS_DATA_SAVE_ON_ERROR=all
+      - EXECUTIONS_DATA_SAVE_ON_PROGRESS=false
+      - EXECUTIONS_DATA_SAVE_MANUAL_EXECUTIONS=true
+      # --- SECURITY ---
+      - N8N_SECURE_COOKIE=false
+      - NODES_EXCLUDE=[]
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # --- PROCESS MANAGEMENT ---
+      - N8N_RUNNERS_ENABLED=true
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+      - /data/assets/downloads:/downloads:rw
+      - /data/assets/downloads/watch:/watch-folder:rw
+
+  # --- NGROK TUNNEL ---
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    restart: unless-stopped
+    networks:
+      - proxy    
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_TOKEN}
+    # Points the static domain to the n8n container
+    command: http n8n:5678 --domain=${NGROK_DOMAIN}
+
+networks:
+  proxy:
+    external: true
