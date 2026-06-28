@@ -7,7 +7,7 @@ services:
     environment:
       - MYJDOWNLOADER_EMAIL=${JD2_USER}
       - MYJDOWNLOADER_PASSWORD=${JD2_PASS}
-      - MYJDOWNLOADER_DEVICE_NAME=Homeserver
+      - MYJDOWNLOADER_DEVICE_NAME=Wonderland
       - JDOWNLOADER_HEADLESS=1 # 1 here means no GUI. Managing is through my.jdownloader.org
       - USER_ID=1000
       - GROUP_ID=1000
