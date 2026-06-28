@@ -13,7 +13,7 @@
       - /etc/hostname
     diskUnits: bytes
     expanded: true
-    label: Homeserver
+    label: Wonderland
 
 - search:
     provider: duckduckgo
