@@ -133,7 +133,7 @@
             type: jdownloader
             username: {{HOMEPAGE_VAR_JD2_USER}}
             password: {{HOMEPAGE_VAR_JD2_PASS}}
-            client: jd@homeserver
+            client: Wonderland
 
 - Arrs:
     - Radarr:
