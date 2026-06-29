@@ -15,6 +15,7 @@ services:
       #- 8081:80/tcp
     networks:
       - proxy
+      - default
     environment:
       - TZ=Africa/Cairo
       - FTLCONF_webserver_api_password=${PASS}
