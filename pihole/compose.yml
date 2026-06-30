@@ -6,7 +6,7 @@ services:
       - "dash.notes=Acts as DNS for the whole network — start early on restore"
     image: pihole/pihole:2026.06.0@sha256:8ea95136e7c8c15b42d88eadf1a3875421aa1be30ad39e50f661188cc986fb27
     dns:
-      - 1.1.1.1
+      - 8.8.8.8
     ports:
       - 53:53/tcp
       - 53:53/udp
