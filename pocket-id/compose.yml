@@ -13,7 +13,7 @@ services:
       - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
     environment:
       # First time setting up visit https://pocket.wonder.lan/setup
-      # To by pass the passkey and login with a url, run this: docker exec -it pocket-id /app/pocket-id one-time-access-token <EMAIL_ADDRESS>
+      # To bypass the passkey and login with a url, run this: docker exec -it pocket-id /app/pocket-id one-time-access-token <EMAIL_ADDRESS>
       - APP_URL=https://pocket.wonder.lan
       - TRUST_PROXY=true
       - ANALYTICS_DISABLED=true
