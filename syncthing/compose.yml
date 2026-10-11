@@ -1,6 +1,6 @@
 services:
   syncthing:
-    image: syncthing/syncthing:2.1@sha256:775c4aac486263ca8653055bba7d3061799281974b706695e17bc798da3f4e92
+    image: syncthing/syncthing:2.1@sha256:4d0281bdcb4ed9baf503d251d0544ddd856f49fce3f114056257ae172b7fb670
     container_name: syncthing
     hostname: Wonderland
     networks:
