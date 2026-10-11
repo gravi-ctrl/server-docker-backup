@@ -1,6 +1,6 @@
 services:
   n8n:
-    image: n8nio/n8n:2.26.3@sha256:51ac1d08178e635a593368f0947532990e55c14342ac781c8d77538daae859c8
+    image: n8nio/n8n:2.43.3@sha256:d4eca183959b30fb1ba5ecda7e58363c5be49a7bcf8c0227a6384a47ce2f7a65
     container_name: n8n
     labels:
       - "dash.description=Workflow automation"
