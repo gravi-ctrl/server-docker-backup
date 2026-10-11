@@ -1,6 +1,6 @@
 services:
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:5.2.2@sha256:abbf2aeeb58b641977a012d0ab69939eb277cb827078450b142f782b1cd6893c
+    image: lscr.io/linuxserver/qbittorrent:5.2.2@sha256:dd24a5f3db32bc1425d3f8dc95e8aca8ac5a35905d798171230edf33f516d9a4
     labels:
       - "dash.description=Torrent client"
     container_name: qbittorrent
