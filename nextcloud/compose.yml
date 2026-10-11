@@ -16,7 +16,7 @@ services:
       - MYSQL_USER=${NC_USER}
 
   redis:
-    image: redis:8.8-alpine@sha256:09160599abd229764c0fb44cb6be640294e1d360a54b19985ab4843dcf2d90f1
+    image: redis:8.8-alpine@sha256:0b2b77d3ea5078274795e3177cdbdada8b96316684a38911d528534ed679b5ec
     container_name: nextcloud-redis
     restart: unless-stopped
     networks:
