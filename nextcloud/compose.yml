@@ -23,7 +23,7 @@ services:
       - internal
 
   app:
-    image: nextcloud:34.0.0@sha256:e15ff2ff02d04bf272940bb63f2157599bc9440d45b688cc60f09b72be7ae717
+    image: nextcloud:34.0.0@sha256:5baecc7baf8991ca0d4b202c349c75c1c83129568284fd1ec6bb7e4417e0a5bb
     container_name: nextcloud
     labels:
       - "dash.description=Self-hosted file sync and cloud storage"
