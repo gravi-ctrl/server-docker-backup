@@ -1,0 +1,76 @@
+services:
+  db:
+    image: mariadb:11.8@sha256:6422478cb8e159f080fb1d8ccf65101e26fe51385787fde7d16c3b165a331f15
+    container_name: nextcloud-mariadb
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - internal
+    environment:
+      - TZ=Africa/Cairo
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
+      - MYSQL_PASSWORD=${MYSQL_PASS}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${NC_USER}
+
+  redis:
+    image: redis:8.8-alpine@sha256:0b2b77d3ea5078274795e3177cdbdada8b96316684a38911d528534ed679b5ec
+    container_name: nextcloud-redis
+    restart: unless-stopped
+    networks:
+      - internal
+
+  app:
+    image: nextcloud:34.0.0@sha256:5baecc7baf8991ca0d4b202c349c75c1c83129568284fd1ec6bb7e4417e0a5bb
+    container_name: nextcloud
+    labels:
+      - "dash.description=Self-hosted file sync and cloud storage"
+      - "dash.notes=Watched by nextcloud-dynamic-watch.sh"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./html:/var/www/html
+      - /data/nextcloud_data:/var/www/html/data
+      - /data/assets:/mnt/external_files
+      - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
+    entrypoint: /bin/sh -c "update-ca-certificates && exec /entrypoint.sh apache2-foreground"
+    environment:
+      - TZ=Africa/Cairo
+      - MYSQL_PASSWORD=${MYSQL_PASS}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=${NC_USER}
+      - MYSQL_HOST=db
+      - NEXTCLOUD_DATA_DIR=/var/www/html/data
+      - REDIS_HOST=redis
+
+  calcardbackup:
+    image: waja/calcardbackup@sha256:f14fa42b3fac674f720aabc001d95b3e17c3aaf4b2aa259480d390f08e26b661
+    container_name: calcardbackup
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      - db
+      - app
+    environment:
+      - NC_DIR=/var/www/html
+      - DB_HOST=db
+      - CRON_TIME="59 23 31 12 *"
+      - CALCARD_OPTS=-s
+    volumes:
+      - ./html:/var/www/html:ro
+      - /data/assets:/backup
+      - /usr/share/zoneinfo/Africa/Cairo:/etc/localtime:ro
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true
