@@ -1,0 +1,85 @@
+services:
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:2.4.0@sha256:4fd7a166c8f46dd3370a871c250ee577d6c2ae97a0dbe0e3614b5ef736205620
+    container_name: prowlarr
+    labels:
+      - "dash.description=Indexer manager — feeds Sonarr, Radarr, and Bazarr"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+    volumes:
+      - ./config/prowlarr:/config
+    networks:
+      - proxy
+      - internal
+    restart: unless-stopped
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:6.2.1@sha256:549c4a075496cf7584593bdc041407ddb38ee8958df8cf99938f8821467ea6f8
+    container_name: radarr
+    labels:
+      - "dash.description=Movie automation — monitors, downloads, and organises films"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+    volumes:
+      - ./config/radarr:/config
+      - /data/assets:/data
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:4.0.17@sha256:02bc962946fef994e67a38152446df25c10a52f8583aefeeb6467f9dd44cab99
+    container_name: sonarr
+    labels:
+      - "dash.description=TV show automation — monitors, downloads, and organises episodes"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+    volumes:
+      - ./config/sonarr:/config
+      - /data/assets:/data
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:1.5.6@sha256:047222423d6d8556a88581b189175bec57f286f120b52ba29c0390fe6babaa5a
+    container_name: bazarr
+    labels:
+      - "dash.description=Subtitle automation for Sonarr and Radarr"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+    volumes:
+      - ./config/bazarr:/config
+      - /data/assets:/data
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_FILE=${LOG_FILE:-none}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Africa/Cairo
+    networks:
+      - internal
+    volumes:
+      - ./config/flaresolver:/config
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true

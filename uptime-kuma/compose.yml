@@ -1,0 +1,36 @@
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:2.4.0@sha256:91e963bfda569ba115206e843febb446f473ab525add4e08b2b9e3beffa16985
+    container_name: uptime-kuma
+    labels:
+      - "dash.description=Service uptime monitoring and alerting"
+    user: "1000:1000"
+    restart: unless-stopped
+    networks:
+      - proxy
+      - internal
+    volumes:
+      - ./data:/app/data
+    environment:
+      # Add tcp://uptime-socket-proxy:2375 in 'Docker Hosts' from Kuma's Settings.
+      - DOCKER_HOST=tcp://127.0.0.1:2375
+    depends_on:
+      - uptime-socket-proxy
+  uptime-socket-proxy:
+    image: tecnativa/docker-socket-proxy@sha256:1f5038b54f06c3e18422902cf00ba21803d1c97805aae032e5e6673d532d3459
+    container_name: uptime-socket-proxy
+    labels:
+      - "dash.description=Docker socket proxy — restricts Kuma's socket access"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true

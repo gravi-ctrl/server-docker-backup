@@ -1,0 +1,77 @@
+services:
+  romm:
+    image: rommapp/romm:4.9.0@sha256:fa9a412dd2881472ef85aa9b268a84ae6d149b865fddd50df2b72749ce8a480e
+    container_name: romm
+    labels:
+      - "dash.description=ROM manager and game library browser"
+    restart: unless-stopped
+    environment:
+      - DB_HOST=romm-db
+      - DB_NAME=romm
+      - DB_USER=romm
+      - DB_PASSWD=${DB_MYSQL_PASS}
+      - ROMM_AUTH_SECRET_KEY=${ROMM_AUTH_KEY}
+      - IGDB_CLIENT_ID=${IGDB_TWITCH_CLIENT_ID}
+      - IGDB_CLIENT_SECRET=${IGDB_TWITCH_CLIENT_SECRET}
+      - REDIS_HOST=romm-redis
+      - PUID=1000
+      - PGID=1000
+      - TZ=Africa/Cairo
+      # OIDC support
+      - OIDC_TLS_CACERTFILE=/etc/ssl/certs/homeserver-ca.pem
+      - OIDC_ENABLED=true
+      - OIDC_PROVIDER=pocket-id
+      - OIDC_CLIENT_ID=${ROMM_CLIENT_ID}
+      - OIDC_CLIENT_SECRET=${ROMM_CLIENT_SECRET}
+      - OIDC_REDIRECT_URI=https://romm.wonder.lan/api/oauth/openid
+      - OIDC_SERVER_APPLICATION_URL=https://pocket.wonder.lan
+    volumes:
+      - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
+      - /data/assets/romm/resources:/romm/resources
+      - ./config:/romm/config
+      - ./assets:/romm/assets
+      # the roms need to be in a folder called 'roms' inside each platform folder (e.g. romm/library/snes/roms)
+      - /data/assets/romm/library:/romm/library
+    networks:
+      - proxy
+      - internal
+    depends_on:
+      romm-db:
+        condition: service_healthy
+      romm-redis:
+        condition: service_started
+  romm-db:
+    image: mariadb:11.8@sha256:6422478cb8e159f080fb1d8ccf65101e26fe51385787fde7d16c3b165a331f15
+    container_name: romm-db
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MYSQL_PASS}
+      - MARIADB_DATABASE=romm
+      - MARIADB_USER=romm
+      - MARIADB_PASSWORD=${DB_MYSQL_PASS}
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - internal
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      start_period: 180s
+      interval: 20s
+      timeout: 5s
+      retries: 10
+  romm-redis:
+    image: redis:8.8-alpine@sha256:0b2b77d3ea5078274795e3177cdbdada8b96316684a38911d528534ed679b5ec
+    container_name: romm-redis
+    restart: unless-stopped
+    networks:
+      - internal
+
+networks:
+  proxy:
+    external: true
+  internal:
+    internal: true
