@@ -36,6 +36,7 @@
 !wifi-robot/*.py
 !wifi-robot/guestwifi
 !paperless-ngx/docker-compose.env
+!paperless-ngx/custom-cont-init.d/10-update-ca.sh
 
 # --- SECURITY ---
 .env

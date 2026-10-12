@@ -60,10 +60,10 @@ services:
       - /data/paperless/data:/usr/src/paperless/data
       - /data/paperless/media:/usr/src/paperless/media
       - /data/assets/syncthing/DCIM/paperless-scan:/usr/src/paperless/consume:rw
-      - ./custom-tessdata:/usr/share/tesseract-ocr/5/tessdata
+      - ./custom-tessdata/ara.traineddata:/usr/share/tesseract-ocr/5/tessdata/ara.traineddata:ro
+      - ./custom-tessdata/eng.traineddata:/usr/share/tesseract-ocr/5/tessdata/eng.traineddata:ro
       - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
-    command: >
-      sh -c "update-ca-certificates && /usr/local/bin/paperless_cmd.sh"
+      - ./custom-cont-init.d:/custom-cont-init.d:ro  # My CA certificate
     env_file: docker-compose.env
 
 networks:
