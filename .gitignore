@@ -1,46 +1,80 @@
-# --- IGNORE EVERYTHING BY DEFAULT ---
+# ==============================================================================
+# 1. IGNORE EVERYTHING BY DEFAULT
+# ==============================================================================
 *
 
-# --- OPEN DIRECTORIES (For traversing) ---
+# Allow Git to traverse directory structures
 !*/
 
-# --- PREVENT PERMISSION ERROR ---
-**/html/
-**/postgres/
-**/db/
-**/influxdb/
-**/mysql_data/
+# ==============================================================================
+# 2. RUNTIME & HEAVY DATA DIRECTORIES (Prevent Permission Errors & Slowness)
+# ==============================================================================
 **/config/
 **/data/
+**/n8n_data/
+**/metadata/
+**/db/
+**/postgres/
+**/pgdata/
+**/mysql_data/
+**/influxdb/
+**/html/
+**/letsencrypt/
 **/etc-pihole/
 **/etc-dnsmasq.d/
-**/pgdata/
-**/letsencrypt/
+**/custom-tessdata/
 
-# --- ALLOW ---
-!compose.yml.disabled
+# ==============================================================================
+# 3. BASE ALLOW RULES
+# ==============================================================================
+# Compose files
 !compose.yml
-!.gitignore
-!.commit-warning
+!compose.yaml
+!compose.yml.disabled
+!docker-compose.yml
+!docker-compose.yaml
+!compose.yaml.disabled
+
+# Repo & Environment Metadata
 !Dockerfile
-!.env.example
-!/README.md
+!.gitignore
 !.gitattributes
 !.git-perms
+!.commit-warning
+!.env.example
+!/README.md
+!renovate.json
 
-# --- CONTAINERS EXCEPTION ---
+# ==============================================================================
+# 4. CONTAINER CONFIG EXCEPTIONS
+# ==============================================================================
+# Renovate
 !renovate/config.js
+
+# Homepage Dashboard Configs & Icons
 !homepage/config/
 !homepage/config/*.yaml
+!homepage/config/*.yml
+!homepage/config/*.css
+!homepage/config/*.js
 !homepage/config/images/
 !homepage/config/images/*
+
+# LinuxServer / Container Custom Init Scripts
+!**/custom-cont-init.d/
+!**/custom-cont-init.d/*
+
+# Paperless Non-Secret Config
+!paperless-ngx/docker-compose.env
+
+# Wifi Robot Custom App
 !wifi-robot/*.py
 !wifi-robot/guestwifi
-!paperless-ngx/docker-compose.env
-!paperless-ngx/custom-cont-init.d/10-update-ca.sh
 
-# --- SECURITY ---
+# ==============================================================================
+# 5. STRICT SECURITY EXCLUSIONS
+# ==============================================================================
 .env
 **/.env
 .git/
-
+*.log
