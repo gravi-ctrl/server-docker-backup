@@ -17,12 +17,15 @@
 644	@USER:@GROUP	dockge/compose.yml
 644	@USER:@GROUP	.gitattributes
 644	@USER:@GROUP	.gitignore
+600	@USER:@GROUP	.git-perms
 755	@USER:@GROUP	glances
 644	@USER:@GROUP	glances/compose.yml
 755	@USER:@GROUP	homepage
 644	@USER:@GROUP	homepage/compose.yml
 755	@USER:@GROUP	homepage/config
 644	@USER:@GROUP	homepage/config/bookmarks.yaml
+644	@USER:@GROUP	homepage/config/custom.css
+644	@USER:@GROUP	homepage/config/custom.js
 644	@USER:@GROUP	homepage/config/docker.yaml
 755	@USER:@GROUP	homepage/config/images
 644	@USER:@GROUP	homepage/config/images/triss.jpg
