@@ -26,6 +26,7 @@
 !.env.example
 !/README.md
 !.gitattributes
+!.git-perms
 
 # --- CONTAINERS EXCEPTION ---
 !renovate/config.js
