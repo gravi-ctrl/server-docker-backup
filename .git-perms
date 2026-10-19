@@ -17,7 +17,6 @@
 644	@USER:@GROUP	dockge/compose.yml
 644	@USER:@GROUP	.gitattributes
 644	@USER:@GROUP	.gitignore
-600	@USER:@GROUP	.git-perms
 755	@USER:@GROUP	glances
 644	@USER:@GROUP	glances/compose.yml
 755	@USER:@GROUP	homepage
