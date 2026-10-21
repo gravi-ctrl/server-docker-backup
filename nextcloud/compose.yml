@@ -26,7 +26,7 @@ services:
     image: nextcloud:34.0.0@sha256:5baecc7baf8991ca0d4b202c349c75c1c83129568284fd1ec6bb7e4417e0a5bb
     container_name: nextcloud
     labels:
-      - "dash.description=Self-hosted file sync, cloud storage, CalDAV and CarDAV"
+      - "dash.description=Self-hosted file sync and cloud storage"
       - "dash.notes=Watched by nextcloud-dynamic-watch.sh"
     restart: unless-stopped
     networks:
