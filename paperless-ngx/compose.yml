@@ -1,6 +1,6 @@
 services:
   broker:
-    image: docker.io/library/redis:8.8-alpine@sha256:0b2b77d3ea5078274795e3177cdbdada8b96316684a38911d528534ed679b5ec
+    image: docker.io/library/redis:8.8-alpine@sha256:f61bc3826f4a37a6ba8ca50ee75e3525709b01779d8e468233e6d238119aed72
     container_name: paperless-redis
     restart: unless-stopped
     volumes:
