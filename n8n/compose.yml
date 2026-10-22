@@ -61,7 +61,7 @@ services:
 
   # --- NGROK TUNNEL ---
   ngrok:
-    image: ngrok/ngrok:latest@sha256:2658b5ad05e1111e3ff07caa38d2eea742407b8de9a5978b88b87516debc0d2f
+    image: ngrok/ngrok:3
     container_name: ngrok
     restart: unless-stopped
     networks:
