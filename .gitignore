@@ -67,6 +67,9 @@
 # Paperless Non-Secret Config
 !paperless-ngx/docker-compose.env
 
+# n8n OIDC fix script
+!n8n/n8n-oidc-check.sh
+
 # Wifi Robot Custom App
 !wifi-robot/*.py
 !wifi-robot/guestwifi
