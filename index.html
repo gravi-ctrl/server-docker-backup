@@ -215,7 +215,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
       <span class="meta-sep">·</span>
       <span>branch <strong>main</strong></span>
       <span class="meta-sep">·</span>
-      <span>Generated 2026-10-21 20:29 EEST</span>
+      <span>Generated 2026-10-22 03:52 EEST</span>
     </div>
   </div>
 
@@ -954,6 +954,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "N8N_RUNNERS_ENABLED",
           "N8N_SECURE_COOKIE",
           "N8N_VERSION_NOTIFICATIONS_ENABLED",
+          "NGROK_DOMAIN",
           "NODES_EXCLUDE",
           "NODE_EXTRA_CA_CERTS",
           "OIDC_CLIENT_ID",
@@ -968,7 +969,6 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "RAD_API",
           "SONARR_API",
           "SON_API",
-          "TAILSCALE_DOMAIN",
           "TELEGRAM_DANTE_TOKEN",
           "TELEGRAM_VERGIL_TOKEN",
           "WEBHOOK_URL"
@@ -978,7 +978,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
             "comment": "",
             "default": "''",
             "is_secret": false,
-            "key": "TAILSCALE_DOMAIN"
+            "key": "NGROK_DOMAIN"
           },
           {
             "comment": "",
@@ -1072,9 +1072,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [
           "https://n8n.wonder.lan"
         ],
-        "ports": [
-          "127.0.0.1:5678:5678"
-        ],
+        "ports": [],
         "restart": "unless-stopped",
         "volumes": [
           "./n8n_data:/home/node/.n8n",
@@ -1082,6 +1080,52 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "/data/assets/downloads:/downloads:rw",
           "/data/assets/downloads/watch:/watch-folder:rw"
         ]
+      },
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "ngrok",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [
+          "NGROK_AUTHTOKEN",
+          "NGROK_DOMAIN",
+          "NGROK_TOKEN"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": false,
+            "key": "NGROK_DOMAIN"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "NGROK_TOKEN"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "ngrok/ngrok:latest",
+        "image_pinned": false,
+        "image_tag": "latest",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "ngrok",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": []
       }
     ]
   },
