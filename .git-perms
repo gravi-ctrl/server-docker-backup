@@ -41,7 +41,6 @@
 644	@USER:@GROUP	jellyfin/compose.yml
 755	@USER:@GROUP	n8n
 644	@USER:@GROUP	n8n/compose.yml
-644	@USER:@GROUP	n8n/compose.yml.disabled
 644	@USER:@GROUP	n8n/.env.example
 755	@USER:@GROUP	nextcloud
 644	@USER:@GROUP	nextcloud/compose.yml
