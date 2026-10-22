@@ -8,11 +8,9 @@ services:
     restart: unless-stopped
     networks:
       - proxy
-    ports:
-      - 127.0.0.1:5678:5678 # For the Tailscale Funnel to work
     environment:
       # --- NETWORK CONFIG ---
-      - WEBHOOK_URL=https://${TAILSCALE_DOMAIN}
+      - WEBHOOK_URL=https://${NGROK_DOMAIN}
       - GENERIC_TIMEZONE=Africa/Cairo
       # --- SECRETS ---
       # Variables can be added in a workflow like: {{ $env.MY_BOT_TOKEN }}, and choose 'Expression' instead of 'Fixed'
@@ -60,6 +58,18 @@ services:
       - ${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro
       - /data/assets/downloads:/downloads:rw
       - /data/assets/downloads/watch:/watch-folder:rw
+
+  # --- NGROK TUNNEL ---
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_TOKEN}
+    # Points the static domain to the n8n container
+    command: http n8n:5678 --domain=${NGROK_DOMAIN}
 
 networks:
   proxy:
