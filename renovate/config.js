@@ -1,19 +1,14 @@
 module.exports = {
-  platform: "forgejo",
-  endpoint: "https://codeberg.org",
-  token: process.env.RENOVATE_TOKEN,
+  platform: "github",
+  endpoint: "https://api.github.com",
+  token: process.env.GITHUB_RENOVATE_TOKEN,
   gitAuthor: process.env.RENOVATE_GIT_AUTHOR,
+  persistRepoData: true,
   autodiscover: false,
   repositories: [
     "gravi-ctrl/server-docker-backup",
   ],
   enabledManagers: ["docker-compose"],
-  hostRules: [
-    {
-      matchHost: "github.com",
-      token: process.env.GITHUB_TOKEN,
-    }
-  ],
   packageRules: [
     {
       matchDatasources: ["docker"],
