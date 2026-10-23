@@ -29,7 +29,11 @@ module.exports = {
       matchUpdateTypes: ["major"],
       minimumReleaseAge: "7 days",
       labels: ["major-update", "review-carefully"],
-    }
+    },
+    {
+      matchPackageNames: ["lscr.io/linuxserver/qbittorrent"],
+      allowedVersions: "/^\\d+\\.\\d+\\.\\d+$/",
+    },
   ],
   labels: ["renovate", "dependencies"],
 };
