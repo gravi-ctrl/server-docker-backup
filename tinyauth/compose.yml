@@ -1,6 +1,6 @@
 services:
   tinyauth:
-    image: ghcr.io/tinyauthapp/tinyauth:v5.0.7@sha256:0793c71c49906e079d90c7e693cded9df569217a92d717dc9b171f2116fcd1c6
+    image: ghcr.io/tinyauthapp/tinyauth:v5.2.0@sha256:220aa235c76393a73fece831d7ba967b8698d3907fd8e3c4c952f699c7b142a5
     container_name: tinyauth
     labels:
       - "dash.description=Lightweight auth middleware — protects services via Pocket ID OIDC"
