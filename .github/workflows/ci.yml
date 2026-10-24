@@ -1,0 +1,74 @@
+name: Stacks Validation & CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+permissions:
+  contents: read
+
+jobs:
+  validate-compose:
+    name: Validate Compose Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Validate All Compose Files with Docker
+        run: |
+          FAILED=0
+          while IFS= read -r -d '' file; do
+            dir=$(dirname "$file")
+            echo "Checking: $file"
+
+            made_env=0
+            if [ -f "$dir/.env.example" ] && [ ! -f "$dir/.env" ]; then
+              cp "$dir/.env.example" "$dir/.env"
+              made_env=1
+            fi
+
+            if docker compose -f "$file" config -q; then
+              echo "  ✓ Valid"
+            else
+              echo "::error file=$file::compose validation failed"
+              FAILED=1
+            fi
+
+            if [ "$made_env" -eq 1 ]; then rm -f "$dir/.env"; fi
+          done < <(find . \( -name 'compose.y*ml' -o -name 'docker-compose.y*ml' \) \
+                     ! -path './_archive/*' ! -path './.git/*' -print0)
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo "🚨 One or more compose files failed validation!"
+            exit 1
+          fi
+          echo "✅ All Compose stacks are valid."
+
+  wifi-robot:
+    name: Lint & Build Wifi-Robot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Lint Python with Ruff
+        run: |
+          pip install ruff==0.17.2
+          ruff check wifi-robot/
+
+      - name: Lint Dockerfile with Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: wifi-robot/Dockerfile
+          failure-threshold: error
+
+      - name: Test Docker Build
+        run: docker build -t test-wifi-robot ./wifi-robot
