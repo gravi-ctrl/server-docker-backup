@@ -1,5 +1,5 @@
 # Start from a clean Python image
-FROM python:3.9-slim
+FROM python:3.12-slim
 WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/gravi-ctrl/server-docker-backup"
 
