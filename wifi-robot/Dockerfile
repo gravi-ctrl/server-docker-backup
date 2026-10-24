@@ -14,10 +14,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Install Python Dependencies
-RUN pip install selenium flask python-dotenv
+RUN pip install --no-cache-dir selenium flask python-dotenv
 
-# 3. Copy Application Code
-COPY guest_wifi.py .
+# 3. Create non-root user & copy code
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+COPY --chown=appuser:appuser guest_wifi.py .
 
-# 4. Run the script
+# 4. Drop to non-root
+USER appuser
+
+# 5. Run the script
 ENTRYPOINT ["python3", "guest_wifi.py"]
