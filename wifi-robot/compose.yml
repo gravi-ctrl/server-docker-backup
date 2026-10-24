@@ -1,6 +1,6 @@
 services:
-  robot:
-    build: .
+  wifi-robot:
+    image: ghcr.io/gravi-ctrl/wifi-robot:latest
     container_name: wifi-robot
     init: true
     restart: unless-stopped

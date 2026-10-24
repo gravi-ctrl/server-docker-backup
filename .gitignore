@@ -37,6 +37,7 @@
 
 # Repo & Environment Metadata
 !Dockerfile
+!.github/workflows/*.yml
 !.gitignore
 !.gitattributes
 !.git-perms
