@@ -16,6 +16,9 @@
 755	@USER:@GROUP	dockge
 644	@USER:@GROUP	dockge/compose.yml
 644	@USER:@GROUP	.gitattributes
+755	@USER:@GROUP	.github/workflows
+644	@USER:@GROUP	.github/workflows/ci.yml
+644	@USER:@GROUP	.github/workflows/wifi-robot-image.yml
 644	@USER:@GROUP	.gitignore
 755	@USER:@GROUP	glances
 644	@USER:@GROUP	glances/compose.yml
