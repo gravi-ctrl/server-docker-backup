@@ -2,14 +2,17 @@
 # @DESCRIPTION: Selenium bot to toggle Guest WiFi via TP-Link Router.
 # @FREQUENCY: On Demand (Telegram - through n8n)
 import os
-from flask import Flask, jsonify
+import sys
 import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
 from dotenv import load_dotenv
+from flask import Flask, jsonify
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 # --- CONFIGURATION ---
 # Load environment variables from .env file (if present)
@@ -23,7 +26,7 @@ APP_PORT = 5000
 # Safety Check
 if not ROUTER_PASSWORD:
     print("❌ Error: ROUTER_PASSWORD not found in environment variables.")
-    exit(1)
+    sys.exit(1)
 
 # Initialize Web Server
 app = Flask(__name__)
@@ -65,8 +68,8 @@ def set_guest_wifi(enable=True):
         try:
             force_login_button = short_wait.until(EC.element_to_be_clickable((By.ID, FORCE_LOGIN_BUTTON_ID)))
             force_login_button.click()
-        except Exception:
-            pass
+        except TimeoutException:
+            pass  # No "already logged in" popup appeared; nothing to confirm
 
         # Navigate
         wait.until(EC.element_to_be_clickable((By.ID, GUEST_NETWORK_MENU_ID))).click()
@@ -75,7 +78,6 @@ def set_guest_wifi(enable=True):
         guest_wifi_checkbox = wait.until(EC.presence_of_element_located((By.ID, GUEST_WIFI_TOGGLE_ID)))
         is_currently_on = guest_wifi_checkbox.is_selected()
 
-        action_taken = False
         target_state = "ON" if enable else "OFF"
 
         if (enable and not is_currently_on) or (not enable and is_currently_on):
@@ -98,8 +100,8 @@ def set_guest_wifi(enable=True):
         time.sleep(3)
         wait.until(EC.element_to_be_clickable((By.ID, LOGOUT_BUTTON_ID))).click()
 
-    except Exception as e:
-        status_msg = f"Error: {str(e)}"
+    except Exception as e:  # noqa: BLE001 - report any failure back to the HTTP caller
+        status_msg = f"Error: {e!s}"
         print(status_msg)
     finally:
         if driver:
