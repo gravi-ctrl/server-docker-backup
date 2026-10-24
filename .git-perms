@@ -18,6 +18,7 @@
 644	@USER:@GROUP	.gitattributes
 755	@USER:@GROUP	.github/workflows
 644	@USER:@GROUP	.github/workflows/ci.yml
+644	@USER:@GROUP	.github/workflows/security.yml
 644	@USER:@GROUP	.github/workflows/wifi-robot-image.yml
 644	@USER:@GROUP	.gitignore
 755	@USER:@GROUP	glances
