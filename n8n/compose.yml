@@ -61,8 +61,8 @@ services:
 
   # --- NGROK TUNNEL ---
   ngrok:
-    image: ngrok/ngrok:3@sha256:ff3b5c3674432d14a786349908b7bdf28ee56c25662637afcbe7180d471993ef
-    container_name: ngrok:3.39.13-debian
+    image: ngrok/ngrok:3.39.13-debian
+    container_name: ngrok
     restart: unless-stopped
     networks:
       - proxy
