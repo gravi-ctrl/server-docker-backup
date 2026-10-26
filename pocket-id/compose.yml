@@ -4,6 +4,7 @@ services:
     labels:
       - "dash.description=OIDC identity provider — handles SSO via passkeys"
       - "dash.notes=start early on restore"
+      - "deploy.rollback=false"
     container_name: pocket-id
     restart: unless-stopped
     networks:

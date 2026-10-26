@@ -5,6 +5,7 @@ services:
     labels:
       - "dash.description=ROM manager and game library browser"
       - "deploy.rollback=false"
+      - "deploy.healthcheck=http://romm:8080/health"
     restart: unless-stopped
     environment:
       - DB_HOST=romm-db
