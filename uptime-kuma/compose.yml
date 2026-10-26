@@ -4,6 +4,7 @@ services:
     container_name: uptime-kuma
     labels:
       - "dash.description=Service uptime monitoring and alerting"
+      - "deploy.rollback=false"
     user: "1000:1000"
     restart: unless-stopped
     networks:

@@ -26,6 +26,7 @@ services:
     container_name: paperless-ngx
     labels:
       - "dash.description=Document scanning and archival. Uses TG workflow through n8n"
+      - "deploy.rollback=false"
     restart: unless-stopped
     depends_on:
       - db

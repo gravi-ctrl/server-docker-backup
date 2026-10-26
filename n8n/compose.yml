@@ -5,6 +5,7 @@ services:
     labels:
       - "dash.description=Workflow automation"
       - "dash.notes=Triggers wifi-robot among other automations"
+      - "deploy.rollback=false"
     restart: unless-stopped
     networks:
       - proxy
