@@ -4,6 +4,7 @@ services:
     container_name: romm
     labels:
       - "dash.description=ROM manager and game library browser"
+      - "deploy.rollback=false"
     restart: unless-stopped
     environment:
       - DB_HOST=romm-db
