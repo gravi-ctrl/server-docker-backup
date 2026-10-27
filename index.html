@@ -215,7 +215,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
       <span class="meta-sep">·</span>
       <span>branch <strong>main</strong></span>
       <span class="meta-sep">·</span>
-      <span>Generated 2026-10-27 05:57 EEST</span>
+      <span>Generated 2026-10-27 23:13 EEST</span>
     </div>
   </div>
 
@@ -1049,9 +1049,9 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "explicit_container_name": true,
         "has_healthcheck": false,
-        "image": "n8nio/n8n:2.45.3@sha256:bf88c3783fc4b2a90a007bb99b04ad2f6a9627f41499baf72ca67559c51c7f4c",
+        "image": "n8nio/n8n:2.45.4@sha256:80e23ced901f0e22597d4f3464e3aaf9d835372262ea6f08ef760d8ca35df25c",
         "image_pinned": true,
-        "image_tag": "bf88c3783fc4b2a90a007bb99b04ad2f6a9627f41499baf72ca67559c51c7f4c",
+        "image_tag": "80e23ced901f0e22597d4f3464e3aaf9d835372262ea6f08ef760d8ca35df25c",
         "is_host_network": false,
         "is_privileged": false,
         "is_special_network": false,
@@ -1130,7 +1130,26 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
     ]
   },
   {
-    "env_vars": [],
+    "env_vars": [
+      {
+        "comment": "the scripts",
+        "default": "'/data/assets'",
+        "is_secret": false,
+        "key": "DATA_DIR"
+      },
+      {
+        "comment": "",
+        "default": "'nextcloud'",
+        "is_secret": false,
+        "key": "NEXTCLOUD_CONTAINER"
+      },
+      {
+        "comment": "",
+        "default": "'assets'",
+        "is_secret": false,
+        "key": "NEXTCLOUD_MOUNT_NAME"
+      }
+    ],
     "parse_error": null,
     "path": "nextcloud/compose.yml",
     "services": [
@@ -1252,22 +1271,28 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           },
           {
             "comment": "",
+            "default": "${HOME}/.local/share/mkcert/rootCA.pem",
+            "is_secret": false,
+            "key": "HOST_CERT_PATH"
+          },
+          {
+            "comment": "",
             "default": "''",
             "is_secret": true,
             "key": "NC_USER"
           },
           {
             "comment": "",
-            "default": "${HOME}/.local/share/mkcert/rootCA.pem",
+            "default": "'/data/nextcloud_data'",
             "is_secret": false,
-            "key": "HOST_CERT_PATH"
+            "key": "NEXTCLOUD_DATA_DIR"
           }
         ],
         "explicit_container_name": true,
         "has_healthcheck": false,
-        "image": "nextcloud:34.0.5@sha256:1f9212adecae32010cdbf137d7e0db78d08c696dc3e77f1eddcbf902d10209b4",
+        "image": "nextcloud:35.0.1@sha256:8f2f0e93aca5e9457019933936dea1f313052e72c696b4aecb31580a208b859f",
         "image_pinned": true,
-        "image_tag": "1f9212adecae32010cdbf137d7e0db78d08c696dc3e77f1eddcbf902d10209b4",
+        "image_tag": "8f2f0e93aca5e9457019933936dea1f313052e72c696b4aecb31580a208b859f",
         "is_host_network": false,
         "is_privileged": false,
         "is_special_network": false,
@@ -2245,9 +2270,9 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "env_vars": [],
         "explicit_container_name": true,
         "has_healthcheck": false,
-        "image": "louislam/uptime-kuma:2.5.7@sha256:4b95dbe7ac5343b768f8e04e3035ccd59997872b1a35ab9b0f082d2cc279070e",
+        "image": "louislam/uptime-kuma:2.5.8@sha256:20abea8c48a163cf0a7a5d5936ab418e4b742d908704e1f58f6c06e56a9c6b67",
         "image_pinned": true,
-        "image_tag": "4b95dbe7ac5343b768f8e04e3035ccd59997872b1a35ab9b0f082d2cc279070e",
+        "image_tag": "20abea8c48a163cf0a7a5d5936ab418e4b742d908704e1f58f6c06e56a9c6b67",
         "is_host_network": false,
         "is_privileged": false,
         "is_special_network": false,
