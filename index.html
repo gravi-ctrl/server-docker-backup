@@ -215,7 +215,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
       <span class="meta-sep">·</span>
       <span>branch <strong>main</strong></span>
       <span class="meta-sep">·</span>
-      <span>Generated 2026-10-27 05:52 EEST</span>
+      <span>Generated 2026-10-27 05:57 EEST</span>
     </div>
   </div>
 
@@ -1584,63 +1584,782 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/pihole/compose.yml?ref=main",
+    "parse_error": null,
     "path": "pihole/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "pihole",
+        "depends_on": [],
+        "description": "DNS-level ad blocking and LAN resolver",
+        "env_keys": [
+          "ADDITIONAL_PACKAGES",
+          "CHECK_LOAD",
+          "FTLCONF_database_maxDBdays",
+          "FTLCONF_dns_listeningMode",
+          "FTLCONF_dns_upstreams",
+          "FTLCONF_webserver_api_password",
+          "PASS",
+          "TZ"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "PASS"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "pihole/pihole:2026.10.0@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113",
+        "image_pinned": true,
+        "image_tag": "d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "pihole",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy",
+          "default"
+        ],
+        "notes": "Acts as DNS for the whole network — start early on restore",
+        "npm_details": [
+          {
+            "forward_host": "pihole",
+            "forward_port": "80",
+            "url": "https://pihole.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://pihole.wonder.lan"
+        ],
+        "ports": [
+          "53:53/tcp",
+          "53:53/udp"
+        ],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./etc-pihole:/etc/pihole",
+          "./etc-dnsmasq.d:/etc/dnsmasq.d"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/pocket-id/compose.yml?ref=main",
+    "parse_error": null,
     "path": "pocket-id/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": "https://pocket.wonder.lan",
+        "cap_add": [],
+        "container_name": "pocket-id",
+        "depends_on": [],
+        "description": "OIDC identity provider — handles SSO via passkeys",
+        "env_keys": [
+          "ANALYTICS_DISABLED",
+          "APP_URL",
+          "ENCRYPTION_KEY",
+          "HOST_CERT_PATH",
+          "SSL_CERT_FILE",
+          "TRUST_PROXY",
+          "VERSION_CHECK_DISABLED"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "'' # Generate with: openssl rand -hex 32",
+            "is_secret": true,
+            "key": "ENCRYPTION_KEY"
+          },
+          {
+            "comment": "",
+            "default": "${HOME}/.local/share/mkcert/rootCA.pem",
+            "is_secret": false,
+            "key": "HOST_CERT_PATH"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "ghcr.io/pocket-id/pocket-id:v2.19.1@sha256:f085157f0b6ea4b2e8aa5ecfd99eada0d83a4960f3a3dcfd46014097d0ef7ab5",
+        "image_pinned": true,
+        "image_tag": "f085157f0b6ea4b2e8aa5ecfd99eada0d83a4960f3a3dcfd46014097d0ef7ab5",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "pocket-id",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "start early on restore",
+        "npm_details": [
+          {
+            "forward_host": "pocket-id",
+            "forward_port": "1411",
+            "url": "https://pocket.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://pocket.wonder.lan"
+        ],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./data:/app/data",
+          "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/qbittorrent/compose.yml?ref=main",
+    "parse_error": null,
     "path": "qbittorrent/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "qbittorrent",
+        "depends_on": [],
+        "description": "Torrent client",
+        "env_keys": [
+          "PGID",
+          "PUID",
+          "TZ",
+          "WEBUI_PORT"
+        ],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "lscr.io/linuxserver/qbittorrent:5.3.0@sha256:e887804fa9de4c60f5f0fb1f3a7e4febe40a8f69fe736f70c4e8589b1f868dab",
+        "image_pinned": true,
+        "image_tag": "e887804fa9de4c60f5f0fb1f3a7e4febe40a8f69fe736f70c4e8589b1f868dab",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "qbittorrent",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "",
+        "npm_details": [
+          {
+            "forward_host": "qbittorrent",
+            "forward_port": "8080",
+            "url": "https://qbit.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://qbit.wonder.lan"
+        ],
+        "ports": [
+          "6881:6881",
+          "6881:6881/udp"
+        ],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./config:/config",
+          "/data/assets:/data"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/romm/compose.yml?ref=main",
+    "parse_error": null,
     "path": "romm/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "romm",
+        "depends_on": [
+          "romm-db",
+          "romm-redis"
+        ],
+        "description": "ROM manager and game library browser",
+        "env_keys": [
+          "DB_HOST",
+          "DB_MYSQL_PASS",
+          "DB_NAME",
+          "DB_PASSWD",
+          "DB_USER",
+          "HOST_CERT_PATH",
+          "IGDB_CLIENT_ID",
+          "IGDB_CLIENT_SECRET",
+          "IGDB_TWITCH_CLIENT_ID",
+          "IGDB_TWITCH_CLIENT_SECRET",
+          "OIDC_CLIENT_ID",
+          "OIDC_CLIENT_SECRET",
+          "OIDC_ENABLED",
+          "OIDC_PROVIDER",
+          "OIDC_REDIRECT_URI",
+          "OIDC_SERVER_APPLICATION_URL",
+          "OIDC_TLS_CACERTFILE",
+          "PGID",
+          "PUID",
+          "REDIS_HOST",
+          "ROMM_AUTH_KEY",
+          "ROMM_AUTH_SECRET_KEY",
+          "ROMM_CLIENT_ID",
+          "ROMM_CLIENT_SECRET",
+          "TZ"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "DB_MYSQL_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "ROMM_AUTH_KEY"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "IGDB_TWITCH_CLIENT_ID"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "IGDB_TWITCH_CLIENT_SECRET"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "ROMM_CLIENT_ID"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "ROMM_CLIENT_SECRET"
+          },
+          {
+            "comment": "",
+            "default": "${HOME}/.local/share/mkcert/rootCA.pem",
+            "is_secret": false,
+            "key": "HOST_CERT_PATH"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "rommapp/romm:5.4.1@sha256:8677fb7b81b1d3db20b849e989a1dadc2a11159e51eb34a2acdcb01102274edf",
+        "image_pinned": true,
+        "image_tag": "8677fb7b81b1d3db20b849e989a1dadc2a11159e51eb34a2acdcb01102274edf",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "romm",
+        "network_mode": "",
+        "network_type": "both",
+        "networks": [
+          "proxy",
+          "internal"
+        ],
+        "notes": "",
+        "npm_details": [
+          {
+            "forward_host": "romm",
+            "forward_port": "8080",
+            "url": "https://romm.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://romm.wonder.lan"
+        ],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro",
+          "/data/assets/romm/resources:/romm/resources",
+          "./config:/romm/config",
+          "./assets:/romm/assets",
+          "/data/assets/romm/library:/romm/library"
+        ]
+      },
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "romm-db",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [
+          "DB_MYSQL_PASS",
+          "MARIADB_DATABASE",
+          "MARIADB_PASSWORD",
+          "MARIADB_ROOT_PASSWORD",
+          "MARIADB_USER",
+          "MYSQL_PASS"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "DB_MYSQL_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "MYSQL_PASS"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": true,
+        "image": "mariadb:13.0@sha256:0e4bb0f339feba125d1154fbacd36c16ec8518f52e44e1f82ecec7d6771caf39",
+        "image_pinned": true,
+        "image_tag": "0e4bb0f339feba125d1154fbacd36c16ec8518f52e44e1f82ecec7d6771caf39",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "romm-db",
+        "network_mode": "",
+        "network_type": "internal-only",
+        "networks": [
+          "internal"
+        ],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./mysql_data:/var/lib/mysql"
+        ]
+      },
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "romm-redis",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "redis:8.10-alpine@sha256:0bf6577d7774e592b29d093e3ac9390eb91e13d72c21e506afce736de5e0eeb0",
+        "image_pinned": true,
+        "image_tag": "0bf6577d7774e592b29d093e3ac9390eb91e13d72c21e506afce736de5e0eeb0",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "romm-redis",
+        "network_mode": "",
+        "network_type": "internal-only",
+        "networks": [
+          "internal"
+        ],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": []
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/scrutiny/compose.yml?ref=main",
+    "parse_error": null,
     "path": "scrutiny/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [
+          "SYS_RAWIO"
+        ],
+        "container_name": "scrutiny",
+        "depends_on": [],
+        "description": "S.M.A.R.T. drive health monitoring",
+        "env_keys": [
+          "S6_CMD_WAIT_FOR_SERVICES_MAXTIME",
+          "SCRUTINY_ARGS",
+          "SCRUTINY_NOTIFY_URLS",
+          "SCRUTINY_WEB_INFLUXDB_INIT_TIMEOUT",
+          "TELE_DANTE_TOKEN",
+          "TZ"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "'telegram://<BOT_TOKEN>@telegram?channels=<CHAT_ID>'",
+            "is_secret": true,
+            "key": "TELE_DANTE_TOKEN"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "ghcr.io/starosdev/scrutiny:master-omnibus@sha256:8c09f958f4bbd0cfe68ee1396517420c33704226839186a04cdc5ec56381780e",
+        "image_pinned": true,
+        "image_tag": "8c09f958f4bbd0cfe68ee1396517420c33704226839186a04cdc5ec56381780e",
+        "is_host_network": false,
+        "is_privileged": true,
+        "is_special_network": false,
+        "name": "scrutiny",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "",
+        "npm_details": [
+          {
+            "forward_host": "scrutiny",
+            "forward_port": "8080",
+            "url": "https://scrutiny.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://scrutiny.wonder.lan"
+        ],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "/run/udev:/run/udev:ro",
+          "./config:/opt/scrutiny/config",
+          "./influxdb:/opt/scrutiny/influxdb"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/syncthing/compose.yml?ref=main",
+    "parse_error": null,
     "path": "syncthing/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "syncthing",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [
+          "PGID",
+          "PUID",
+          "STGUIADDRESS"
+        ],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "syncthing/syncthing:2.1@sha256:2b71da7c0d0a91a6ae5285ad079226fecc0a365d08b27720e1f7037b018f7546",
+        "image_pinned": true,
+        "image_tag": "2b71da7c0d0a91a6ae5285ad079226fecc0a365d08b27720e1f7037b018f7546",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "syncthing",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "",
+        "npm_details": [
+          {
+            "forward_host": "syncthing",
+            "forward_port": "8384",
+            "url": "https://syncthing.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://syncthing.wonder.lan"
+        ],
+        "ports": [
+          "22000:22000/tcp",
+          "22000:22000/udp",
+          "21027:21027/udp"
+        ],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./config:/var/syncthing/config",
+          "/data:/data"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/tailscale/compose.yml?ref=main",
+    "parse_error": null,
     "path": "tailscale/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [
+          "NET_ADMIN",
+          "NET_RAW"
+        ],
+        "container_name": "tailscaled",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [
+          "AUTH_KEY",
+          "TS_AUTHKEY",
+          "TS_EXTRA_ARGS",
+          "TS_SOCKS5_SERVER",
+          "TS_STATE_DIR"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "AUTH_KEY"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "tailscale/tailscale:v1.104.2@sha256:b11583ad2e93e4671128538c88cf11f460444a5d7e449311dd1933a400ab849d",
+        "image_pinned": true,
+        "image_tag": "b11583ad2e93e4671128538c88cf11f460444a5d7e449311dd1933a400ab849d",
+        "is_host_network": true,
+        "is_privileged": false,
+        "is_special_network": true,
+        "name": "tailscale",
+        "network_mode": "host",
+        "network_type": "none",
+        "networks": [],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./config:/var/lib/tailscale",
+          "/dev/net/tun:/dev/net/tun"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/tinyauth/compose.yml?ref=main",
+    "parse_error": null,
     "path": "tinyauth/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "tinyauth",
+        "depends_on": [],
+        "description": "Lightweight auth middleware — protects services via Pocket ID OIDC",
+        "env_keys": [
+          "HOST_CERT_PATH",
+          "SSL_CERT_FILE",
+          "TINYAUTH_APPURL",
+          "TINYAUTH_CLIENT_ID",
+          "TINYAUTH_CLIENT_SECRET",
+          "TINYAUTH_OAUTH_AUTOREDIRECT",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_AUTHURL",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTID",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_CLIENTSECRET",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_REDIRECTURL",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_SCOPES",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_TOKENURL",
+          "TINYAUTH_OAUTH_PROVIDERS_POCKETID_USERINFOURL"
+        ],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "${HOME}/.local/share/mkcert/rootCA.pem",
+            "is_secret": false,
+            "key": "HOST_CERT_PATH"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "TINYAUTH_CLIENT_ID"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "TINYAUTH_CLIENT_ID"
+          }
+        ],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "ghcr.io/tinyauthapp/tinyauth:v5.2.0@sha256:220aa235c76393a73fece831d7ba967b8698d3907fd8e3c4c952f699c7b142a5",
+        "image_pinned": true,
+        "image_tag": "220aa235c76393a73fece831d7ba967b8698d3907fd8e3c4c952f699c7b142a5",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "tinyauth",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "start early on restore. NPM will crash without it",
+        "npm_details": [
+          {
+            "forward_host": "tinyauth",
+            "forward_port": "3000",
+            "url": "https://auth.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://auth.wonder.lan"
+        ],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"
+        ]
+      }
+    ]
   },
   {
     "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/uptime-kuma/compose.yml?ref=main",
+    "parse_error": null,
     "path": "uptime-kuma/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "uptime-kuma",
+        "depends_on": [
+          "uptime-socket-proxy"
+        ],
+        "description": "Service uptime monitoring and alerting",
+        "env_keys": [
+          "DOCKER_HOST"
+        ],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "louislam/uptime-kuma:2.5.7@sha256:4b95dbe7ac5343b768f8e04e3035ccd59997872b1a35ab9b0f082d2cc279070e",
+        "image_pinned": true,
+        "image_tag": "4b95dbe7ac5343b768f8e04e3035ccd59997872b1a35ab9b0f082d2cc279070e",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "uptime-kuma",
+        "network_mode": "",
+        "network_type": "both",
+        "networks": [
+          "proxy",
+          "internal"
+        ],
+        "notes": "",
+        "npm_details": [
+          {
+            "forward_host": "uptime-kuma",
+            "forward_port": "3001",
+            "url": "https://kuma.wonder.lan"
+          }
+        ],
+        "npm_urls": [
+          "https://kuma.wonder.lan"
+        ],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "./data:/app/data"
+        ]
+      },
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "uptime-socket-proxy",
+        "depends_on": [],
+        "description": "Docker socket proxy — restricts Kuma's socket access",
+        "env_keys": [
+          "CONTAINERS"
+        ],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "tecnativa/docker-socket-proxy@sha256:1f5038b54f06c3e18422902cf00ba21803d1c97805aae032e5e6673d532d3459",
+        "image_pinned": true,
+        "image_tag": "1f5038b54f06c3e18422902cf00ba21803d1c97805aae032e5e6673d532d3459",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "uptime-socket-proxy",
+        "network_mode": "",
+        "network_type": "internal-only",
+        "networks": [
+          "internal"
+        ],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": [
+          "/var/run/docker.sock:/var/run/docker.sock:ro"
+        ]
+      }
+    ]
   },
   {
-    "env_vars": [],
-    "parse_error": "403 Client Error: rate limit exceeded for url: https://api.github.com/repos/gravi-ctrl/server-docker-backup/contents/wifi-robot/compose.yml?ref=main",
+    "env_vars": [
+      {
+        "comment": "",
+        "default": "''",
+        "is_secret": false,
+        "key": "ROUTER_IP"
+      },
+      {
+        "comment": "",
+        "default": "''",
+        "is_secret": true,
+        "key": "ROUTER_PASSWORD"
+      }
+    ],
+    "parse_error": null,
     "path": "wifi-robot/compose.yml",
-    "services": []
+    "services": [
+      {
+        "app_url_hint": null,
+        "cap_add": [],
+        "container_name": "wifi-robot",
+        "depends_on": [],
+        "description": "",
+        "env_keys": [
+          "PYTHONUNBUFFERED"
+        ],
+        "env_vars": [],
+        "explicit_container_name": true,
+        "has_healthcheck": false,
+        "image": "ghcr.io/gravi-ctrl/wifi-robot:latest@sha256:2ac88c221403ce1019f29a02d9b01b3bebd69d7c826c33d1d677370e54febecc",
+        "image_pinned": true,
+        "image_tag": "2ac88c221403ce1019f29a02d9b01b3bebd69d7c826c33d1d677370e54febecc",
+        "is_host_network": false,
+        "is_privileged": false,
+        "is_special_network": false,
+        "name": "wifi-robot",
+        "network_mode": "",
+        "network_type": "proxy-only",
+        "networks": [
+          "proxy"
+        ],
+        "notes": "",
+        "npm_details": [],
+        "npm_urls": [],
+        "ports": [],
+        "restart": "unless-stopped",
+        "volumes": []
+      }
+    ]
   }
 ]</script>
 <script>
