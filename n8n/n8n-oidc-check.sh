@@ -114,6 +114,8 @@ else
   echo "  Compose-defined variables, networks and mounts will be MISSING. Set CONTAINER=<name>."
 fi
 
+[ -n "${TEST_REDIRECT_URI:-}" ] && EXTRA_ARGS+=(-e "OIDC_REDIRECT_URI=$TEST_REDIRECT_URI")
+
 # A Postgres-backed test container would run migrations against the REAL database.
 if grep -qE '^DB_TYPE=postgres' "$ENVFILE" && [ "${FORCE:-0}" != "1" ]; then
   echo "Refusing to run: config uses Postgres (DB_TYPE), so the test container would"
@@ -210,6 +212,7 @@ echo
 if [ "$FAILS" -eq 0 ]; then
   echo "ALL AUTOMATED CHECKS PASSED."
   echo "Still do ONE real login through your IdP (re-run with KEEP=1 to keep the test container up):"
+  echo "e.g. KEEP=1 TEST_REDIRECT_URI=\"http://<YOUR_SERVER_LAN_IP>:5679/auth/oidc/callback\" ./n8n-oidc-check.sh $TAG"
   echo "these checks cannot exercise the callback, user lookup, or session cookie."
   exit 0
 else
