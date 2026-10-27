@@ -68,8 +68,14 @@
 # Paperless Non-Secret Config
 !paperless-ngx/docker-compose.env
 
+# Pihole update script
+!pihole/*.sh
+
 # n8n OIDC fix script
 !n8n/n8n-oidc-check.sh
+
+# Nextcloud scripts
+!nextcloud/*.sh
 
 # Wifi Robot Custom App
 !wifi-robot/*.py
