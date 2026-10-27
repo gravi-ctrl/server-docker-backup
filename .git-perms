@@ -50,6 +50,8 @@
 755	@USER:@GROUP	nextcloud
 644	@USER:@GROUP	nextcloud/compose.yml
 644	@USER:@GROUP	nextcloud/.env.example
+755	@USER:@GROUP	nextcloud/nextcloud-dynamic-watch.sh
+755	@USER:@GROUP	nextcloud/nextcloud_post-restore_fix.sh
 755	@USER:@GROUP	npm
 644	@USER:@GROUP	npm/compose.yml
 755	@USER:@GROUP	paperless-ngx
@@ -61,6 +63,7 @@
 755	@USER:@GROUP	pihole
 644	@USER:@GROUP	pihole/compose.yml
 644	@USER:@GROUP	pihole/.env.example
+755	@USER:@GROUP	pihole/update-pihole-regex.sh
 755	@USER:@GROUP	pocket-id
 644	@USER:@GROUP	pocket-id/compose.yml
 644	@USER:@GROUP	pocket-id/.env.example
