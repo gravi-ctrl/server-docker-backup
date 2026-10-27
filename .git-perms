@@ -67,9 +67,6 @@
 755	@USER:@GROUP	qbittorrent
 644	@USER:@GROUP	qbittorrent/compose.yml
 644	@USER:@GROUP	README.md
-755	@USER:@GROUP	renovate
-644	@USER:@GROUP	renovate/config.js
-644	@USER:@GROUP	renovate/.env.example
 644	@USER:@GROUP	renovate.json
 755	@USER:@GROUP	romm
 644	@USER:@GROUP	romm/compose.yml
