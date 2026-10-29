@@ -34,6 +34,7 @@
 !docker-compose.yml
 !docker-compose.yaml
 !compose.yaml.disabled
+!.trivyignore
 
 # Repo & Environment Metadata
 !Dockerfile
