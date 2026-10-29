@@ -1,0 +1,7 @@
+# selenium-manager (bundled in selenium 4.51.0) ships zip crate 8.6.0.
+# Used at build time only to fetch chromedriver; no untrusted zip handling at runtime.
+# Fix needs zip >= 9.0.5. Remove these once selenium releases with it.
+CVE-2026-115905 exp:2026-12-31
+CVE-2026-115907 exp:2026-12-31
+CVE-2026-115908 exp:2026-12-31
+CVE-2026-115909 exp:2026-12-31

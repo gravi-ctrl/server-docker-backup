@@ -60,10 +60,14 @@ jobs:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
       - name: Scan the published image for known vulnerabilities
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: ghcr.io/gravi-ctrl/wifi-robot:latest
           severity: CRITICAL,HIGH
           ignore-unfixed: true      # skip CVEs with no available fix; nothing you can do about them
+          trivyignores: .trivyignore
           exit-code: '1'
