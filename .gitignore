@@ -80,6 +80,7 @@
 # Wifi Robot Custom App
 !wifi-robot/*.py
 !wifi-robot/guestwifi
+!wifi-robot/*.txt
 
 # ==============================================================================
 # 5. STRICT SECURITY EXCLUSIONS

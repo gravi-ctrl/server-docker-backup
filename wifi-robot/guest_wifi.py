@@ -3,6 +3,7 @@
 # @FREQUENCY: On Demand (Telegram - through n8n)
 import os
 import sys
+import threading
 import time
 
 from dotenv import load_dotenv
@@ -13,6 +14,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from waitress import serve
 
 # --- CONFIGURATION ---
 # Load environment variables from .env file (if present)
@@ -30,6 +32,10 @@ if not ROUTER_PASSWORD:
 
 # Initialize Web Server
 app = Flask(__name__)
+
+# The router only allows one admin session, so never run two browsers at once.
+# Concurrent requests queue up here instead of fighting over the login.
+router_lock = threading.Lock()
 
 # --- Element IDs ---
 PASSWORD_FIELD_ID = "pc-login-password"
@@ -56,6 +62,8 @@ def set_guest_wifi(enable=True):
         driver = webdriver.Chrome(options=options)
         wait = WebDriverWait(driver, 15)
         short_wait = WebDriverWait(driver, 3)
+
+        driver.set_page_load_timeout(30)
 
         print(f"Connecting to http://{ROUTER_IP}...")
         driver.get(f"http://{ROUTER_IP}")
@@ -111,15 +119,23 @@ def set_guest_wifi(enable=True):
 
 # --- WEB ROUTES ---
 
+def run(enable, action):
+    with router_lock:
+        result = set_guest_wifi(enable=enable)
+    code = 500 if result.startswith("Error") else 200
+    return jsonify({"status": result, "action": action}), code
+
 @app.route('/on', methods=['GET', 'POST'])
 def turn_on():
-    result = set_guest_wifi(enable=True)
-    return jsonify({"status": result, "action": "ON"})
+    return run(True, "ON")
 
 @app.route('/off', methods=['GET', 'POST'])
 def turn_off():
-    result = set_guest_wifi(enable=False)
-    return jsonify({"status": result, "action": "OFF"})
+    return run(False, "OFF")
+
+@app.route('/health', methods=['GET'])
+def health():
+    return "ok"
 
 @app.route('/', methods=['GET'])
 def home():
@@ -128,4 +144,6 @@ def home():
 if __name__ == '__main__':
     # Run the web server on port 5000
     print(f"Starting Web Server on port {APP_PORT}")
-    app.run(host='0.0.0.0', port=APP_PORT)
+    # One thread is enough (requests are serialized anyway); a few extra let
+    # /health and queued requests be accepted while a toggle is running.
+    serve(app, host='0.0.0.0', port=APP_PORT, threads=4)
