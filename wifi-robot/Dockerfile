@@ -25,11 +25,11 @@ COPY --chown=appuser:appuser guest_wifi.py .
 # 4. Drop to non-root
 USER appuser
 
-# 5. Pre-fetch chromedriver at build time (Selenium Manager would otherwise
-#    download it on the first request after every container re-creation).
-RUN python3 -c "from selenium import webdriver as w; o = w.ChromeOptions(); \
-[o.add_argument(a) for a in ('--headless=new', '--no-sandbox', '--disable-dev-shm-usage')]; \
-w.Chrome(options=o).quit()"
+# 5. Pre-fetch chromedriver at build time so the first request doesn't have to
+#    download it. Only downloads (never launches it), so it can't fail on
+#    sandbox/library issues during the build.
+RUN "$(find /usr/local/lib/python3.12/site-packages/selenium -name selenium-manager -type f | head -n 1)" \
+    --browser chrome --browser-path /usr/bin/google-chrome
 
 HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -fs http://localhost:5000/health || exit 1
