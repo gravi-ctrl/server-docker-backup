@@ -25,8 +25,8 @@ COPY --chown=appuser:appuser guest_wifi.py .
 USER appuser
 
 # 5. Pre-fetch chromedriver at build time (download only, never launches it)
-RUN /usr/local/lib/python3.12/site-packages/selenium/webdriver/common/linux-x86_64/selenium-manager \
-    --browser chrome --browser-path /usr/bin/google-chrome
+RUN SM="$(python -c 'import selenium, pathlib; print(next(pathlib.Path(selenium.__file__).parent.glob("webdriver/common/linux*/selenium-manager")))')" \
+    && "$SM" --browser chrome --browser-path /usr/bin/google-chrome
 
 HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -fs http://localhost:5000/health || exit 1
