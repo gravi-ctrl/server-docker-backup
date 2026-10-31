@@ -11,6 +11,7 @@ from flask import Flask, jsonify
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -48,6 +49,7 @@ SAVE_BUTTON_ID = "save"
 
 def set_guest_wifi(enable=True):
     options = ChromeOptions()
+    options.binary_location = "/usr/bin/chromium"
     options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--no-sandbox")
@@ -59,7 +61,7 @@ def set_guest_wifi(enable=True):
 
     try:
         print("Starting Chrome...")
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(service=ChromeService("/usr/bin/chromedriver"), options=options)
         wait = WebDriverWait(driver, 15)
         short_wait = WebDriverWait(driver, 3)
 

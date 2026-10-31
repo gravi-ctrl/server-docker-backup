@@ -3,15 +3,14 @@ FROM python:3.15-slim@sha256:94d3426f1def7db4a106a232ac121bfd975393e5dfd40a619b9
 WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/gravi-ctrl/server-docker-backup"
 
-# 1. Install Chrome (amd64 only). wget must stay: google-chrome-stable depends on it.
+# 1. Install Chromium + matching driver from Debian (versions stay in lockstep).
+#    curl is kept for the HEALTHCHECK.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget gnupg ca-certificates curl \
-    && mkdir -p /etc/apt/keyrings \
-    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg \
-    && echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable --no-install-recommends \
+    chromium chromium-driver ca-certificates curl \
     && rm -rf /var/lib/apt/lists/*
+
+# Fail the build loudly if Debian renames/moves either binary
+RUN chromium --version && chromedriver --version
 
 # 2. Install pinned Python dependencies (cached unless requirements.txt changes)
 COPY requirements.txt .
@@ -24,12 +23,8 @@ COPY --chown=appuser:appuser guest_wifi.py .
 # 4. Drop to non-root
 USER appuser
 
-# 5. Pre-fetch chromedriver at build time (download only, never launches it)
-RUN SM="$(python -c 'import selenium, pathlib; print(next(pathlib.Path(selenium.__file__).parent.glob("webdriver/common/linux*/selenium-manager")))')" \
-    && "$SM" --browser chrome --browser-path /usr/bin/google-chrome
-
 HEALTHCHECK --interval=60s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -fs http://localhost:5000/health || exit 1
 
-# 6. Run the script
+# 5. Run the script
 ENTRYPOINT ["python3", "guest_wifi.py"]
