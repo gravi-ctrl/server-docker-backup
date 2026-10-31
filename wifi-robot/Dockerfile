@@ -12,7 +12,8 @@ RUN chromium --version && chromedriver --version
 
 # 2. Install pinned Python dependencies (cached unless requirements.txt changes)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip uninstall -y pip
 
 # 3. Create non-root user & copy code
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
