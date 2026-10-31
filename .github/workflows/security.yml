@@ -1,15 +1,5 @@
 name: Security Scans
 
-# Save as .github/workflows/security.yml in the stacks repo (server-docker-backup).
-#
-# BEFORE COMMITTING: replace every <FULL_COMMIT_SHA> below with the 40-character commit SHA of
-# the trivy-action release you want, and keep the version in the trailing comment. Do NOT use a
-# tag. In March 2026 attackers force-pushed 76 of 77 trivy-action version tags to malware; a
-# pinned SHA would not have been affected.
-#   Find it: https://github.com/aquasecurity/trivy-action/releases -> latest release -> click the
-#   short commit hash -> copy the full SHA from the URL.
-# Never set `version: latest` for the action.
-
 on:
   push:
     branches: ['main']
@@ -54,12 +44,13 @@ jobs:
           exit-code: '1'
 
   image:
-    name: Image CVE Scan (wifi-robot)
-    # The image is built from main, so scan it on pushes, the weekly schedule and manual runs.
-    # Don't make this one a required check: a new CVE would block unrelated PRs.
-    if: github.event_name != 'pull_request'
+    name: Weekly Image CVE Scan (wifi-robot)
+    # Pushes and PRs are scanned in the build workflow before publishing.
+    # This job catches new CVEs in the already-published image.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      # Needed so Trivy can read .trivyignore
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -68,6 +59,6 @@ jobs:
         with:
           image-ref: ghcr.io/gravi-ctrl/wifi-robot:latest
           severity: CRITICAL,HIGH
-          ignore-unfixed: true      # skip CVEs with no available fix; nothing you can do about them
+          ignore-unfixed: true
           trivyignores: .trivyignore
           exit-code: '1'
