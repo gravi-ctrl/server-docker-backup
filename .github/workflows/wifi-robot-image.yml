@@ -5,6 +5,10 @@ on:
     branches: ['main']
     paths:
       - 'wifi-robot/**'
+  pull_request:
+    branches: ['main']
+    paths:
+      - 'wifi-robot/**'
   workflow_dispatch:
 
 permissions:
@@ -19,16 +23,37 @@ jobs:
 
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4
 
-      - uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4
+      # Build into the local Docker daemon only; nothing is pushed yet
+      - name: Build image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
+        with:
+          context: ./wifi-robot
+          load: true
+          push: false
+          tags: wifi-robot:scan
+
+      # Scan the exact image that would ship; a failure here stops the push below
+      - name: Scan the image that was just built
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: wifi-robot:scan
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          trivyignores: .trivyignore
+          exit-code: '1'
+
+      - name: Log in to GHCR
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7
-        with:
-          context: ./wifi-robot
-          push: true
-          tags: |
-            ghcr.io/gravi-ctrl/wifi-robot:latest
-            ghcr.io/gravi-ctrl/wifi-robot:${{ github.sha }}
+      - name: Push the scanned image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag wifi-robot:scan ghcr.io/gravi-ctrl/wifi-robot:latest
+          docker tag wifi-robot:scan ghcr.io/gravi-ctrl/wifi-robot:${{ github.sha }}
+          docker push ghcr.io/gravi-ctrl/wifi-robot:latest
+          docker push ghcr.io/gravi-ctrl/wifi-robot:${{ github.sha }}
