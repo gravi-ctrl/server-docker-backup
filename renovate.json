@@ -1,31 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "helpers:pinGitHubActionDigests"
+    "config:best-practices"
   ],
   "enabledManagers": [
     "docker-compose",
     "dockerfile",
     "github-actions"
   ],
-  "labels": [
-    "renovate",
-    "dependencies"
-  ],
+  "ignorePaths": ["_archive/**"],
+  "labels": ["renovate", "dependencies"],
+  "dependencyDashboard": true,
+  "internalChecksFilter": "strict",
+  "minimumReleaseAge": "3 days",
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  },
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "minimumReleaseAge": "3 days",
-      "pinDigests": true
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "minimumReleaseAge": "1 day"
-    },
-    {
-      "matchUpdateTypes": ["minor"],
-      "minimumReleaseAge": "3 days"
+      "description": "One PR per stack, with the stack name in branch and title",
+      "matchManagers": ["docker-compose", "dockerfile"],
+      "additionalBranchPrefix": "{{parentDir}}-",
+      "commitMessagePrefix": "[{{parentDir}}]"
     },
     {
       "matchUpdateTypes": ["major"],
