@@ -9,7 +9,7 @@ services:
       - ./data:/data
     environment:
       - DOMAIN=https://vaultwarden.wonder.lan
-      - SIGNUPS_ALLOWED=true    # disable after creating the needed accounts and restart
+      - SIGNUPS_ALLOWED=true    # switching to false after creating the needed accounts and restart
       - ADMIN_TOKEN=${ADMIN_TOKEN}
 
 networks:
