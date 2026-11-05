@@ -7,6 +7,7 @@ LABEL org.opencontainers.image.source="https://github.com/gravi-ctrl/server-dock
 #    curl is kept for the HEALTHCHECK.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium chromium-driver ca-certificates curl \
+    && apt-get install -y --only-upgrade apt libapt-pkg7.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Fail the build loudly if Debian renames/moves either binary
