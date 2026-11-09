@@ -4,10 +4,12 @@ WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/gravi-ctrl/server-docker-backup"
 
 # 1. Install Chromium + matching driver from Debian (versions stay in lockstep).
+#    Upgrade base OS packages to pick up published Debian security patches.
 #    curl is kept for the HEALTHCHECK.
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    chromium chromium-driver ca-certificates curl \
-    && apt-get install -y --only-upgrade apt libapt-pkg7.0 \
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+       chromium chromium-driver ca-certificates curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Fail the build loudly if Debian renames/moves either binary
