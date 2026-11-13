@@ -55,16 +55,16 @@ services:
     image: waja/calcardbackup@sha256:14466ac4ca7ef27ffed6edb2e08c2345e928a41d12d359617cae6d6dd9ff975f
     container_name: calcardbackup
     restart: unless-stopped
+    user: "1000:33"
+    entrypoint: ["tail", "-f", "/dev/null"]
+    init: true
     networks:
       - internal
     depends_on:
       - db
       - app
     environment:
-      - NC_DIR=/var/www/html
-      - DB_HOST=db
-      - CRON_TIME="59 23 31 12 *"
-      - CALCARD_OPTS=-s
+      - TZ=Africa/Cairo
     volumes:
       - ./html:/var/www/html:ro
       - /data/assets:/backup
