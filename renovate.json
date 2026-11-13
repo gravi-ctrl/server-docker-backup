@@ -21,6 +21,10 @@
   },
   "packageRules": [
     {
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "minimumReleaseAge": null
+    },
+    {
       "description": "One PR per stack, with the stack name in branch and title",
       "matchManagers": ["docker-compose", "dockerfile"],
       "additionalBranchPrefix": "{{parentDir}}-",
