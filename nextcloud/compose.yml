@@ -52,7 +52,7 @@ services:
       - REDIS_HOST=redis
 
   calcardbackup:
-    image: waja/calcardbackup@sha256:14466ac4ca7ef27ffed6edb2e08c2345e928a41d12d359617cae6d6dd9ff975f
+    image: waja/calcardbackup@sha256:042b0afc69ee137ea480ef9e3d5e2994341cbfab8b729e84decccaf4ead792e1
     container_name: calcardbackup
     restart: unless-stopped
     user: "1000:33"
