@@ -31,7 +31,7 @@ jobs:
         run: python3 n8n/scripts/generate_n8n_stable_preset.py
 
       - name: Create or update Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
         with:
           token: ${{ secrets.N8N_AUTOMATION_TOKEN }}
           branch: automation/n8n-stable-allowlist
