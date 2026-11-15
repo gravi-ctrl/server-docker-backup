@@ -1,12 +1,10 @@
+
 name: Refresh n8n Stable Version Allowlist
 
 on:
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 concurrency:
   group: n8n-stable-version-allowlist
@@ -17,24 +15,33 @@ jobs:
     name: Generate stable n8n Renovate preset
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    # The default GitHub token only needs read access.
+    # The dedicated token below handles the PR and branch.
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Generate allowlist from GitHub Releases
         run: python3 n8n/scripts/generate_n8n_stable_preset.py
 
-      - name: Commit preset if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Create or update Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.N8N_AUTOMATION_TOKEN }}
+          branch: automation/n8n-stable-allowlist
+          base: main
+          delete-branch: true
+          add-paths: renovate-feed/n8n-stable.json
+          commit-message: "chore(renovate): refresh n8n stable versions"
+          title: "chore(renovate): refresh n8n stable versions"
+          body: |
+            Automatically generated update to the n8n stable-version
+            allowlist based on GitHub Releases.
 
-          git add renovate-feed/n8n-stable.json
-
-          if git diff --cached --quiet; then
-            echo "Stable n8n allowlist is already up to date."
-            exit 0
-          fi
-
-          git commit -m "chore(renovate): refresh n8n stable versions"
-          git push
+            Please review the generated version list before merging.
