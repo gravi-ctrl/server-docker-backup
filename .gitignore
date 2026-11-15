@@ -46,6 +46,7 @@
 !.env.example
 !/README.md
 !renovate.json
+!renovate-feed/*
 
 # ==============================================================================
 # 4. CONTAINER CONFIG EXCEPTIONS
