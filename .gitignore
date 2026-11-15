@@ -46,6 +46,7 @@
 !.env.example
 !/README.md
 !renovate.json
+!renovate-feed/*
 
 # ==============================================================================
 # 4. CONTAINER CONFIG EXCEPTIONS
@@ -72,8 +73,8 @@
 # Pihole update script
 !pihole/*.sh
 
-# n8n OIDC fix script
-!n8n/n8n-oidc-check.sh
+# n8n scripts
+!n8n/scripts/*
 
 # Nextcloud scripts
 !nextcloud/*.sh
