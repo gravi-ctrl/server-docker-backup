@@ -1,15 +1,21 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:best-practices"
+    "config:best-practices",
+    "local>gravi-ctrl/server-docker-backup//renovate-feed/n8n-stable"
   ],
   "enabledManagers": [
     "docker-compose",
     "dockerfile",
     "github-actions"
   ],
-  "ignorePaths": ["_archive/**"],
-  "labels": ["renovate", "dependencies"],
+  "ignorePaths": [
+    "_archive/**"
+  ],
+  "labels": [
+    "renovate",
+    "dependencies"
+  ],
   "dependencyDashboard": true,
   "internalChecksFilter": "strict",
   "minimumReleaseAge": "3 days",
@@ -17,26 +23,41 @@
   "prHourlyLimit": 2,
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"]
+    "labels": [
+      "security"
+    ]
   },
   "packageRules": [
     {
-      "matchUpdateTypes": ["digest", "pinDigest"],
+      "matchUpdateTypes": [
+        "digest",
+        "pinDigest"
+      ],
       "minimumReleaseAge": null
     },
     {
       "description": "One PR per stack, with the stack name in branch and title",
-      "matchManagers": ["docker-compose", "dockerfile"],
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
       "additionalBranchPrefix": "{{parentDir}}-",
       "commitMessagePrefix": "[{{parentDir}}]"
     },
     {
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "minimumReleaseAge": "7 days",
-      "labels": ["major-update", "review-carefully"]
+      "labels": [
+        "major-update",
+        "review-carefully"
+      ]
     },
     {
-      "matchPackageNames": ["lscr.io/linuxserver/qbittorrent"],
+      "matchPackageNames": [
+        "lscr.io/linuxserver/qbittorrent"
+      ],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     }
   ]
