@@ -54,6 +54,9 @@
 # Renovate
 !renovate/config.js
 
+# Container specific scripts
+!**/scripts/*
+
 # Homepage Dashboard Configs & Icons
 !homepage/config/
 !homepage/config/*.yaml
@@ -69,15 +72,6 @@
 
 # Paperless Non-Secret Config
 !paperless-ngx/docker-compose.env
-
-# Pihole update script
-!pihole/*.sh
-
-# n8n scripts
-!n8n/scripts/*
-
-# Nextcloud scripts
-!nextcloud/*.sh
 
 # Wifi Robot Custom App
 !wifi-robot/*.py

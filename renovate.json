@@ -54,13 +54,60 @@
       "labels": [
         "major-update",
         "review-carefully"
-      ]
+      ],
+      "automerge": false
     },
     {
       "matchPackageNames": [
         "lscr.io/linuxserver/qbittorrent"
       ],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
+    },
+    {
+      "description": "Auto-merge digest and patch updates for Docker images. Critical-service exceptions follow.",
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchUpdateTypes": [
+        "digest",
+        "pinDigest",
+        "patch"
+      ],
+      "automerge": true,
+      "addLabels": [
+        "automerge"
+      ]
+    },
+    {
+      "description": "Never auto-merge critical services: Nextcloud, databases, n8n and Pocket ID.",
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "nextcloud",
+        "**/nextcloud",
+        "mariadb",
+        "**/mariadb",
+        "postgres",
+        "**/postgres",
+        "n8nio/n8n",
+        "pocket-id",
+        "**/pocket-id"
+      ],
+      "automerge": false
     }
+  ],
+  "timezone": "Africa/Cairo",
+  "platformAutomerge": false,
+  "automergeSchedule": [
+    "after 6am and before 7am"
   ]
 }
