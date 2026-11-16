@@ -1,3 +1,4 @@
+
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
@@ -31,6 +32,14 @@
   },
   "packageRules": [
     {
+      "description": "Disable release-age requirement for Docker digest updates only.",
+      "matchManagers": [
+        "docker-compose",
+        "dockerfile"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
       "matchUpdateTypes": [
         "digest",
         "pinDigest"
@@ -47,6 +56,7 @@
       "commitMessagePrefix": "[{{parentDir}}]"
     },
     {
+      "description": "Major updates require manual review and seven days.",
       "matchUpdateTypes": [
         "major"
       ],
@@ -64,7 +74,7 @@
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     },
     {
-      "description": "Auto-merge digest and patch updates for Docker images. Critical-service exceptions follow.",
+      "description": "Auto-merge Docker digest and patch updates, excluding critical services.",
       "matchManagers": [
         "docker-compose",
         "dockerfile"
@@ -77,13 +87,24 @@
         "pinDigest",
         "patch"
       ],
+      "matchPackageNames": [
+        "!nextcloud",
+        "!**/nextcloud",
+        "!mariadb",
+        "!**/mariadb",
+        "!postgres",
+        "!**/postgres",
+        "!n8nio/n8n",
+        "!pocket-id",
+        "!**/pocket-id"
+      ],
       "automerge": true,
       "addLabels": [
         "automerge"
       ]
     },
     {
-      "description": "Never auto-merge critical services: Nextcloud, databases, n8n and Pocket ID.",
+      "description": "Explicitly keep critical services manual: Nextcloud, databases, n8n and Pocket ID.",
       "matchManagers": [
         "docker-compose",
         "dockerfile"
@@ -108,6 +129,6 @@
   "timezone": "Africa/Cairo",
   "platformAutomerge": false,
   "automergeSchedule": [
-    "after 6am and before 7am"
+    "after 6am and before 11am"
   ]
 }
