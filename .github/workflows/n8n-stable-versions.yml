@@ -31,6 +31,7 @@ jobs:
         run: python3 n8n/scripts/generate_n8n_stable_preset.py
 
       - name: Create or update Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         with:
           token: ${{ secrets.N8N_AUTOMATION_TOKEN }}
@@ -44,4 +45,11 @@ jobs:
             Automatically generated update to the n8n stable-version
             allowlist based on GitHub Releases.
 
-            Please review the generated version list before merging.
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.N8N_AUTOMATION_TOKEN }}
+        run: |
+          gh pr merge --auto --squash \
+            --repo "$GITHUB_REPOSITORY" \
+            "${{ steps.cpr.outputs.pull-request-number }}"
