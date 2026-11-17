@@ -1,0 +1,23 @@
+name: Validate Renovate config
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - renovate.json
+      - renovate-feed/**
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate renovate.json
+        run: |
+          docker run --rm -v "$PWD:/usr/src/app" -w /usr/src/app \
+            renovate/renovate:44 renovate-config-validator
