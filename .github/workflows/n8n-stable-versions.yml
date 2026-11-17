@@ -1,4 +1,3 @@
-
 name: Refresh n8n Stable Version Allowlist
 
 on:
@@ -16,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    # The default GitHub token only needs read access.
-    # The dedicated token below handles the PR and branch.
     permissions:
       contents: read
 
@@ -28,10 +25,13 @@ jobs:
           persist-credentials: false
 
       - name: Generate allowlist from GitHub Releases
+        env:
+          # Read-only token, only used to avoid the 60 req/h unauthenticated API limit.
+          GITHUB_TOKEN: ${{ github.token }}
         run: python3 n8n/scripts/generate_n8n_stable_preset.py
 
       - name: Create or update Pull Request
-        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         with:
           token: ${{ secrets.N8N_AUTOMATION_TOKEN }}
           branch: automation/n8n-stable-allowlist

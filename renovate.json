@@ -1,4 +1,3 @@
-
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
@@ -74,7 +73,7 @@
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     },
     {
-      "description": "Auto-merge Docker digest and patch updates, excluding critical services.",
+      "description": "Auto-merge Docker digest and patch updates. Services that must stay manual are listed in the rule below, which overrides this one because it comes later.",
       "matchManagers": [
         "docker-compose",
         "dockerfile"
@@ -87,24 +86,13 @@
         "pinDigest",
         "patch"
       ],
-      "matchPackageNames": [
-        "!nextcloud",
-        "!**/nextcloud",
-        "!mariadb",
-        "!**/mariadb",
-        "!postgres",
-        "!**/postgres",
-        "!n8nio/n8n",
-        "!pocket-id",
-        "!**/pocket-id"
-      ],
       "automerge": true,
       "addLabels": [
         "automerge"
       ]
     },
     {
-      "description": "Explicitly keep critical services manual: Nextcloud, databases, n8n and Pocket ID.",
+      "description": "Single source of truth for services that must never automerge: Nextcloud, databases and datastores, n8n and Pocket ID. Keep this rule AFTER the automerge rule, later rules win.",
       "matchManagers": [
         "docker-compose",
         "dockerfile"
@@ -119,11 +107,35 @@
         "**/mariadb",
         "postgres",
         "**/postgres",
+        "**/pgvector",
+        "mysql",
+        "**/mysql",
+        "mongo",
+        "**/mongo",
+        "redis",
+        "**/redis",
+        "valkey",
+        "**/valkey",
         "n8nio/n8n",
         "pocket-id",
         "**/pocket-id"
+        "uptime-kuma"
+        "**/uptime-kuma"
+        "romm"
+        "**/romm"
       ],
       "automerge": false
+    },
+    {
+      "description": [
+        "BLOCKLIST for versions that failed gitops verification and were reverted. Without this, Renovate re-opens the PR for the same version after the revert and automerge would deploy it again.",
+        "To use: put the image name in matchPackageNames and the bad tag(s) in the regex, e.g. \"!/^(?:1\\\\.2\\\\.3|1\\\\.2\\\\.4)$/\" blocks 1.2.3 and 1.2.4. Dots are escaped as \\\\. inside JSON.",
+        "Remove the entry once a fixed version is out. The placeholder below matches nothing, so the rule is inert until filled."
+      ],
+      "matchPackageNames": [
+        "REPLACE/with-image-name"
+      ],
+      "allowedVersions": "!/^(?:REPLACE-ME)$/"
     }
   ],
   "timezone": "Africa/Cairo",
