@@ -8,6 +8,7 @@ datasource remains responsible for both version discovery and digest lookup.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -30,14 +31,18 @@ def fetch_releases() -> list[dict]:
 
     while True:
         url = RELEASES_API.format(page=page)
-        request = Request(
-            url,
-            headers={
-                "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28",
-                "User-Agent": "gravi-ctrl-n8n-stable-version-feed",
-            },
-        )
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "gravi-ctrl-n8n-stable-version-feed",
+        }
+        # Optional: authenticated calls get 5000 requests/hour instead of 60 per shared IP,
+        # which keeps the paginated release listing from being rate-limited on hosted runners.
+        # The data is public, so the workflow's read-only GITHUB_TOKEN is enough.
+        token = os.environ.get("GITHUB_TOKEN")
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+        request = Request(url, headers=headers)
 
         try:
             with urlopen(request, timeout=30) as response:
