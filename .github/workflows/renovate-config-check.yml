@@ -20,4 +20,5 @@ jobs:
       - name: Validate renovate.json
         run: |
           docker run --rm -v "$PWD:/usr/src/app" -w /usr/src/app \
-            renovate/renovate:44 renovate-config-validator
+            renovate/renovate:44 renovate-config-validator \
+            renovate.json renovate-feed/n8n-stable.json
