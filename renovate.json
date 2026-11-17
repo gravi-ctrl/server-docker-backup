@@ -118,10 +118,10 @@
         "**/valkey",
         "n8nio/n8n",
         "pocket-id",
-        "**/pocket-id"
-        "uptime-kuma"
-        "**/uptime-kuma"
-        "romm"
+        "**/pocket-id",
+        "uptime-kuma",
+        "**/uptime-kuma",
+        "romm",
         "**/romm"
       ],
       "automerge": false
