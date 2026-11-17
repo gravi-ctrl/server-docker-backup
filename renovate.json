@@ -117,7 +117,7 @@
         "valkey",
         "**/valkey",
         "n8nio/n8n",
-        "pocket-id",
+        "pocket-id"
         "**/pocket-id",
         "uptime-kuma",
         "**/uptime-kuma",
