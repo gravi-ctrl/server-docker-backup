@@ -12,6 +12,9 @@
   "ignorePaths": [
     "_archive/**"
   ],
+  "assignees": [
+    "gravi-ctrl"
+  ],
   "labels": [
     "renovate",
     "dependencies"
