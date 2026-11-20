@@ -11,6 +11,7 @@
 #         PORT=5679               host port for the throwaway container
 #         KEEP=1                  leave the test container running for a manual login
 #         FORCE=1                 run even if the config uses Postgres (WARNING: touches the real DB)
+#         ENV_FILE=/opt/rabbit-hole/.env   optional central env (SERVER_IP, STACKS_DIR)
 #
 # It never touches your real container or data dir: it runs the new image
 # against a COPY of n8n_data (which contains hooks.js).
@@ -62,7 +63,12 @@
 set -u
 
 TAG=${1:?usage: $0 <n8n-image-tag>}
-STACK=${STACK:-/opt/stacks/n8n}
+
+# Optional: central env (only used for STACKS_DIR / SERVER_IP defaults)
+ENV_FILE=${ENV_FILE:-/opt/rabbit-hole/.env}
+[[ -f "$ENV_FILE" ]] && source "$ENV_FILE"
+
+STACK=${STACK:-${STACKS_DIR:-/opt/stacks}/n8n}
 CONTAINER=${CONTAINER:-n8n}
 PORT=${PORT:-5679}
 IMAGE="n8nio/n8n:$TAG"
@@ -212,7 +218,7 @@ echo
 if [ "$FAILS" -eq 0 ]; then
   echo "ALL AUTOMATED CHECKS PASSED."
   echo "Still do ONE real login through your IdP (re-run with KEEP=1 to keep the test container up):"
-  echo "e.g. KEEP=1 TEST_REDIRECT_URI=\"http://<YOUR_SERVER_LAN_IP>:5679/auth/oidc/callback\" ./n8n-oidc-check.sh $TAG"
+  echo "e.g. KEEP=1 TEST_REDIRECT_URI=\"http://${SERVER_IP:-YOUR_SERVER_IP}:$PORT/auth/oidc/callback\" ./n8n-oidc-check.sh $TAG"
   echo "these checks cannot exercise the callback, user lookup, or session cookie."
   exit 0
 else
