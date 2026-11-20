@@ -1,5 +1,5 @@
 #!/bin/bash
-# @DESCRIPTION: Pi-hole Teleporter snapshot and restore. `backup` exports a zip into etc-pihole and keeps the newest 2; `restore` imports the newest zip and rebuilds gravity
+# @DESCRIPTION: Pi-hole Teleporter snapshot and restore. `backup` exports a zip into etc-pihole, keeps the newest 2, then refreshes gravity; `restore` imports the newest zip and rebuilds gravity
 # @FREQUENCY: backup = daily via cron; restore = run once by container-watcher (task: pihole)
 # @USES_ENV: none
 #
@@ -50,6 +50,14 @@ do_backup() {
         "ls -1 pi-hole_*_teleporter_*.zip | sort -r | tail -n +$((KEEP + 1)) | while read -r f; do rm -f \"\$f\"; done"
 
     echo "✅ Teleporter snapshot: $zip (keeping newest $KEEP)"
+
+    # Snapshot first, so a failing blocklist download can't cost us the zip
+    echo "→ Refreshing gravity..."
+    if ! docker exec "$CONTAINER" pihole -g; then
+        echo "⚠️ Snapshot saved, but the gravity refresh failed" >&2
+        exit 1
+    fi
+    echo "✅ Gravity refreshed"
 }
 
 # ── restore ───────────────────────────────────────────────────────────────────
