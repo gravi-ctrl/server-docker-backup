@@ -34,7 +34,7 @@ Restart=always
 RestartSec=10
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target docker.service
 EOF
 
         sudo systemctl daemon-reload
