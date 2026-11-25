@@ -85,7 +85,14 @@ fail() { echo "  FAIL  $*"; FAILS=$((FAILS + 1)); }
 cleanup() {
   rm -f "$ENVFILE"
   if [ "${KEEP:-0}" = "1" ]; then
+    # Prefer the base of TEST_REDIRECT_URI, else SERVER_IP (from ENV_FILE), else localhost
+    if [ -n "${TEST_REDIRECT_URI:-}" ]; then
+      URL=${TEST_REDIRECT_URI%/auth/oidc/callback}
+    else
+      URL="http://${SERVER_IP:-localhost}:$PORT"
+    fi
     echo "KEEP=1: container '$NAME' left running on port $PORT (data copy: $TMP)"
+    echo "Log in at:   $URL"
     echo "Remove with: docker rm -f $NAME && rm -rf $TMP"
   else
     docker rm -f "$NAME" >/dev/null 2>&1
