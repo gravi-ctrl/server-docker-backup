@@ -14,6 +14,12 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=${NC_USER}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   redis:
     image: redis:8.10-alpine@sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3
@@ -21,6 +27,12 @@ services:
     restart: unless-stopped
     networks:
       - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   app:
     image: nextcloud:35.0.3@sha256:f44180601f18e7664557232b4c5edb0eb4a82d649c05b93313f4e15909553d42
@@ -50,19 +62,30 @@ services:
       - MYSQL_HOST=db
       - NEXTCLOUD_DATA_DIR=/var/www/html/data
       - REDIS_HOST=redis
+    healthcheck:
+      test:
+        - CMD
+        - php
+        - -r
+        - "$$s=@file_get_contents('http://127.0.0.1/status.php'); $$j=json_decode($$s ?: '', true); exit(($$j['installed'] ?? false) && !($$j['maintenance'] ?? true) && !($$j['needsDbUpgrade'] ?? true) ? 0 : 1);"
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   calcardbackup:
     image: waja/calcardbackup@sha256:042b0afc69ee137ea480ef9e3d5e2994341cbfab8b729e84decccaf4ead792e1
-    container_name: calcardbackup
-    restart: unless-stopped
+    profiles: ["jobs"]
     user: "1000:33"
-    entrypoint: ["tail", "-f", "/dev/null"]
+    entrypoint: ["/opt/calcardbackup/calcardbackup"]
     init: true
     networks:
       - internal
     depends_on:
-      - db
-      - app
+      db:
+        condition: service_healthy
+      app:
+        condition: service_healthy
     environment:
       - TZ=Africa/Cairo
     volumes:
