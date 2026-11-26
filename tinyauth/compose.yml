@@ -2,6 +2,7 @@ services:
   tinyauth:
     image: ghcr.io/tinyauthapp/tinyauth:v5.2.0@sha256:220aa235c76393a73fece831d7ba967b8698d3907fd8e3c4c952f699c7b142a5
     container_name: tinyauth
+    user: "1000:1000"
     labels:
       - "dash.description=Lightweight auth middleware — protects services via Pocket ID OIDC"
       - "dash.notes=start early on restore. NPM will crash without it"

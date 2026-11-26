@@ -2,6 +2,7 @@ services:
   romm:
     image: rommapp/romm:5.4.1@sha256:8677fb7b81b1d3db20b849e989a1dadc2a11159e51eb34a2acdcb01102274edf
     container_name: romm
+    user: "1000:1000"
     labels:
       - "dash.description=ROM manager and game library browser"
       - "deploy.rollback=false"
@@ -16,8 +17,6 @@ services:
       - IGDB_CLIENT_ID=${IGDB_TWITCH_CLIENT_ID}
       - IGDB_CLIENT_SECRET=${IGDB_TWITCH_CLIENT_SECRET}
       - REDIS_HOST=romm-redis
-      - PUID=1000
-      - PGID=1000
       - TZ=Africa/Cairo
       # OIDC support
       - OIDC_TLS_CACERTFILE=/etc/ssl/certs/homeserver-ca.pem
@@ -42,6 +41,13 @@ services:
         condition: service_healthy
       romm-redis:
         condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/api/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
   romm-db:
     image: mariadb:13.0@sha256:54f493ea0d60b621a5bff84e5b20100f8b86b6efa6b79158e04756c5194a5e4d
     container_name: romm-db
@@ -65,12 +71,19 @@ services:
       interval: 20s
       timeout: 5s
       retries: 10
+
   romm-redis:
     image: redis:8.10-alpine@sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3
     container_name: romm-redis
     restart: unless-stopped
     networks:
       - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
 networks:
   proxy:
