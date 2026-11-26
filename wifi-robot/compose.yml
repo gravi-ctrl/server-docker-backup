@@ -1,7 +1,7 @@
 services:
   wifi-robot:
     container_name: wifi-robot
-    image: ghcr.io/gravi-ctrl/wifi-robot:latest@sha256:b5d399ee6244b4640c39e3d2a9236c007fa47a85bf66925bdef260215999d50b
+    image: ghcr.io/gravi-ctrl/wifi-robot:latest@sha256:0e5e11cf18da9b449de1528d016e694c402faba56f84bcea59d4c217ddac818b
     init: true
     restart: unless-stopped
     networks:
