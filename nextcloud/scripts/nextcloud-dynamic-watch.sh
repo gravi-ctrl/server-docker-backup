@@ -2,8 +2,8 @@
 # @DESCRIPTION: Watches `/data/assets` + Internal Data, scans Nextcloud via Docker
 # @FREQUENCY: Service (Always) (triggered by `container-watcher. sh`)
 
-[[ -f "/opt/stacks/nextcloud/.env" ]] || { echo ".env does not exist at /opt/stacks/nextcloud" >&2; exit 1; }
-source "/opt/stacks/nextcloud/.env"
+[[ -f "/opt/stacks/nextcloud/scripts/.env" ]] || { echo ".env does not exist at /opt/stacks/nextcloud/scripts" >&2; exit 1; }
+source "/opt/stacks/nextcloud/scripts/.env"
 
 SERVICE_NAME="nc-watcher"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}.service"
