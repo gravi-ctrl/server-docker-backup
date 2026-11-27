@@ -46,8 +46,10 @@ services:
       - proxy
       - internal
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - ./html:/var/www/html
       - /data/nextcloud_data:/var/www/html/data

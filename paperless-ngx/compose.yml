@@ -43,8 +43,10 @@ services:
       - "deploy.rollback=false"
     restart: unless-stopped
     depends_on:
-      - db
-      - broker
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
     networks:
       - proxy
       - internal
@@ -80,6 +82,11 @@ services:
       - ${HOST_CERT_PATH}:/usr/local/share/ca-certificates/homeserver-ca.crt:ro
       - ./custom-cont-init.d:/custom-cont-init.d:ro  # My CA certificate
     env_file: docker-compose.env
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
 
 networks:
   proxy:
