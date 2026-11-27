@@ -215,7 +215,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
       <span class="meta-sep">·</span>
       <span>branch <strong>main</strong></span>
       <span class="meta-sep">·</span>
-      <span>Generated 2026-11-27 03:16 EET</span>
+      <span>Generated 2026-11-27 03:28 EET</span>
     </div>
   </div>
 
@@ -280,6 +280,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config/prowlarr:/config"
         ]
@@ -323,6 +324,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config/radarr:/config",
           "/data/assets:/data"
@@ -367,6 +369,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config/sonarr:/config",
           "/data/assets:/data"
@@ -411,6 +414,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config/bazarr:/config",
           "/data/assets:/data"
@@ -478,6 +482,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config/flaresolver:/config"
         ]
@@ -535,6 +540,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/config",
           "./metadata:/metadata",
@@ -588,6 +594,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "/var/run/docker.sock:/var/run/docker.sock",
           "./data:/app/data",
@@ -638,6 +645,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "/var/run/docker.sock:/var/run/docker.sock:ro"
         ]
@@ -645,98 +653,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
     ]
   },
   {
-    "env_vars": [
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_NPM_USER"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_NPM_PASS"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_NEXTCLOUD_USER"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_NEXTCLOUD_APP_PASS"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_PAPERLESS_API"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_AUDIOBOOKSHELF_API"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_QBIT_USERNAME"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_QBIT_PASS"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_JD2_USER"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_JD2_PASS"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_JELLYFIN_KEY"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_RADARR_KEY"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_SONARR_KEY"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_PROWLARR_KEY"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "HOMEPAGE_VAR_BAZARR_KEY"
-      }
-    ],
+    "env_vars": [],
     "parse_error": null,
     "path": "homepage/compose.yml",
     "services": [
@@ -752,7 +669,98 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "PGID",
           "PUID"
         ],
-        "env_vars": [],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_NPM_USER"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_NPM_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_NEXTCLOUD_USER"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_NEXTCLOUD_APP_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_PAPERLESS_API"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_AUDIOBOOKSHELF_API"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_QBIT_USERNAME"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_QBIT_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_JD2_USER"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_JD2_PASS"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_JELLYFIN_KEY"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_RADARR_KEY"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_SONARR_KEY"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_PROWLARR_KEY"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "HOMEPAGE_VAR_BAZARR_KEY"
+          }
+        ],
         "explicit_container_name": true,
         "has_healthcheck": false,
         "image": "ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f",
@@ -780,6 +788,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": true,
         "volumes": [
           "./config:/app/config",
           "./config/images:/app/public/images"
@@ -849,6 +858,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/config",
           "/data/assets/downloads:/output:rw",
@@ -901,6 +911,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/config",
           "/data/assets:/data"
@@ -1066,6 +1077,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./n8n_data:/home/node/.n8n",
           "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro",
@@ -1117,6 +1129,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": []
       }
     ]
@@ -1200,6 +1213,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./db:/var/lib/mysql"
         ]
@@ -1231,6 +1245,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": []
       },
       {
@@ -1308,6 +1323,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./html:/var/www/html",
           "/data/nextcloud_data:/var/www/html/data",
@@ -1347,6 +1363,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "no",
+        "uses_env_file": false,
         "volumes": [
           "./html:/var/www/html:ro",
           "/data/assets:/backup",
@@ -1401,6 +1418,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "443:443"
         ],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./data:/data",
           "./letsencrypt:/etc/letsencrypt"
@@ -1440,6 +1458,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./redisdata:/data"
         ]
@@ -1486,6 +1505,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./pgdata:/var/lib/postgresql"
         ]
@@ -1585,6 +1605,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "/data/paperless/data:/usr/src/paperless/data",
           "/data/paperless/media:/usr/src/paperless/media",
@@ -1657,6 +1678,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "53:53/udp"
         ],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./etc-pihole:/etc/pihole",
           "./etc-dnsmasq.d:/etc/dnsmasq.d"
@@ -1725,6 +1747,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./data:/app/data",
           "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"
@@ -1780,6 +1803,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "6881:6881/udp"
         ],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/config",
           "/data/assets:/data"
@@ -1898,6 +1922,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro",
           "/data/assets/romm/resources:/romm/resources",
@@ -1953,6 +1978,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./mysql_data:/var/lib/mysql"
         ]
@@ -1984,6 +2010,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": []
       }
     ]
@@ -2044,6 +2071,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "/run/udev:/run/udev:ro",
           "./config:/opt/scrutiny/config",
@@ -2100,6 +2128,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
           "21027:21027/udp"
         ],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/var/syncthing/config",
           "/data:/data"
@@ -2155,6 +2184,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./config:/var/lib/tailscale",
           "/dev/net/tun:/dev/net/tun"
@@ -2235,6 +2265,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "${HOST_CERT_PATH}:/etc/ssl/certs/homeserver-ca.pem:ro"
         ]
@@ -2286,6 +2317,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         ],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "./data:/app/data"
         ]
@@ -2319,6 +2351,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": false,
         "volumes": [
           "/var/run/docker.sock:/var/run/docker.sock:ro"
         ]
@@ -2326,20 +2359,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
     ]
   },
   {
-    "env_vars": [
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": false,
-        "key": "ROUTER_IP"
-      },
-      {
-        "comment": "",
-        "default": "''",
-        "is_secret": true,
-        "key": "ROUTER_PASSWORD"
-      }
-    ],
+    "env_vars": [],
     "parse_error": null,
     "path": "wifi-robot/compose.yml",
     "services": [
@@ -2352,7 +2372,20 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "env_keys": [
           "PYTHONUNBUFFERED"
         ],
-        "env_vars": [],
+        "env_vars": [
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": false,
+            "key": "ROUTER_IP"
+          },
+          {
+            "comment": "",
+            "default": "''",
+            "is_secret": true,
+            "key": "ROUTER_PASSWORD"
+          }
+        ],
         "explicit_container_name": true,
         "has_healthcheck": false,
         "image": "ghcr.io/gravi-ctrl/wifi-robot:latest@sha256:0e5e11cf18da9b449de1528d016e694c402faba56f84bcea59d4c217ddac818b",
@@ -2372,6 +2405,7 @@ h1{font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
         "npm_urls": [],
         "ports": [],
         "restart": "unless-stopped",
+        "uses_env_file": true,
         "volumes": []
       }
     ]
