@@ -66,9 +66,9 @@ services:
         - -e
         - "require('http').get('http://127.0.0.1:5678/healthz/readiness',r=>{r.resume();if(r.statusCode!==200)process.exitCode=1}).on('error',()=>{process.exitCode=1})"
       interval: 30s
-      timeout: 5s
+      timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 180s
 
   # --- NGROK TUNNEL ---
   ngrok:
