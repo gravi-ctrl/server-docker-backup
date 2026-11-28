@@ -80,7 +80,9 @@ services:
     environment:
       - NGROK_AUTHTOKEN=${NGROK_TOKEN}
     # Points the static domain to the n8n container
-    command: http n8n:5678 --domain=${NGROK_DOMAIN}
+    volumes:
+      - ./ngrok-policy.yml:/etc/ngrok/policy.yml:ro
+    command: http n8n:5678 --domain=${NGROK_DOMAIN} --traffic-policy-file=/etc/ngrok/policy.yml
 
 networks:
   proxy:
