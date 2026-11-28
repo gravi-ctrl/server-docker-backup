@@ -11,7 +11,6 @@
 # ==============================================================================
 **/config/
 **/data/
-**/n8n_data/
 **/metadata/
 **/db/
 **/postgres/
@@ -23,6 +22,7 @@
 **/etc-pihole/
 **/etc-dnsmasq.d/
 **/custom-tessdata/
+n8n/n8n_data/*
 
 # ==============================================================================
 # 3. BASE ALLOW RULES
@@ -77,6 +77,9 @@
 !wifi-robot/*.py
 !wifi-robot/guestwifi
 !wifi-robot/*.txt
+
+# n8n hook for OIDC
+!n8n/n8n_data/hooks.js
 
 # ==============================================================================
 # 5. STRICT SECURITY EXCLUSIONS

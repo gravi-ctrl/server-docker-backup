@@ -17,42 +17,36 @@
 # against a COPY of n8n_data (which contains hooks.js).
 #
 # ---------------------------------------------------------------------------
-# IF A CHECK FAILS - quick guide (do NOT upgrade until it passes)
+# IF A CHECK FAILS - do NOT upgrade until it passes.
+# The hook reports what it found at startup; the log lines printed at the end
+# of the run are the evidence. Find your failure below.
 #
-# "hook never loaded" (no [OIDC Hook] log lines)
-#    The hook file wasn't picked up. Look at the EXTERNAL_HOOK_FILES / file
-#    listing the script prints. Usual causes: wrong CONTAINER name (so the
-#    env was incomplete), or n8n_data/hooks.js is missing/unpatched.
+# "hook never loaded" (no [OIDC Hook] lines)
+#    The hook file wasn't picked up. Check the EXTERNAL_HOOK_FILES listing the
+#    script printed, the CONTAINER name, and that n8n_data/hooks.js exists.
 #
 # "OIDC DISABLED" or no "Session issuer" line
-#    n8n moved something. The hook log lists every location it tried.
-#    a) Diff old vs new image to see what moved:
-#         for t in OLD NEW; do docker run --rm --entrypoint sh n8nio/n8n:$t -c \
-#           'cd /usr/local/lib/node_modules/n8n; find dist/auth dist/services -name "*.js" | sort' > /tmp/$t.txt; done
-#         diff /tmp/OLD.txt /tmp/NEW.txt
-#    b) Find the new home (BusyBox grep: use -R, there is no --include):
-#         docker run --rm --entrypoint sh n8nio/n8n:NEW -c 'cd /usr/local/lib/node_modules/n8n;
-#           grep -Rl "JwtService" dist node_modules/@n8n/*/dist | grep -v "\.map$"; cat dist/auth/jwt.js'
-#    c) Add the new path to SESSION_ISSUER_SPECS in hooks.js, re-run this script.
+#    n8n changed how it issues login cookies; the log lists everywhere the hook looked.
+#      docker run --rm --entrypoint sh n8nio/n8n:NEW -c \
+#        'cd /usr/local/lib/node_modules/n8n; grep -n "issueCookie" dist/auth/jwt.js'
+#    Then fix SESSION_ISSUER_SPECS / resolveSessionIssuer() in hooks.js.
 #
-# A static check fails (issueCookie / dbCollections / createUserWithProject)
-#    Same idea: use the grep in (b) to find what replaced it, then update
-#    hooks.js (issueCookie -> resolveSessionIssuer; dbCollections and
-#    createUserWithProject -> the /auth/oidc/callback handler).
+# no "User provisioning" line (log says UNAVAILABLE)
+#    n8n renamed or moved "create a user + personal project" (2.49 renamed
+#    createUserWithProject -> createPersonWithProject, on PersonRepository).
+#      docker run --rm --entrypoint sh n8nio/n8n:NEW -c 'cd /usr/local/lib/node_modules/n8n;
+#        grep -Rho "create[A-Za-z]*WithProject" dist node_modules/@n8n/db/dist | sort -u'
+#    Then add the new name as another strategy in resolveUserCreator() in hooks.js.
+#    Meanwhile existing users still log in; only first-time logins fail.
 #
 # "/auth/oidc/login returned 500"
-#    The hook couldn't fetch your IdP's discovery document. The script prints
-#    the "Login error" log and a probe from inside the test container:
-#      ENOTFOUND / EAI_AGAIN          -> DNS/network: test container can't resolve the IdP
-#      ECONNREFUSED / ETIMEDOUT       -> can't reach it (network, firewall, hairpin)
-#      UNABLE_TO_VERIFY_LEAF_SIGNATURE / SELF_SIGNED_CERT_IN_CHAIN
-#                                     -> private CA not trusted (check NODE_EXTRA_CA_CERTS + its mount)
-#      HTTP 200                       -> discovery works; read the "Login error" log instead
-#    If it's the test setup (not n8n), fix CONTAINER / mounts / networks here.
+#    The hook can't fetch your IdP's discovery document. Read the probe line the
+#    script prints: ENOTFOUND/EAI_AGAIN = DNS; ECONNREFUSED/ETIMEDOUT = network;
+#    UNABLE_TO_VERIFY_LEAF_SIGNATURE = private CA not trusted (NODE_EXTRA_CA_CERTS
+#    and its mount); HTTP 200 = discovery fine, read the "Login error" log instead.
 #
 # Everything passes but a real login fails
-#    Re-run with KEEP=1, log in at http://localhost:$PORT, then run
-#    docker logs n8n-oidc-test 2>&1 | grep -A6 "OIDC Hook"   (look for "Callback error").
+#    Re-run with KEEP=1, log in, then: docker logs n8n-oidc-test 2>&1 | grep -A6 "OIDC Hook"
 #
 # Before the REAL upgrade: back up n8n_data / the database. Downgrading after
 # n8n has run its migrations is not guaranteed to work.
@@ -141,17 +135,6 @@ INNER_PORT=${INNER_PORT:-5678}
 echo "== Pulling $IMAGE"
 docker pull -q "$IMAGE" >/dev/null || { echo "Could not pull $IMAGE"; exit 2; }
 
-echo "== Static checks (what the hook depends on inside n8n)"
-static=$(docker run --rm --entrypoint sh "$IMAGE" -c '
-cd /usr/local/lib/node_modules/n8n || exit 9
-grep -q "function issueCookie(res, user)" dist/auth/jwt.js 2>/dev/null && echo OK_ISSUE_COOKIE
-grep -q "dbCollections" dist/external-hooks.js 2>/dev/null && echo OK_DBCOLLECTIONS
-grep -Rq "createUserWithProject" dist node_modules/@n8n/db/dist 2>/dev/null && echo OK_CREATE_USER
-')
-echo "$static" | grep -q OK_ISSUE_COOKIE  && pass "dist/auth/jwt.js exports issueCookie(res, user)" || fail "dist/auth/jwt.js issueCookie missing or signature changed"
-echo "$static" | grep -q OK_DBCOLLECTIONS && pass "external hooks still expose dbCollections"        || fail "dbCollections no longer referenced in dist/external-hooks.js"
-echo "$static" | grep -q OK_CREATE_USER   && pass "createUserWithProject still exists"               || fail "createUserWithProject not found (new-user provisioning will fail)"
-
 echo "== Hook file"
 if [ ! -f "$STACK/n8n_data/hooks.js" ]; then
   fail "$STACK/n8n_data/hooks.js does not exist"
@@ -195,6 +178,8 @@ else
   echo "$logs" | grep -q "OIDC DISABLED" && fail "hook disabled itself (see hook log below)" || pass "hook loaded and did not disable itself"
   issuer=$(echo "$logs" | grep -o "Session issuer: .*" | head -1)
   [ -n "$issuer" ] && pass "$issuer" || fail "no 'Session issuer' log line"
+  prov=$(echo "$logs" | grep -o "User provisioning: .*" | head -1)
+  [ -n "$prov" ] && pass "$prov" || fail "no 'User provisioning' log line (new users could not be created)"
 fi
 
 code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "http://localhost:$PORT/auth/oidc/login")
