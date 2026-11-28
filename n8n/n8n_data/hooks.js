@@ -450,6 +450,20 @@ function resolveUserCreator(User) {
     errors.push(`PersonRepository: ${e.message}`);
   }
 
+  // 3) n8n <= 2.48: createUserWithProject lives on UserRepository
+  try {
+    const { Container } = n8nRequire('@n8n/di');
+    const { UserRepository } = n8nRequire('@n8n/db');
+    const repo = Container.get(UserRepository);
+    if (typeof repo.createUserWithProject !== 'function') throw new Error('no createUserWithProject()');
+    return {
+      label: 'UserRepository.createUserWithProject',
+      create: (data) => repo.createUserWithProject(data),
+    };
+  } catch (e) {
+    errors.push(`UserRepository: ${e.message}`);
+  }
+
   throw new Error(`No usable user creator found:\n  ${errors.join('\n  ')}`);
 }
 
