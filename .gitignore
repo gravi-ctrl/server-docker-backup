@@ -78,8 +78,9 @@ n8n/n8n_data/*
 !wifi-robot/guestwifi
 !wifi-robot/*.txt
 
-# n8n hook for OIDC
+# n8n hook for OIDC and ngrok policy
 !n8n/n8n_data/hooks.js
+!n8n/ngrok-policy.yml
 
 # ==============================================================================
 # 5. STRICT SECURITY EXCLUSIONS

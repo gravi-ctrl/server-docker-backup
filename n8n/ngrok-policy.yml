@@ -1,0 +1,8 @@
+on_http_request:
+  - name: Only allow n8n webhooks
+    expressions:
+      - "!(req.url.path.startsWith('/webhook/') || req.url.path.startsWith('/webhook-test/'))"
+    actions:
+      - type: deny
+        config:
+          status_code: 404
